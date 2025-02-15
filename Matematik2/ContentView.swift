@@ -76,7 +76,7 @@ struct MathView: View {
     
     static func generateProblems(for operation: MathOperation) -> [MathProblem] {
         var problems = [MathProblem]()
-        for _ in 0..<30 {
+        for _ in 0..<45 {
             var left = 1
             var right = 1
             
@@ -109,6 +109,7 @@ struct MathView: View {
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
                     ForEach(problems.indices, id: \..self) { index in
                         HStack {
+                            Spacer()
                             Text("\(problems[index].left) \(symbol) \(problems[index].right) =")
                                 .font(.system(size: 24, weight: .bold, design: .rounded))
                             TextField("?", text: Binding(
