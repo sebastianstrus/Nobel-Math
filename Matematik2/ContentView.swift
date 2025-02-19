@@ -211,11 +211,11 @@ struct MathView: View {
                     left = right * Int.random(in: 1...10)
                 } while left / right <= 0
             case .subtraction:
-                left = Int.random(in: 1...20)
+                left = Int.random(in: 1...30)
                 right = Int.random(in: 1...left)
             default:
-                left = Int.random(in: 1...20)
-                right = Int.random(in: 1...20)
+                left = Int.random(in: 1...30)
+                right = Int.random(in: 1...30)
             }
             
             problems.append(MathProblem(left: left, right: right, operation: operation))
