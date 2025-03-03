@@ -16,7 +16,7 @@ struct ContentView: View {
     @State private var divisionCompleted = false
     
     var body: some View {
-        if additionCompleted && subtractionCompleted {
+        if additionCompleted && subtractionCompleted && multiplicationCompleted && divisionCompleted {
                     VictoryView()
         } else {
             TabView {
@@ -207,8 +207,8 @@ struct MathView: View {
                 } while left * right > 100
             case .division:
                 repeat {
-                    right = Int.random(in: 1...10)
-                    left = right * Int.random(in: 1...10)
+                    right = Int.random(in: 1...5)
+                    left = right * Int.random(in: 1...5)
                 } while left / right <= 0
             case .subtraction:
                 left = Int.random(in: 1...30)
@@ -220,7 +220,15 @@ struct MathView: View {
             
             problems.append(MathProblem(left: left, right: right, operation: operation))
         }
-        return problems
+        
+//        return problems
+        
+        switch operation {
+        case .multiplication, .division:
+            return Array(problems.prefix(15))
+        default:
+            return problems
+        }
     }
     
     var body: some View {
