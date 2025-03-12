@@ -18,16 +18,21 @@ struct ContentView: View {
     
     init() {
         setMaxVolume()
+        setMaxBrightness()
     }
     
     func setMaxVolume() {
         let volumeView = MPVolumeView()
         
         if let slider = volumeView.subviews.first(where: { $0 is UISlider }) as? UISlider {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { // Delay to ensure system registers the change
-                slider.value = 1.0  // Set volume to maximum
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                slider.value = 1.0
             }
         }
+    }
+    
+    func setMaxBrightness() {
+        UIScreen.main.brightness = 1.0
     }
     
     var body: some View {
@@ -213,7 +218,7 @@ struct MathView: View {
     
     static func generateProblems(for operation: MathOperation) -> [MathProblem] {
         var problems = [MathProblem]()
-        for _ in 0..<30 {
+        for _ in 0..<45 {
             var left = 1
             var right = 1
             
@@ -243,37 +248,37 @@ struct MathView: View {
     }
     
     var body: some View {
-            ScrollView {
-                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
-                    ForEach(problems.indices, id: \..self) { index in
-                        HStack {
-                            Spacer()
-                            Text("\(problems[index].left) \(symbol) \(problems[index].right) =")
-                                .font(.system(size: 24, weight: .bold, design: .rounded))
-                            TextField("?", text: Binding(
-                                get: { problems[index].userAnswer },
-                                set: { newValue in
-                                    problems[index].userAnswer = newValue
-                                    problems[index].updateBorderColor()
-                                    checkCompletion()
-                                }
-                            ))
+        ScrollView {
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
+                ForEach(problems.indices, id: \..self) { index in
+                    HStack {
+                        Spacer()
+                        Text("\(problems[index].left) \(symbol) \(problems[index].right) =")
                             .font(.system(size: 24, weight: .bold, design: .rounded))
-                            .keyboardType(.numberPad)
-                            .frame(width: 60, height: 34)
-                            .multilineTextAlignment(.center)
-                            .padding()
-                            .background(problems[index].borderColor.opacity(0.3))
-                            .cornerRadius(5)
-                            .overlay(RoundedRectangle(cornerRadius: 5).stroke(problems[index].borderColor, lineWidth: 2))
-                        }
+                        TextField("?", text: Binding(
+                            get: { problems[index].userAnswer },
+                            set: { newValue in
+                                problems[index].userAnswer = newValue
+                                problems[index].updateBorderColor()
+                                checkCompletion()
+                            }
+                        ))
+                        .font(.system(size: 24, weight: .bold, design: .rounded))
+                        .keyboardType(.numberPad)
+                        .frame(width: 60, height: 34)
+                        .multilineTextAlignment(.center)
                         .padding()
+                        .background(problems[index].borderColor.opacity(0.3))
+                        .cornerRadius(5)
+                        .overlay(RoundedRectangle(cornerRadius: 5).stroke(problems[index].borderColor, lineWidth: 2))
                     }
+                    .padding()
                 }
-                .padding()
             }
-            .navigationTitle(title)
+            .padding()
         }
+        .navigationTitle(title)
+    }
     
     var title: String {
         switch operation {
