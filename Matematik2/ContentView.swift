@@ -74,7 +74,7 @@ struct MathProblem: Identifiable {
     let operation: MathOperation
     var userAnswer: String = "" {
         didSet {
-            updateBorderColor()
+            //updateBorderColor()
         }
     }
     
@@ -89,13 +89,13 @@ struct MathProblem: Identifiable {
     
     var borderColor: Color = .gray
     
-    mutating func updateBorderColor() {
+    /*mutating func updateBorderColor() {
         guard let answer = Int(userAnswer.replacingOccurrences(of: " ", with: "")) else {
             borderColor = .gray
             return
         }
         borderColor = answer == correctAnswer ? .green : .red
-    }
+    }*/
 }
 
 struct VictoryView: View {
@@ -215,6 +215,21 @@ struct MathView: View {
         _problems = State(initialValue: MathView.generateProblems(for: operation))
     }
     
+    func updateBorderColors() {
+        for i in stride(from: 0, to: problems.count, by: 3) {
+            if i + 2 < problems.count {
+                let allCorrect = (0...2).allSatisfy { offset in
+                    let index = i + offset
+                    return Int(problems[index].userAnswer.replacingOccurrences(of: " ", with: "")) == problems[index].correctAnswer
+                }
+                
+                for offset in 0...2 {
+                    let index = i + offset
+                    problems[index].borderColor = allCorrect ? .green : .gray
+                }
+            }
+        }
+    }
     
     static func generateProblems(for operation: MathOperation) -> [MathProblem] {
         var problems = [MathProblem]()
@@ -259,7 +274,8 @@ struct MathView: View {
                             get: { problems[index].userAnswer },
                             set: { newValue in
                                 problems[index].userAnswer = newValue
-                                problems[index].updateBorderColor()
+                                //problems[index].updateBorderColor()
+                                updateBorderColors()
                                 checkCompletion()
                             }
                         ))
