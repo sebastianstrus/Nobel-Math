@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AVFoundation
+import MediaPlayer
 
 struct ContentView: View {
     
@@ -15,9 +16,25 @@ struct ContentView: View {
     @State private var multiplicationCompleted = false
     @State private var divisionCompleted = false
     
+    init() {
+        setMaxVolume()
+    }
+    
+    func setMaxVolume() {
+        let volumeView = MPVolumeView()
+        
+        if let slider = volumeView.subviews.first(where: { $0 is UISlider }) as? UISlider {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { // Delay to ensure system registers the change
+                slider.value = 1.0  // Set volume to maximum
+            }
+        }
+    }
+    
     var body: some View {
+        
+        
         if additionCompleted && subtractionCompleted && multiplicationCompleted && divisionCompleted {
-                    VictoryView()
+            VictoryView()
         } else {
             TabView {
                 MathView(operation: .addition, isCompleted: $additionCompleted)
@@ -68,7 +85,7 @@ struct MathProblem: Identifiable {
     var borderColor: Color = .gray
     
     mutating func updateBorderColor() {
-        guard let answer = Int(userAnswer) else {
+        guard let answer = Int(userAnswer.replacingOccurrences(of: " ", with: "")) else {
             borderColor = .gray
             return
         }
@@ -193,42 +210,36 @@ struct MathView: View {
         _problems = State(initialValue: MathView.generateProblems(for: operation))
     }
     
+    
     static func generateProblems(for operation: MathOperation) -> [MathProblem] {
         var problems = [MathProblem]()
-        for _ in 0..<60 {
+        for _ in 0..<30 {
             var left = 1
             var right = 1
             
             switch operation {
+            case .addition:
+                left = Int.random(in: 9...50)
+                right = Int.random(in: 9...50)
+            case .subtraction:
+                left = Int.random(in: 1...99)
+                right = Int.random(in: 1...left)
             case .multiplication:
                 repeat {
-                    left = Int.random(in: 1...10)
-                    right = Int.random(in: 1...10)
+                    left = Int.random(in: 2...50)
+                    right = Int.random(in: 2...50)
                 } while left * right > 100
             case .division:
                 repeat {
-                    right = Int.random(in: 1...5)
-                    left = right * Int.random(in: 1...5)
+                    right = Int.random(in: 2...9)
+                    left = right * Int.random(in: 2...9)
                 } while left / right <= 0
-            case .subtraction:
-                left = Int.random(in: 1...30)
-                right = Int.random(in: 1...left)
-            default:
-                left = Int.random(in: 1...30)
-                right = Int.random(in: 1...30)
             }
             
             problems.append(MathProblem(left: left, right: right, operation: operation))
         }
         
-//        return problems
-        
-        switch operation {
-        case .multiplication, .division:
-            return Array(problems.prefix(15))
-        default:
-            return problems
-        }
+        return problems
     }
     
     var body: some View {
@@ -283,7 +294,7 @@ struct MathView: View {
     }
     
     private func checkCompletion() {
-        if problems.allSatisfy({ Int($0.userAnswer) == $0.correctAnswer }) {
+        if problems.allSatisfy({ Int($0.userAnswer.replacingOccurrences(of: " ", with: "")) == $0.correctAnswer }) {
             isCompleted = true
         }
     }
