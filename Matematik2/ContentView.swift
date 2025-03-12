@@ -227,8 +227,8 @@ struct MathView: View {
                 left = Int.random(in: 9...50)
                 right = Int.random(in: 9...50)
             case .subtraction:
-                left = Int.random(in: 1...99)
-                right = Int.random(in: 1...left)
+                left = Int.random(in: 10...99)
+                right = Int.random(in: 9...left-1)
             case .multiplication:
                 repeat {
                     left = Int.random(in: 2...50)
