@@ -5,6 +5,33 @@
 //  Created by Sebastian Strus on 2025-04-27.
 //
 
+enum Language: String {
+    case english
+    case swedish
+    case ukrainian
+    case polish
+    
+    init?(localeIdentifier: String) {
+        switch String(localeIdentifier.lowercased().prefix(2)) {
+        case "sv": self = .swedish
+        case "uk": self = .ukrainian
+        case "en": self = .english
+        case "pl": self = .polish
+        default:
+            return nil
+        }
+    }
+    
+    var displayName: String {
+        switch self {
+        case .swedish: return "Swedish".localized
+        case .ukrainian: return "Ukrainian".localized
+        case .english: return "English".localized
+        case .polish: return "Polish".localized
+        }
+    }
+}
+
 import SwiftUI
 
 enum UserDefaultsKeys: String {
@@ -15,6 +42,7 @@ enum UserDefaultsKeys: String {
     case isSubtractionOn
     case isMultiplicationOn
     case isDivisionOn
+    case primaryLanguage = "AppleLanguages"
 
 }
 
@@ -47,13 +75,22 @@ class SettingsManager: ObservableObject {
     
     @Published var tabsEnabledCount: Int = 0
     
-
+    @Published var primaryLanguage: Language
     
     
     private let userDefaults = UserDefaults.standard
     
     private init() {
+        if let appleLanguages = userDefaults.array(forKey: UserDefaultsKeys.primaryLanguage.rawValue),
+           let code = appleLanguages.first as? String,
+           let appLanguage = Language(localeIdentifier: appleLanguages.first! as! String) {
+            primaryLanguage = appLanguage
+        } else {
+            primaryLanguage = .english
+        }
+        
         updateEnabledTabsCount()
+        
     }
     
     func updateEnabledTabsCount() {
@@ -77,6 +114,18 @@ class SettingsManager: ObservableObject {
     
     func completedCategoriesKey() -> String {
         return ""
+    }
+    
+    func openAppLanguageSettings() {
+        guard let bundleId = Bundle.main.bundleIdentifier,
+              let settingsUrl = URL(string: UIApplication.openSettingsURLString + "&path=\(bundleId)/LANGUAGE") else {
+            return
+        }
+        
+        if UIApplication.shared.canOpenURL(settingsUrl) {
+            UIApplication.shared.open(settingsUrl)
+        }
+
     }
     
     func clearUserDefaultsAndCloseApp() {

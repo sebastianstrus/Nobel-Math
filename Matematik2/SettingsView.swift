@@ -72,6 +72,22 @@ struct SettingsView: View {
                     .pickerStyle(.segmented)
                 }
                 
+                Section(header: Text("Language".localized)) {
+                    NavigationLink(destination: EmptyView()) {
+                            HStack {
+                                Text("App Language".localized)
+                                Spacer()
+                                Text(settings.primaryLanguage.rawValue)
+                            }
+                            .contentShape(Rectangle()) // makes entire row tappable
+                            .onTapGesture {
+                                settings.openAppLanguageSettings()
+                            }
+                        }
+                    
+                    
+                }
+                
                 Section(header: Text("Let Us Know What You Think".localized)) {
                     Button("Share Feedback".localized) {
                         showMailComposer = true
