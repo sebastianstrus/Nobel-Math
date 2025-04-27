@@ -93,6 +93,7 @@
 				Base,
 				sv,
 				pl,
+				uk,
 			);
 			mainGroup = 7D2542B82D52C202000FDCC0;
 			minimizedProjectReferenceProxies = 1;
