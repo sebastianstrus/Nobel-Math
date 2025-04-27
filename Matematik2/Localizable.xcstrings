@@ -35,6 +35,12 @@
             "state" : "translated",
             "value" : "Addition"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Додавання"
+          }
         }
       }
     },
@@ -51,6 +57,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Utseende"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Зовнішній вигляд"
           }
         }
       }
@@ -69,6 +81,12 @@
             "state" : "translated",
             "value" : "Grattis!\nDu vann!"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вітаємо!\nВи перемогли!"
+          }
         }
       }
     },
@@ -85,6 +103,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mörk"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Темна"
           }
         }
       }
@@ -103,6 +127,12 @@
             "state" : "translated",
             "value" : "Standardinställningar"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Типові налаштування"
+          }
         }
       }
     },
@@ -120,6 +150,12 @@
             "state" : "translated",
             "value" : "Svårighetsnivå"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Рівень складності"
+          }
         }
       }
     },
@@ -135,6 +171,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Upptäck glädjen med siffror."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відкрийте радість чисел."
           }
         }
       }
@@ -153,6 +195,12 @@
             "state" : "translated",
             "value" : "Division"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ділення"
+          }
         }
       }
     },
@@ -169,6 +217,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lätt"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Легкий"
           }
         }
       }
@@ -187,6 +241,12 @@
             "state" : "translated",
             "value" : "Exempelräkning"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Кількість прикладів"
+          }
         }
       }
     },
@@ -203,6 +263,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Svår"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Складний"
           }
         }
       }
@@ -221,6 +287,12 @@
             "state" : "translated",
             "value" : "Jag vill gärna dela min feedback om Nobla Math-appen:"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Я хотів би поділитися своїми відгуками про додаток Nobla Math:"
+          }
         }
       }
     },
@@ -237,6 +309,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lärandeinställningar"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Налаштування навчання"
           }
         }
       }
@@ -255,6 +333,12 @@
             "state" : "translated",
             "value" : "Låt oss veta vad du tycker"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поділіться своєю думкою"
+          }
         }
       }
     },
@@ -271,6 +355,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ljus"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Світла"
           }
         }
       }
@@ -289,6 +379,12 @@
             "state" : "translated",
             "value" : "Medel"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Середній"
+          }
         }
       }
     },
@@ -305,6 +401,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Multiplikation"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Множення"
           }
         }
       }
@@ -326,6 +428,12 @@
             "state" : "translated",
             "value" : "Återställ inställningar"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скинути налаштування"
+          }
         }
       }
     },
@@ -343,6 +451,12 @@
             "state" : "translated",
             "value" : "Dela feedback"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поділитися відгуком"
+          }
         }
       }
     },
@@ -358,6 +472,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Start"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Почати"
           }
         }
       }
@@ -376,6 +496,12 @@
             "state" : "translated",
             "value" : "Subtraktion"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Віднімання"
+          }
         }
       }
     },
@@ -392,6 +518,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tema"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тема"
           }
         }
       }
