@@ -145,13 +145,30 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Division"
+            "value" : "Dzielenie"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Division"
+          }
+        }
+      }
+    },
+    "Easy" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Łatwy"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lätt"
           }
         }
       }
@@ -169,6 +186,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Exempelräkning"
+          }
+        }
+      }
+    },
+    "Hard" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trudny"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Svår"
           }
         }
       }
@@ -237,6 +271,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ljus"
+          }
+        }
+      }
+    },
+    "Medium" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Średni"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medel"
           }
         }
       }
