@@ -9,9 +9,14 @@ import SwiftUI
 
 @main
 struct Matematik2App: App {
+    
+    @StateObject private var settings = SettingsManager.shared
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            WelcomeView()
+                .environmentObject(settings)
+                .preferredColorScheme(settings.isDarkMode ? .dark : .light)
         }
     }
 }

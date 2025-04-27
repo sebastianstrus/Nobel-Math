@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		7D2542C12D52C202000FDCC0 /* Matematik.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Matematik.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D2542C12D52C202000FDCC0 /* Nobla Math.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nobla Math.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -40,7 +40,7 @@
 		7D2542C22D52C202000FDCC0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7D2542C12D52C202000FDCC0 /* Matematik.app */,
+				7D2542C12D52C202000FDCC0 /* Nobla Math.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,9 +48,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		7D2542C02D52C202000FDCC0 /* Matematik */ = {
+		7D2542C02D52C202000FDCC0 /* Nobla Math */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7D2542CF2D52C204000FDCC0 /* Build configuration list for PBXNativeTarget "Matematik" */;
+			buildConfigurationList = 7D2542CF2D52C204000FDCC0 /* Build configuration list for PBXNativeTarget "Nobla Math" */;
 			buildPhases = (
 				7D2542BD2D52C202000FDCC0 /* Sources */,
 				7D2542BE2D52C202000FDCC0 /* Frameworks */,
@@ -63,11 +63,11 @@
 			fileSystemSynchronizedGroups = (
 				7D2542C32D52C202000FDCC0 /* Matematik2 */,
 			);
-			name = Matematik;
+			name = "Nobla Math";
 			packageProductDependencies = (
 			);
 			productName = Matematik2;
-			productReference = 7D2542C12D52C202000FDCC0 /* Matematik.app */;
+			productReference = 7D2542C12D52C202000FDCC0 /* Nobla Math.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -85,12 +85,14 @@
 					};
 				};
 			};
-			buildConfigurationList = 7D2542BC2D52C202000FDCC0 /* Build configuration list for PBXProject "Matematik" */;
+			buildConfigurationList = 7D2542BC2D52C202000FDCC0 /* Build configuration list for PBXProject "Nobla Math" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				sv,
+				pl,
 			);
 			mainGroup = 7D2542B82D52C202000FDCC0;
 			minimizedProjectReferenceProxies = 1;
@@ -99,7 +101,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				7D2542C02D52C202000FDCC0 /* Matematik */,
+				7D2542C02D52C202000FDCC0 /* Nobla Math */,
 			);
 		};
 /* End PBXProject section */
@@ -184,6 +186,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -240,6 +243,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -267,6 +271,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sebastianstrus.matemastik.Matematik2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -296,6 +303,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sebastianstrus.matemastik.Matematik2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -305,7 +315,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		7D2542BC2D52C202000FDCC0 /* Build configuration list for PBXProject "Matematik" */ = {
+		7D2542BC2D52C202000FDCC0 /* Build configuration list for PBXProject "Nobla Math" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7D2542CD2D52C204000FDCC0 /* Debug */,
@@ -314,7 +324,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7D2542CF2D52C204000FDCC0 /* Build configuration list for PBXNativeTarget "Matematik" */ = {
+		7D2542CF2D52C204000FDCC0 /* Build configuration list for PBXNativeTarget "Nobla Math" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7D2542D02D52C204000FDCC0 /* Debug */,
