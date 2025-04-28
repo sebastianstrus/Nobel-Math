@@ -226,7 +226,7 @@ struct MathView: View {
                 .padding(.trailing, UIDevice.current.userInterfaceIdiom == .pad ? 16 : 12)
             }
             .navigationTitle(title)
-        }
+        }.padding(.trailing, UIScreen.main.bounds.width == 1024 ? 60 : 0)
         .onTapGesture {
             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         }
