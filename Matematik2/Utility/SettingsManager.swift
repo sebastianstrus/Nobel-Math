@@ -98,7 +98,7 @@ class SettingsManager: ObservableObject {
     }
     
     func resetSettings() {
-        exampleCount = 30
+        exampleCount = 45
         isDarkMode = false
         isAdditionOn = true
         isSubtractionOn = true

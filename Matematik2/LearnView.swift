@@ -147,7 +147,7 @@ struct VictoryView: View {
 struct MathView: View {
     
     let hintFontSize: CGFloat = {
-        UIDevice.current.userInterfaceIdiom == .pad ? 24 : 12
+        UIDevice.current.userInterfaceIdiom == .pad ? 22 : 12
     }()
     
     let lineWidth: CGFloat = {
@@ -337,7 +337,7 @@ struct MathView: View {
     }
     
     private func checkCompletion() {
-        if problems.contains(where: { Int($0.userAnswer.replacingOccurrences(of: " ", with: "")) == $0.correctAnswer }) {
+        if problems.allSatisfy({ Int($0.userAnswer.replacingOccurrences(of: " ", with: "")) == $0.correctAnswer }) {
             isCompleted = true
         }
     }

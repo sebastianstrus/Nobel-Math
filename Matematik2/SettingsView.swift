@@ -77,7 +77,7 @@ struct SettingsView: View {
                             HStack {
                                 Text("App Language".localized)
                                 Spacer()
-                                Text(settings.primaryLanguage.rawValue)
+                                Text(settings.primaryLanguage.displayName)
                             }
                             .contentShape(Rectangle()) // makes entire row tappable
                             .onTapGesture {
