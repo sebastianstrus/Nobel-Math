@@ -37,7 +37,7 @@ struct SettingsView: View {
                         Text("Example Count".localized)
                             .padding(.trailing, 10)
                         GradientSlider(value: settings.$exampleCount, range: 15...90, step: 15)
-                    }.padding(.leading, 8)
+                    }.padding(.trailing, 8)
                     
 
                     Toggle("Addition".localized, isOn: settings.$isAdditionOn)
