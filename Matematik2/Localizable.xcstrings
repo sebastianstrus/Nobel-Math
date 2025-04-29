@@ -90,6 +90,29 @@
         }
       }
     },
+    "Check out Nobla Math - a great math learning app!" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprawdź Nobla Math – świetną aplikację do nauki matematyki!"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kolla in Nobla Math – en fantastisk app för att lära sig matematik!"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Спробуй Nobla Math – чудовий додаток для вивчення математики!"
+          }
+        }
+      }
+    },
     "Congratulations!\nYou won!" : {
       "extractionState" : "stale",
       "localizations" : {

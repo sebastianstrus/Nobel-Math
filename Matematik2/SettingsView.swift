@@ -142,26 +142,26 @@ struct SettingsView: View {
         }
         .background( GradientBackground().ignoresSafeArea().opacity(settings.isDarkMode ? 1.0 : 0.0))
         .scrollContentBackground(settings.isDarkMode ? .hidden : .visible)
-//        .toolbar {
-//            ToolbarItem(placement: .primaryAction) {
-//                Button(action: shareApp) {
-//                    Image(systemName: "square.and.arrow.up")
-//                        .accessibilityLabel("Share".localized)
-//                }
-//                .tint(.purple)
-//            }
-//        }
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button(action: shareApp) {
+                    Image(systemName: "square.and.arrow.up")
+                        .accessibilityLabel("Share".localized)
+                }
+                .tint(.purple)
+            }
+        }
     }
     
-//    private func shareApp() {
-//        let text = "Check out Polyglot Pro - a great language learning app!".localized
-//        let url = URL(string: "TODO_Use_App_Store_link")!
-//        
-//        let activityViewController = UIActivityViewController(activityItems: [text, url], applicationActivities: nil)
-//        
-//        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-//           let rootViewController = windowScene.windows.first?.rootViewController {
-//            rootViewController.present(activityViewController, animated: true, completion: nil)
-//        }
-//    }
+    private func shareApp() {
+        let text = "Check out Nobla Math - a great math learning app!".localized
+        let url = URL(string: "https://apps.apple.com/app/6745169341")!
+        
+        let activityViewController = UIActivityViewController(activityItems: [text, url], applicationActivities: nil)
+        
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootViewController = windowScene.windows.first?.rootViewController {
+            rootViewController.present(activityViewController, animated: true, completion: nil)
+        }
+    }
 }

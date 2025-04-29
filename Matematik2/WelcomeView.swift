@@ -44,20 +44,23 @@ struct WelcomeView: View {
         NavigationStack {
             ZStack {
                 // Background Image
+                LoopingVideoPlayer(videoName: "background_video", videoType: "mov")
+                    .ignoresSafeArea()
+                    .overlay(Color.black.opacity(0.6))
                 
-                if UIDevice.current.userInterfaceIdiom == .pad {
-                    Image("roblox")
-                        .resizable()
-                        .scaledToFill()
-                        .overlay(Color.black.opacity(0.4))
-                        .ignoresSafeArea()
-                } else {
-                    Image("roblox2")
-                        .resizable()
-                        .scaledToFill()
-                        .overlay(Color.black.opacity(0.4))
-                        .ignoresSafeArea()
-                }
+//                if UIDevice.current.userInterfaceIdiom == .pad {
+//                    Image("roblox")
+//                        .resizable()
+//                        .scaledToFill()
+//                        .overlay(Color.black.opacity(0.4))
+//                        .ignoresSafeArea()
+//                } else {
+//                    Image("roblox2")
+//                        .resizable()
+//                        .scaledToFill()
+//                        .overlay(Color.black.opacity(0.4))
+//                        .ignoresSafeArea()
+//                }
                 
 
                 VStack(spacing: 20) {
@@ -96,7 +99,7 @@ struct WelcomeView: View {
                             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
                             .overlay(
                                 RoundedRectangle(cornerRadius: cornerRadius)
-                                    .stroke(Color.white, lineWidth: 2)
+                                    .stroke(Color.white, lineWidth: 1)
                             )
                             .scaleEffect(isStartButtonAnimating ? 1.1 : 1.0)
                             .padding()
