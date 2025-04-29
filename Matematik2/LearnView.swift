@@ -12,11 +12,19 @@ import MediaPlayer
 struct LearnView: View {
     
     @EnvironmentObject var settings: SettingsManager
+    @Environment(\.dismiss) var dismiss
     
     @State private var additionCompleted = false
     @State private var subtractionCompleted = false
     @State private var multiplicationCompleted = false
     @State private var divisionCompleted = false
+    
+    @State private var additionHasProgress = false
+    @State private var subtractionHasProgress = false
+    @State private var multiplicationHasProgress = false
+    @State private var divisionHasProgress = false
+    
+    @State private var showBackConfirmation = false
     
     init() {
         setMaxVolume()
@@ -46,7 +54,7 @@ struct LearnView: View {
         } else {
             TabView {
                 if settings.isAdditionOn {
-                    MathView(operation: .addition, isCompleted: $additionCompleted, settings: settings)
+                    MathView(operation: .addition, isCompleted: $additionCompleted, hasProgress: $additionHasProgress, settings: settings)
                         .tabItem {
                             Label("Addition".localized, systemImage: "plus")
                         }
@@ -54,7 +62,7 @@ struct LearnView: View {
                 }
                 
                 if settings.isSubtractionOn {
-                    MathView(operation: .subtraction, isCompleted: $subtractionCompleted, settings: settings)
+                    MathView(operation: .subtraction, isCompleted: $subtractionCompleted, hasProgress: $subtractionHasProgress, settings: settings)
                         .tabItem {
                             Label("Subtraction".localized, systemImage: "minus")
                         }
@@ -62,7 +70,7 @@ struct LearnView: View {
                 }
                 
                 if settings.isMultiplicationOn {
-                    MathView(operation: .multiplication, isCompleted: $multiplicationCompleted, settings: settings)
+                    MathView(operation: .multiplication, isCompleted: $multiplicationCompleted, hasProgress: $multiplicationHasProgress, settings: settings)
                         .tabItem {
                             Label("Multiplication".localized, systemImage: "multiply")
                         }
@@ -70,11 +78,41 @@ struct LearnView: View {
                 }
                 
                 if settings.isDivisionOn {
-                    MathView(operation: .division, isCompleted: $divisionCompleted, settings: settings)
+                    MathView(operation: .division, isCompleted: $divisionCompleted, hasProgress: $divisionHasProgress, settings: settings)
                         .tabItem {
                             Label("Division".localized, systemImage: "divide")
                         }
                         .environmentObject(settings)
+                }
+            }
+            .confirmationDialog("Are you sure?", isPresented: $showBackConfirmation) {
+                Button("Discard Changes", role: .destructive) {
+                    dismiss()
+                }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("Your progress will be lost if you go back.")
+            }
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        // Check if any progress has been made
+                        let hasProgress = additionHasProgress || subtractionHasProgress ||
+                        multiplicationHasProgress || divisionHasProgress
+                        
+                        if hasProgress {
+                            showBackConfirmation = true
+                        } else {
+                            dismiss()
+                        }
+                    } label: {
+                        HStack {
+                            Image(systemName: "chevron.left")
+                            Text("Back".localized)
+                        }
+                        .foregroundColor(.blue)
+                    }
                 }
             }
         }
@@ -178,10 +216,12 @@ struct MathView: View {
     let operation: MathOperation
     @State private var problems: [MathProblem] = []
     @Binding var isCompleted: Bool
+    @Binding var hasProgress: Bool
     
-    init(operation: MathOperation, isCompleted: Binding<Bool>, settings: SettingsManager) {
+    init(operation: MathOperation, isCompleted: Binding<Bool>, hasProgress: Binding<Bool>, settings: SettingsManager) {
         self.operation = operation
         self._isCompleted = isCompleted
+        self._hasProgress = hasProgress
         self.settings = settings
         _problems = State(initialValue: generateProblems(for: operation))
     }
@@ -204,6 +244,7 @@ struct MathView: View {
                                     problems[index].userAnswer = newValue
                                     updateBorderColors()
                                     checkCompletion()
+                                    checkProgress()
                                 }
                             ))
                             .font(.system(size: hintFontSize, weight: .bold, design: .rounded))
@@ -339,6 +380,16 @@ struct MathView: View {
     private func checkCompletion() {
         if problems.allSatisfy({ Int($0.userAnswer.replacingOccurrences(of: " ", with: "")) == $0.correctAnswer }) {
             isCompleted = true
+        } else {
+            isCompleted = false
+        }
+    }
+    
+    private func checkProgress() {
+        if problems.contains(where: { Int($0.userAnswer.replacingOccurrences(of: " ", with: "")) == $0.correctAnswer }) {
+            hasProgress = true
+        } else {
+            hasProgress = false
         }
     }
 }
