@@ -85,13 +85,25 @@ struct LearnView: View {
                         .environmentObject(settings)
                 }
             }
-            .confirmationDialog("Are you sure?", isPresented: $showBackConfirmation) {
-                Button("Discard Changes", role: .destructive) {
-                    dismiss()
+            .if(UIDevice.current.userInterfaceIdiom == .pad) { view in
+                view.alert(isPresented: $showBackConfirmation) {
+                    Alert(
+                        title: Text("Are you sure?".localized),
+                        message: Text("Your progress will be lost if you go back.".localized),
+                        primaryButton: .destructive(Text("Discard Changes".localized)) {
+                            dismiss()
+                        },
+                        secondaryButton: .cancel()
+                    )
                 }
-                Button("Cancel", role: .cancel) {}
-            } message: {
-                Text("Your progress will be lost if you go back.")
+            } else: { view in
+                view.confirmationDialog("Are you sure?".localized, isPresented: $showBackConfirmation) {
+                    Button("Discard Changes".localized, role: .destructive) {
+                        dismiss()
+                    }
+                } message: {
+                    Text("Your progress will be lost if you go back.".localized)
+                }
             }
             .navigationBarBackButtonHidden(true)
             .toolbar {
