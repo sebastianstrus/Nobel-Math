@@ -159,9 +159,21 @@ struct SettingsView: View {
         
         let activityViewController = UIActivityViewController(activityItems: [text, url], applicationActivities: nil)
         
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let rootViewController = windowScene.windows.first?.rootViewController {
-            rootViewController.present(activityViewController, animated: true, completion: nil)
+        // Safely get windowScene and rootViewController
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first,
+              let rootViewController = window.rootViewController else {
+            return
         }
+
+        // Configure for iPad
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            activityViewController.popoverPresentationController?.sourceView = rootViewController.view
+            activityViewController.popoverPresentationController?.sourceRect = CGRect(x: window.bounds.width / 2, y: window.bounds.height / 2, width: 0, height: 0)
+            activityViewController.popoverPresentationController?.permittedArrowDirections = []
+        }
+        
+        rootViewController.present(activityViewController, animated: true, completion: nil)
     }
+
 }
