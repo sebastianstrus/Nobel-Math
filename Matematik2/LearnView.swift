@@ -14,6 +14,11 @@ struct LearnView: View {
     @EnvironmentObject var settings: SettingsManager
     @Environment(\.dismiss) var dismiss
     
+    // Timer related state variables
+    @State private var startTime: Date?
+    @State private var elapsedTime: TimeInterval = 0
+    @State private var timer: Timer?
+    
     @State private var additionCompleted = false
     @State private var subtractionCompleted = false
     @State private var multiplicationCompleted = false
@@ -49,7 +54,7 @@ struct LearnView: View {
         
         
         if shouldShowVoctoryView() {
-            VictoryView()
+            VictoryView(elapsedTime: elapsedTime)
                 .environmentObject(settings)
         } else {
             TabView {
@@ -126,9 +131,53 @@ struct LearnView: View {
                         .foregroundColor(.blue)
                     }
                 }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Text(formattedTime(elapsedTime))
+                        .font(.system(size: UIDevice.current.userInterfaceIdiom == .pad ? 20 : 16, weight: .bold, design: .monospaced))
+                        .foregroundColor(.blue)
+                }
+            }
+            .onAppear {
+                startTimer()
+            }
+            .onDisappear {
+                stopTimer()
+            }
+            .onChange(of: shouldShowVoctoryView()) { completed in
+                if completed {
+                    stopTimer()
+                }
             }
         }
     }
+    
+    // Timer control functions
+    private func startTimer() {
+        guard startTime == nil else { return }
+        startTime = Date()
+        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+            if let startTime = startTime {
+                elapsedTime = Date().timeIntervalSince(startTime)
+            }
+        }
+        // Add this line to keep timer running during scrolling
+        RunLoop.current.add(timer!, forMode: .common)
+    }
+        
+        private func stopTimer() {
+            timer?.invalidate()
+            timer = nil
+        }
+        
+        // Format time as minutes:seconds.milliseconds
+        private func formattedTime(_ time: TimeInterval) -> String {
+            let minutes = Int(time) / 60
+            let seconds = Int(time) % 60
+            let milliseconds = Int((time.truncatingRemainder(dividingBy: 1)) * 100)
+            
+            return String(format: "%02d:%02d.%02d", minutes, seconds, milliseconds)
+        }
     
     func shouldShowVoctoryView() -> Bool {
         
@@ -172,24 +221,38 @@ struct MathProblem: Identifiable {
 }
 
 struct VictoryView: View {
-    
+    let elapsedTime: TimeInterval
     let fontSize: CGFloat = {
         UIDevice.current.userInterfaceIdiom == .pad ? 50 : 25
     }()
+    
+    private func formattedTime(_ time: TimeInterval) -> String {
+        let minutes = Int(time) / 60
+        let seconds = Int(time) % 60
+        let milliseconds = Int((time.truncatingRemainder(dividingBy: 1)) * 100)
+        
+        return String(format: "%02d:%02d.%02d", minutes, seconds, milliseconds)
+    }
     
     var body: some View {
         ZStack {
             FallingCoinsView()
             
-            Text("Congratulations!\nYou won!".localized)
-                .font(.system(size: fontSize, weight: .bold, design: .rounded))
-                .multilineTextAlignment(.center)
-                .fontWeight(.bold)
-                .foregroundColor(.white)
+            VStack {
+                Text("Congratulations!\nYou won!".localized)
+                    .font(.system(size: fontSize, weight: .bold, design: .rounded))
+                    .multilineTextAlignment(.center)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                    .padding(.bottom, 20)
+                
+                Text("Time: \(formattedTime(elapsedTime))")
+                    .font(.system(size: fontSize * 0.7, weight: .bold, design: .monospaced))
+                    .foregroundColor(.white)
+            }
         }
     }
 }
-
 
 
 
