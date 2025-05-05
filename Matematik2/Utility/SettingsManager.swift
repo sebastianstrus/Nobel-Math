@@ -9,14 +9,51 @@ enum Language: String {
     case english
     case swedish
     case ukrainian
+    case spanish
+    case german
     case polish
+    case french
+    case portuguese
+    case italian
+    case japanese
+    case simplifiedChinese
+    case indonesian
+    case danish
+    case norwegian
+    case arabic
+    case hindi
+    case punjabi
+    case bengali
+    case finnish
+    case korean
+    case urdu
+    case icelandic
+
     
     init?(localeIdentifier: String) {
         switch String(localeIdentifier.lowercased().prefix(2)) {
         case "sv": self = .swedish
         case "uk": self = .ukrainian
+        case "es": self = .spanish
+        case "de": self = .german
         case "en": self = .english
         case "pl": self = .polish
+        case "fr": self = .french
+        case "pt": self = .portuguese
+        case "it": self = .italian
+        case "ja": self = .japanese
+        case "zh": self = .simplifiedChinese
+        case "id": self = .indonesian
+        case "da": self = .danish
+        case "no": self = .norwegian
+        case "ar": self = .arabic
+        case "hi": self = .hindi
+        case "pa": self = .punjabi
+        case "bn": self = .bengali
+        case "fi": self = .finnish
+        case "ko": self = .korean
+        case "ur": self = .urdu
+        case "is": self = .icelandic
         default:
             return nil
         }
@@ -26,8 +63,26 @@ enum Language: String {
         switch self {
         case .swedish: return "Swedish".localized
         case .ukrainian: return "Ukrainian".localized
+        case .spanish: return "Spanish".localized
+        case .german: return "German".localized
         case .english: return "English".localized
         case .polish: return "Polish".localized
+        case .french: return "French".localized
+        case .portuguese: return "Portuguese".localized
+        case .italian: return "Italian".localized
+        case .japanese: return "Japanese".localized
+        case .simplifiedChinese: return "Simplified Chinese".localized
+        case .indonesian: return "Indonesian".localized
+        case .danish: return "Danish".localized
+        case .norwegian: return "Norwegian".localized
+        case .arabic: return "Arabic".localized
+        case .hindi: return "Hindi".localized
+        case .punjabi: return "Punjabi".localized
+        case .bengali: return "Bengali".localized
+        case .finnish: return "Finnish".localized
+        case .korean: return "Korean".localized
+        case .urdu: return "Urdu".localized
+        case .icelandic: return "Icelandic".localized
         }
     }
 }

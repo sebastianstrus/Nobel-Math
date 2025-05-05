@@ -25,7 +25,7 @@ struct WelcomeView: View {
     }()
     
     let buttonWidth: CGFloat = {
-        UIDevice.current.userInterfaceIdiom == .pad ? 140 : 100
+        UIDevice.current.userInterfaceIdiom == .pad ? 150 : 120
     }()
     
     let buttonHeight: CGFloat = {
