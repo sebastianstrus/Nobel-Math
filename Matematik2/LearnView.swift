@@ -118,7 +118,8 @@ struct LearnView: View {
                             .font(.system(size: UIDevice.current.userInterfaceIdiom == .pad ? 20 : 16,
                                         weight: .bold,
                                         design: .monospaced))
-                            .foregroundColor(.blue)
+                            .foregroundColor(.blue.opacity(settings.isTimerOn ? 1 : 0))
+
                     }
                 }
             }

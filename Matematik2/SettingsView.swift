@@ -46,6 +46,9 @@ struct SettingsView: View {
                     }.padding(.trailing, 8)
                     
 
+                    Toggle("Display Timer".localized, isOn: settings.$isTimerOn)
+                        .tint(.purple)
+                    
                     Toggle("Addition".localized, isOn: settings.$isAdditionOn)
                         .tint(.purple)
                         .disabled(settings.tabsEnabledCount == 1 && settings.isAdditionOn)

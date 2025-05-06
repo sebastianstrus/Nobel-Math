@@ -99,6 +99,7 @@ enum UserDefaultsKeys: String {
     case isMultiplicationOn
     case isDivisionOn
     case primaryLanguage = "AppleLanguages"
+    case isTimerOn
 
 }
 
@@ -139,6 +140,8 @@ class SettingsManager: ObservableObject {
     @AppStorage(UserDefaultsKeys.isSubtractionOn.rawValue) var isSubtractionOn: Bool = true
     @AppStorage(UserDefaultsKeys.isMultiplicationOn.rawValue) var isMultiplicationOn: Bool = true
     @AppStorage(UserDefaultsKeys.isDivisionOn.rawValue) var isDivisionOn: Bool = true
+    
+    @AppStorage(UserDefaultsKeys.isTimerOn.rawValue) var isTimerOn: Bool = true
     
     @AppStorage(UserDefaultsKeys.exampleCount.rawValue) var exampleCount: Int = 45
     @AppStorage(UserDefaultsKeys.difficultyLevel.rawValue) var difficultyLevel: Int = DifficultyLevel.medium.rawValue
