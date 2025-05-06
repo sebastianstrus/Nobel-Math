@@ -40,27 +40,25 @@ struct LearnView: View {
         setMaxBrightness()
     }
     
-    func setMaxVolume() {
-        let volumeView = MPVolumeView()
-        if let slider = volumeView.subviews.first(where: { $0 is UISlider }) as? UISlider {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                slider.value = 1.0
-            }
-        }
-    }
-    
-    func setMaxBrightness() {
-        UIScreen.main.brightness = 1.0
-    }
-    
     var body: some View {
-        Group {
-            if showingVictoryView {
+        ZStack {
+            // Main content
+            if showingVictoryView || shouldShowVoctoryView() {
                 VictoryView(elapsedTime: elapsedTime)
                     .environmentObject(settings)
-            } else if shouldShowVoctoryView() {
-                // Empty view that triggers the alert
-                Color.clear
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button {
+                                dismiss()
+                            } label: {
+                                HStack {
+                                    Image(systemName: "chevron.left")
+                                    Text("Back".localized)
+                                }
+                                .foregroundColor(.blue)
+                            }
+                        }
+                    }
             } else {
                 TabView {
                     if settings.isAdditionOn {
@@ -95,55 +93,34 @@ struct LearnView: View {
                             .tabItem { Label("Division".localized, systemImage: "divide") }
                     }
                 }
-                .if(UIDevice.current.userInterfaceIdiom == .pad) { view in
-                    view.alert(isPresented: $showBackConfirmation) {
-                        Alert(
-                            title: Text("Are you sure?".localized),
-                            message: Text("Your progress will be lost if you go back.".localized),
-                            primaryButton: .destructive(Text("Discard Changes".localized)) {
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button {
+                            let hasProgress = additionHasProgress || subtractionHasProgress ||
+                            multiplicationHasProgress || divisionHasProgress
+                            
+                            if hasProgress {
+                                showBackConfirmation = true
+                            } else {
                                 dismiss()
-                            },
-                            secondaryButton: .cancel()
-                        )
-                    }
-                } else: { view in
-                    view.confirmationDialog("Are you sure?".localized, isPresented: $showBackConfirmation) {
-                        Button("Discard Changes".localized, role: .destructive) {
-                            dismiss()
+                            }
+                        } label: {
+                            HStack {
+                                Image(systemName: "chevron.left")
+                                Text("Back".localized)
+                            }
+                            .foregroundColor(.blue)
                         }
-                    } message: {
-                        Text("Your progress will be lost if you go back.".localized)
                     }
-                }
-            }
-        }
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button {
-                    let hasProgress = additionHasProgress || subtractionHasProgress ||
-                    multiplicationHasProgress || divisionHasProgress
                     
-                    if hasProgress {
-                        showBackConfirmation = true
-                    } else {
-                        dismiss()
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Text(formattedTime(elapsedTime))
+                            .font(.system(size: UIDevice.current.userInterfaceIdiom == .pad ? 20 : 16,
+                                        weight: .bold,
+                                        design: .monospaced))
+                            .foregroundColor(.blue)
                     }
-                } label: {
-                    HStack {
-                        Image(systemName: "chevron.left")
-                        Text("Back".localized)
-                    }
-                    .foregroundColor(.blue)
                 }
-            }
-            
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Text(formattedTime(elapsedTime))
-                    .font(.system(size: UIDevice.current.userInterfaceIdiom == .pad ? 20 : 16,
-                                weight: .bold,
-                                design: .monospaced))
-                    .foregroundColor(.blue)
             }
         }
         .onAppear {
@@ -166,8 +143,19 @@ struct LearnView: View {
         .onChange(of: shouldShowVoctoryView()) { completed in
             if completed {
                 stopTimer()
+                showingVictoryView = true
                 shouldShowNameAlert = true
             }
+        }
+        .alert(isPresented: $showBackConfirmation) {
+            Alert(
+                title: Text("Are you sure?".localized),
+                message: Text("Your progress will be lost if you go back.".localized),
+                primaryButton: .destructive(Text("Discard Changes".localized)) {
+                    dismiss()
+                },
+                secondaryButton: .cancel()
+            )
         }
     }
     
@@ -179,7 +167,6 @@ struct LearnView: View {
             exampleCount: settings.exampleCount,
             time: elapsedTime
         )
-        showingVictoryView = true
     }
     
     private func startTimer() {
@@ -218,7 +205,22 @@ struct LearnView: View {
         
         return tabsEnabledCount == tabsCompletedCount
     }
+    
+    func setMaxVolume() {
+        let volumeView = MPVolumeView()
+        if let slider = volumeView.subviews.first(where: { $0 is UISlider }) as? UISlider {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                slider.value = 1.0
+            }
+        }
+    }
+    
+    func setMaxBrightness() {
+        UIScreen.main.brightness = 1.0
+    }
 }
+
+
 enum MathOperation {
     case addition, subtraction, multiplication, division
 }
