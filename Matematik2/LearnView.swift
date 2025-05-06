@@ -145,7 +145,17 @@ struct LearnView: View {
             if completed {
                 stopTimer()
                 showingVictoryView = true
-                shouldShowNameAlert = true
+                
+                // Only show the name alert if ALL operations are enabled
+                let allOperationsEnabled =
+                    settings.isAdditionOn &&
+                    settings.isSubtractionOn &&
+                    settings.isMultiplicationOn &&
+                    settings.isDivisionOn
+                
+                if allOperationsEnabled {
+                    shouldShowNameAlert = true
+                }
             }
         }
         .alert(isPresented: $showBackConfirmation) {
