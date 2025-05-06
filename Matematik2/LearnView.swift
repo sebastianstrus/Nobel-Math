@@ -46,19 +46,19 @@ struct LearnView: View {
             if showingVictoryView || shouldShowVoctoryView() {
                 VictoryView(elapsedTime: elapsedTime)
                     .environmentObject(settings)
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            Button {
-                                dismiss()
-                            } label: {
-                                HStack {
-                                    Image(systemName: "chevron.left")
-                                    Text("Back".localized)
-                                }
-                                .foregroundColor(.blue)
-                            }
-                        }
-                    }
+//                    .toolbar {
+//                        ToolbarItem(placement: .navigationBarLeading) {
+//                            Button {
+//                                dismiss()
+//                            } label: {
+//                                HStack {
+//                                    Image(systemName: "chevron.left")
+//                                    Text("Back".localized)
+//                                }
+//                                .foregroundColor(.blue)
+//                            }
+//                        }
+//                    }
             } else {
                 TabView {
                     if settings.isAdditionOn {
@@ -94,24 +94,24 @@ struct LearnView: View {
                     }
                 }
                 .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button {
-                            let hasProgress = additionHasProgress || subtractionHasProgress ||
-                            multiplicationHasProgress || divisionHasProgress
-                            
-                            if hasProgress {
-                                showBackConfirmation = true
-                            } else {
-                                dismiss()
-                            }
-                        } label: {
-                            HStack {
-                                Image(systemName: "chevron.left")
-                                Text("Back".localized)
-                            }
-                            .foregroundColor(.blue)
-                        }
-                    }
+//                    ToolbarItem(placement: .navigationBarLeading) {
+//                        Button {
+//                            let hasProgress = additionHasProgress || subtractionHasProgress ||
+//                            multiplicationHasProgress || divisionHasProgress
+//                            
+//                            if hasProgress {
+//                                showBackConfirmation = true
+//                            } else {
+//                                dismiss()
+//                            }
+//                        } label: {
+//                            HStack {
+//                                Image(systemName: "chevron.left")
+//                                Text("Back".localized)
+//                            }
+//                            .foregroundColor(.blue)
+//                        }
+//                    }
                     
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Text(formattedTime(elapsedTime))

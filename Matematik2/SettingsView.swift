@@ -210,14 +210,17 @@ struct StatisticsView: View {
     var body: some View {
         List {
             Section(header: sectionHeader("Hard".localized)) {
+                columnHeaders()
                 resultsSection(for: .hard)
             }
             
             Section(header: sectionHeader("Medium".localized)) {
+                columnHeaders()
                 resultsSection(for: .medium)
             }
             
             Section(header: sectionHeader("Easy".localized)) {
+                columnHeaders()
                 resultsSection(for: .easy)
             }
         }
@@ -238,6 +241,34 @@ struct StatisticsView: View {
         } message: {
             Text("This will permanently delete all saved results.".localized)
         }
+    }
+    
+    private func columnHeaders() -> some View {
+        HStack(spacing: 16) {
+            // Name header
+            Text("Name".localized)
+                .frame(width: 100, alignment: .leading)
+                .font(.subheadline.bold())
+                .foregroundColor(.primary)
+            
+            // Count header
+            Text("Count".localized)
+                .frame(width: 60, alignment: .center)
+                .font(.subheadline.bold())
+                .foregroundColor(.primary)
+            
+            // Result header
+            Text("Result".localized)
+                .frame(minWidth: 80, alignment: .trailing)
+                .font(.subheadline.bold())
+                .foregroundColor(.primary)
+            
+            // Date header
+            Text("Date".localized)
+                .font(.subheadline.bold())
+                .foregroundColor(.primary)
+        }
+        .padding(.vertical, 8)
     }
     
     private func sectionHeader(_ text: String) -> some View {
@@ -264,6 +295,7 @@ struct StatisticsView: View {
                 Text("No results yet".localized)
                     .foregroundColor(.secondary)
                     .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.vertical, 8)
             } else {
                 ForEach(results) { result in
                     HStack(spacing: 16) {
@@ -275,14 +307,14 @@ struct StatisticsView: View {
                         // Example count column
                         Text("\(result.exampleCount)")
                             .frame(width: 60, alignment: .center)
-                            .font(.system(.body, design: .monospaced))
+                            .font(.system(size: 15, design: .monospaced))
                         
                         // Time column
                         Text(formatTime(result.time))
                             .frame(minWidth: 80, alignment: .trailing)
-                            .font(.system(.body, design: .monospaced))
+                            .font(.system(size: 15, design: .monospaced))
                         
-                        // Date column (optional)
+                        // Date column
                         Text(formatDate(result.date))
                             .font(.caption)
                             .foregroundColor(.secondary)
