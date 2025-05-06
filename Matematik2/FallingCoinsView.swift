@@ -25,7 +25,7 @@ struct FallingCoinsView: View {
             Color.black.opacity(0.7).edgesIgnoringSafeArea(.all)
             
             ForEach(coins) { coin in
-                Image("coin")
+                Image("coin2")//Int.random(in: 1...2)
                     .resizable()
                     .frame(width: coin.size * sizer, height: coin.size * sizer)
                     .rotationEffect(.degrees(coin.rotation))
