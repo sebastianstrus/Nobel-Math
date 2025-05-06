@@ -25,6 +25,12 @@ struct SettingsView: View {
             
             List {
                 
+                Section(header: Text("Statistics".localized)) {
+                    NavigationLink(destination: StatisticsView()) {
+                        Text("View Statistics".localized)
+                    }
+                }
+                
                 Section(header: Text("Learning Settings".localized)) {
                     Picker("Difficulty Level".localized, selection: $settings.difficultyLevel) {
                         ForEach(DifficultyLevel.allCases, id: \.self) { level in
@@ -176,4 +182,128 @@ struct SettingsView: View {
         rootViewController.present(activityViewController, animated: true, completion: nil)
     }
 
+}
+
+
+
+
+//
+//  StatisticsView.swift
+//  Matematik
+//
+//  Created by Sebastian Strus on 2025-04-27.
+//
+
+//
+//  StatisticsView.swift
+//  Matematik
+//
+//  Created by Sebastian Strus on 2025-04-27.
+//
+
+import SwiftUI
+
+struct StatisticsView: View {
+    @EnvironmentObject var settings: SettingsManager
+    @State private var showingClearConfirmation = false
+    
+    var body: some View {
+        List {
+            Section(header: sectionHeader("Hard".localized)) {
+                resultsSection(for: .hard)
+            }
+            
+            Section(header: sectionHeader("Medium".localized)) {
+                resultsSection(for: .medium)
+            }
+            
+            Section(header: sectionHeader("Easy".localized)) {
+                resultsSection(for: .easy)
+            }
+        }
+        .navigationTitle("Statistics".localized)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: { showingClearConfirmation = true }) {
+                    Image(systemName: "trash")
+                        .foregroundColor(.red)
+                }
+            }
+        }
+        .alert("Clear All Statistics?".localized, isPresented: $showingClearConfirmation) {
+            Button("Clear".localized, role: .destructive) {
+                settings.clearStatistics()
+            }
+            Button("Cancel".localized, role: .cancel) {}
+        } message: {
+            Text("This will permanently delete all saved results.".localized)
+        }
+    }
+    
+    private func sectionHeader(_ text: String) -> some View {
+        Text(text)
+            .font(.headline)
+            .foregroundColor(.primary)
+            .padding(.vertical, 8)
+    }
+    
+    private func resultsSection(for difficulty: DifficultyLevel) -> some View {
+        let results = settings.loadGameResults()
+            .filter { $0.difficulty == difficulty }
+            .sorted {
+                // Primary sort by example count (descending)
+                if $0.exampleCount != $1.exampleCount {
+                    return $0.exampleCount > $1.exampleCount
+                }
+                // Secondary sort by time (ascending - fastest first)
+                return $0.time < $1.time
+            }
+        
+        return Group {
+            if results.isEmpty {
+                Text("No results yet".localized)
+                    .foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .center)
+            } else {
+                ForEach(results) { result in
+                    HStack(spacing: 16) {
+                        // Name column
+                        Text(result.name)
+                            .frame(width: 100, alignment: .leading)
+                            .font(.subheadline)
+                        
+                        // Example count column
+                        Text("\(result.exampleCount)")
+                            .frame(width: 60, alignment: .center)
+                            .font(.system(.body, design: .monospaced))
+                        
+                        // Time column
+                        Text(formatTime(result.time))
+                            .frame(minWidth: 80, alignment: .trailing)
+                            .font(.system(.body, design: .monospaced))
+                        
+                        // Date column (optional)
+                        Text(formatDate(result.date))
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    .padding(.vertical, 4)
+                }
+            }
+        }
+    }
+    
+    private func formatTime(_ time: TimeInterval) -> String {
+        let minutes = Int(time) / 60
+        let seconds = Int(time) % 60
+        let milliseconds = Int((time.truncatingRemainder(dividingBy: 1)) * 100)
+        return String(format: "%02d:%02d.%02d", minutes, seconds, milliseconds)
+    }
+    
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .none
+        return formatter.string(from: date)
+    }
 }

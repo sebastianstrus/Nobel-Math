@@ -5,6 +5,7 @@
 //  Created by Sebastian Strus on 2025-04-27.
 //
 
+
 enum Language: String {
     case english
     case swedish
@@ -101,7 +102,21 @@ enum UserDefaultsKeys: String {
 
 }
 
-enum DifficultyLevel: Int, CaseIterable {
+struct GameResult: Codable, Identifiable {
+    var id: UUID = UUID()  // Add this for Identifiable conformance
+    let name: String
+    let difficulty: DifficultyLevel
+    let exampleCount: Int
+    let time: TimeInterval
+    let date: Date
+    
+    // Add CodingKeys if you want to customize the JSON keys
+    enum CodingKeys: String, CodingKey {
+        case id, name, difficulty, exampleCount, time, date
+    }
+}
+
+enum DifficultyLevel: Int, CaseIterable, Codable {
     case easy = 0
     case medium = 1
     case hard = 2
@@ -146,6 +161,48 @@ class SettingsManager: ObservableObject {
         
         updateEnabledTabsCount()
         
+    }
+    
+    // Add this at the top of SettingsManager.swift
+    
+
+    // Add these methods to SettingsManager class
+    private let statisticsKey = "gameStatistics"
+
+    func saveGameResult(name: String, difficulty: DifficultyLevel, exampleCount: Int, time: TimeInterval) {
+        var results = loadGameResults()
+        let newResult = GameResult(
+            name: name,
+            difficulty: difficulty,
+            exampleCount: exampleCount,
+            time: time,
+            date: Date()
+        )
+        results.append(newResult)
+        
+        do {
+            let encoded = try JSONEncoder().encode(results)
+            userDefaults.set(encoded, forKey: statisticsKey)
+        } catch {
+            print("Failed to encode game results: \(error)")
+        }
+    }
+
+    func loadGameResults() -> [GameResult] {
+        guard let data = userDefaults.data(forKey: statisticsKey) else {
+            return []
+        }
+        
+        do {
+            return try JSONDecoder().decode([GameResult].self, from: data)
+        } catch {
+            print("Failed to decode game results: \(error)")
+            return []
+        }
+    }
+
+    func clearStatistics() {
+        userDefaults.removeObject(forKey: statisticsKey)
     }
     
     func updateEnabledTabsCount() {

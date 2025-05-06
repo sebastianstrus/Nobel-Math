@@ -10,7 +10,6 @@ import AVFoundation
 import MediaPlayer
 
 struct LearnView: View {
-    
     @EnvironmentObject var settings: SettingsManager
     @Environment(\.dismiss) var dismiss
     
@@ -19,6 +18,7 @@ struct LearnView: View {
     @State private var elapsedTime: TimeInterval = 0
     @State private var timer: Timer?
     
+    // Completion tracking
     @State private var additionCompleted = false
     @State private var subtractionCompleted = false
     @State private var multiplicationCompleted = false
@@ -29,7 +29,11 @@ struct LearnView: View {
     @State private var multiplicationHasProgress = false
     @State private var divisionHasProgress = false
     
+    // UI state
     @State private var showBackConfirmation = false
+    @State private var shouldShowNameAlert = false
+    @State private var showingVictoryView = false
+    @State private var userName = ""
     
     init() {
         setMaxVolume()
@@ -38,7 +42,6 @@ struct LearnView: View {
     
     func setMaxVolume() {
         let volumeView = MPVolumeView()
-        
         if let slider = volumeView.subviews.first(where: { $0 is UISlider }) as? UISlider {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 slider.value = 1.0
@@ -51,108 +54,134 @@ struct LearnView: View {
     }
     
     var body: some View {
-        
-        
-        if shouldShowVoctoryView() {
-            VictoryView(elapsedTime: elapsedTime)
-                .environmentObject(settings)
-        } else {
-            TabView {
-                if settings.isAdditionOn {
-                    MathView(operation: .addition, isCompleted: $additionCompleted, hasProgress: $additionHasProgress, settings: settings)
-                        .tabItem {
-                            Label("Addition".localized, systemImage: "plus")
-                        }
-                        .environmentObject(settings)
+        Group {
+            if showingVictoryView {
+                VictoryView(elapsedTime: elapsedTime)
+                    .environmentObject(settings)
+            } else if shouldShowVoctoryView() {
+                // Empty view that triggers the alert
+                Color.clear
+            } else {
+                TabView {
+                    if settings.isAdditionOn {
+                        MathView(operation: .addition,
+                                isCompleted: $additionCompleted,
+                                hasProgress: $additionHasProgress,
+                                settings: settings)
+                            .tabItem { Label("Addition".localized, systemImage: "plus") }
+                    }
+                    
+                    if settings.isSubtractionOn {
+                        MathView(operation: .subtraction,
+                                isCompleted: $subtractionCompleted,
+                                hasProgress: $subtractionHasProgress,
+                                settings: settings)
+                            .tabItem { Label("Subtraction".localized, systemImage: "minus") }
+                    }
+                    
+                    if settings.isMultiplicationOn {
+                        MathView(operation: .multiplication,
+                                isCompleted: $multiplicationCompleted,
+                                hasProgress: $multiplicationHasProgress,
+                                settings: settings)
+                            .tabItem { Label("Multiplication".localized, systemImage: "multiply") }
+                    }
+                    
+                    if settings.isDivisionOn {
+                        MathView(operation: .division,
+                                isCompleted: $divisionCompleted,
+                                hasProgress: $divisionHasProgress,
+                                settings: settings)
+                            .tabItem { Label("Division".localized, systemImage: "divide") }
+                    }
                 }
-                
-                if settings.isSubtractionOn {
-                    MathView(operation: .subtraction, isCompleted: $subtractionCompleted, hasProgress: $subtractionHasProgress, settings: settings)
-                        .tabItem {
-                            Label("Subtraction".localized, systemImage: "minus")
+                .if(UIDevice.current.userInterfaceIdiom == .pad) { view in
+                    view.alert(isPresented: $showBackConfirmation) {
+                        Alert(
+                            title: Text("Are you sure?".localized),
+                            message: Text("Your progress will be lost if you go back.".localized),
+                            primaryButton: .destructive(Text("Discard Changes".localized)) {
+                                dismiss()
+                            },
+                            secondaryButton: .cancel()
+                        )
+                    }
+                } else: { view in
+                    view.confirmationDialog("Are you sure?".localized, isPresented: $showBackConfirmation) {
+                        Button("Discard Changes".localized, role: .destructive) {
+                            dismiss()
                         }
-                        .environmentObject(settings)
-                }
-                
-                if settings.isMultiplicationOn {
-                    MathView(operation: .multiplication, isCompleted: $multiplicationCompleted, hasProgress: $multiplicationHasProgress, settings: settings)
-                        .tabItem {
-                            Label("Multiplication".localized, systemImage: "multiply")
-                        }
-                        .environmentObject(settings)
-                }
-                
-                if settings.isDivisionOn {
-                    MathView(operation: .division, isCompleted: $divisionCompleted, hasProgress: $divisionHasProgress, settings: settings)
-                        .tabItem {
-                            Label("Division".localized, systemImage: "divide")
-                        }
-                        .environmentObject(settings)
+                    } message: {
+                        Text("Your progress will be lost if you go back.".localized)
+                    }
                 }
             }
-            .if(UIDevice.current.userInterfaceIdiom == .pad) { view in
-                view.alert(isPresented: $showBackConfirmation) {
-                    Alert(
-                        title: Text("Are you sure?".localized),
-                        message: Text("Your progress will be lost if you go back.".localized),
-                        primaryButton: .destructive(Text("Discard Changes".localized)) {
-                            dismiss()
-                        },
-                        secondaryButton: .cancel()
-                    )
-                }
-            } else: { view in
-                view.confirmationDialog("Are you sure?".localized, isPresented: $showBackConfirmation) {
-                    Button("Discard Changes".localized, role: .destructive) {
+        }
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    let hasProgress = additionHasProgress || subtractionHasProgress ||
+                    multiplicationHasProgress || divisionHasProgress
+                    
+                    if hasProgress {
+                        showBackConfirmation = true
+                    } else {
                         dismiss()
                     }
-                } message: {
-                    Text("Your progress will be lost if you go back.".localized)
-                }
-            }
-            .navigationBarBackButtonHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        // Check if any progress has been made
-                        let hasProgress = additionHasProgress || subtractionHasProgress ||
-                        multiplicationHasProgress || divisionHasProgress
-                        
-                        if hasProgress {
-                            showBackConfirmation = true
-                        } else {
-                            dismiss()
-                        }
-                    } label: {
-                        HStack {
-                            Image(systemName: "chevron.left")
-                            Text("Back".localized)
-                        }
-                        .foregroundColor(.blue)
+                } label: {
+                    HStack {
+                        Image(systemName: "chevron.left")
+                        Text("Back".localized)
                     }
-                }
-                
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Text(formattedTime(elapsedTime))
-                        .font(.system(size: UIDevice.current.userInterfaceIdiom == .pad ? 20 : 16, weight: .bold, design: .monospaced))
-                        .foregroundColor(.blue)
+                    .foregroundColor(.blue)
                 }
             }
-            .onAppear {
-                startTimer()
+            
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Text(formattedTime(elapsedTime))
+                    .font(.system(size: UIDevice.current.userInterfaceIdiom == .pad ? 20 : 16,
+                                weight: .bold,
+                                design: .monospaced))
+                    .foregroundColor(.blue)
             }
-            .onDisappear {
+        }
+        .onAppear {
+            startTimer()
+        }
+        .onDisappear {
+            stopTimer()
+        }
+        .alert("Enter your name".localized, isPresented: $shouldShowNameAlert) {
+            TextField("Name".localized, text: $userName)
+            Button("Save".localized) {
+                saveResultAndShowVictory()
+            }
+            Button("Skip".localized, role: .cancel) {
+                showingVictoryView = true
+            }
+        } message: {
+            Text("Enter your name to save your result".localized)
+        }
+        .onChange(of: shouldShowVoctoryView()) { completed in
+            if completed {
                 stopTimer()
-            }
-            .onChange(of: shouldShowVoctoryView()) { completed in
-                if completed {
-                    stopTimer()
-                }
+                shouldShowNameAlert = true
             }
         }
     }
     
-    // Timer control functions
+    private func saveResultAndShowVictory() {
+        let difficulty = DifficultyLevel(rawValue: settings.difficultyLevel) ?? .medium
+        settings.saveGameResult(
+            name: userName.isEmpty ? "Anonymous" : userName,
+            difficulty: difficulty,
+            exampleCount: settings.exampleCount,
+            time: elapsedTime
+        )
+        showingVictoryView = true
+    }
+    
     private func startTimer() {
         guard startTime == nil else { return }
         startTime = Date()
@@ -161,34 +190,35 @@ struct LearnView: View {
                 elapsedTime = Date().timeIntervalSince(startTime)
             }
         }
-        // Add this line to keep timer running during scrolling
         RunLoop.current.add(timer!, forMode: .common)
     }
-        
-        private func stopTimer() {
-            timer?.invalidate()
-            timer = nil
-        }
-        
-        // Format time as minutes:seconds.milliseconds
-        private func formattedTime(_ time: TimeInterval) -> String {
-            let minutes = Int(time) / 60
-            let seconds = Int(time) % 60
-            let milliseconds = Int((time.truncatingRemainder(dividingBy: 1)) * 100)
-            
-            return String(format: "%02d:%02d.%02d", minutes, seconds, milliseconds)
-        }
+    
+    private func stopTimer() {
+        timer?.invalidate()
+        timer = nil
+    }
+    
+    private func formattedTime(_ time: TimeInterval) -> String {
+        let minutes = Int(time) / 60
+        let seconds = Int(time) % 60
+        let milliseconds = Int((time.truncatingRemainder(dividingBy: 1)) * 100)
+        return String(format: "%02d:%02d.%02d", minutes, seconds, milliseconds)
+    }
     
     func shouldShowVoctoryView() -> Bool {
+        let tabsEnabledCount: Int = [settings.isAdditionOn,
+                                   settings.isSubtractionOn,
+                                   settings.isMultiplicationOn,
+                                   settings.isDivisionOn].filter { $0 }.count
         
-        let tabsEnabledCount: Int = [settings.isAdditionOn, settings.isSubtractionOn, settings.isMultiplicationOn, settings.isDivisionOn].filter { $0 }.count
-        
-        let tabsCompletedCount: Int = [additionCompleted, subtractionCompleted, multiplicationCompleted, divisionCompleted].filter { $0 }.count
+        let tabsCompletedCount: Int = [additionCompleted,
+                                     subtractionCompleted,
+                                     multiplicationCompleted,
+                                     divisionCompleted].filter { $0 }.count
         
         return tabsEnabledCount == tabsCompletedCount
+    }
 }
-}
-
 enum MathOperation {
     case addition, subtraction, multiplication, division
 }
