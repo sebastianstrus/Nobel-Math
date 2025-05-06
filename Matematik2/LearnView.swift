@@ -129,8 +129,8 @@ struct LearnView: View {
         .onDisappear {
             stopTimer()
         }
-        .alert("Enter your name".localized, isPresented: $shouldShowNameAlert) {
-            TextField("Name".localized, text: $userName)
+        .alert("Enter your nickname".localized, isPresented: $shouldShowNameAlert) {
+            TextField("Nickname".localized, text: $userName)
             Button("Save".localized) {
                 saveResultAndShowVictory()
             }
@@ -138,7 +138,7 @@ struct LearnView: View {
                 showingVictoryView = true
             }
         } message: {
-            Text("Enter your name to save your result".localized)
+            Text("Enter your nickname to save the result".localized)
         }
         .onChange(of: shouldShowVoctoryView()) { completed in
             if completed {

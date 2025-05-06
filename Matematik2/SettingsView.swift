@@ -246,26 +246,26 @@ struct StatisticsView: View {
     private func columnHeaders() -> some View {
         HStack(spacing: 16) {
             // Name header
-            Text("Name".localized)
+            Text("Nickname".localized)
                 .frame(width: 100, alignment: .leading)
-                .font(.subheadline.bold())
+                .font(Font.system(size: 13).bold())
                 .foregroundColor(.primary)
             
             // Count header
             Text("Count".localized)
                 .frame(width: 60, alignment: .center)
-                .font(.subheadline.bold())
+                .font(Font.system(size: 13).bold())
                 .foregroundColor(.primary)
             
             // Result header
             Text("Result".localized)
                 .frame(minWidth: 80, alignment: .trailing)
-                .font(.subheadline.bold())
+                .font(Font.system(size: 13).bold())
                 .foregroundColor(.primary)
             
             // Date header
             Text("Date".localized)
-                .font(.subheadline.bold())
+                .font(Font.system(size: 13).bold())
                 .foregroundColor(.primary)
         }
         .padding(.vertical, 8)
@@ -307,7 +307,7 @@ struct StatisticsView: View {
                         // Example count column
                         Text("\(result.exampleCount)")
                             .frame(width: 60, alignment: .center)
-                            .font(.system(size: 15, design: .monospaced))
+                            .font(.system(size: 13, design: .monospaced))
                         
                         // Time column
                         Text(formatTime(result.time))
