@@ -25,7 +25,7 @@ struct FallingCoinsView: View {
             Color.black.opacity(0.7).edgesIgnoringSafeArea(.all)
             
             ForEach(coins) { coin in
-                Image("coin2")//Int.random(in: 1...2)
+                Image("coin2")
                     .resizable()
                     .frame(width: coin.size * sizer, height: coin.size * sizer)
                     .rotationEffect(.degrees(coin.rotation))
@@ -37,7 +37,7 @@ struct FallingCoinsView: View {
         }
         .onAppear {
             startCoinRain()
-            playCoinSound() // Odtwarzanie dźwięku
+            playCoinSound()
         }
         .onDisappear {
             stopCoinRain()
@@ -49,10 +49,10 @@ struct FallingCoinsView: View {
             let newCoin = Coin(
                 id: UUID(),
                 x: CGFloat.random(in: 0...screenWidth),
-                y: -50, // Start poza ekranem
-                size: CGFloat.random(in: 30...200), // Losowy rozmiar
-                rotation: Double.random(in: 0...360), // Losowa rotacja
-                duration: Double.random(in: 0.5...2) // Różne prędkości spadania
+                y: -150, // Start poza ekranem
+                size: CGFloat.random(in: 100...400), // Losowy rozmiar
+                rotation: Double.random(in: 0...200), // Losowa rotacja
+                duration: Double.random(in: 0.7...2) // Różne prędkości spadania
             )
             coins.append(newCoin)
         }

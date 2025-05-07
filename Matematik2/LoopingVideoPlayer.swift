@@ -10,154 +10,99 @@ import SwiftUI
 import AVKit
 
 struct LoopingVideoPlayer: View {
-    let videoName: String
-    let videoType: String
-    
+    @ObservedObject var viewModel: VideoPlayerViewModel
+
     var body: some View {
         #if os(iOS)
-        iOSVideoPlayer(videoName: videoName, videoType: videoType)
+        iOSVideoPlayer(viewModel: viewModel)
         #elseif os(macOS)
-        macOSVideoPlayer(videoName: videoName, videoType: videoType)
+        macOSVideoPlayer(viewModel: viewModel)
         #endif
     }
 }
 
 #if os(iOS)
-struct iOSVideoPlayer: UIViewRepresentable {
-    let videoName: String
-    let videoType: String
-    
-    func makeUIView(context: Context) -> UIView {
-        return PlayerUIView(videoName: videoName, videoType: videoType)
+struct iOSVideoPlayer: UIViewControllerRepresentable {
+    @ObservedObject var viewModel: VideoPlayerViewModel
+
+    func makeUIViewController(context: Context) -> AVPlayerViewController {
+        let controller = AVPlayerViewController()
+        controller.player = viewModel.player
+        controller.showsPlaybackControls = false
+        controller.videoGravity = .resizeAspectFill
+        return controller
     }
-    
-    func updateUIView(_ uiView: UIView, context: Context) {
-        // No updates needed
+
+    func updateUIViewController(_ controller: AVPlayerViewController, context: Context) {
+        // No-op
     }
 }
+#elseif os(macOS)
+import SwiftUI
+import AVKit
 
-class PlayerUIView: UIView {
-    private var playerLayer = AVPlayerLayer()
-    private var playerLooper: AVPlayerLooper?
+struct macOSVideoPlayer: NSViewRepresentable {
+    @ObservedObject var viewModel: VideoPlayerViewModel
+
+    func makeNSView(context: Context) -> AVPlayerView {
+        let playerView = AVPlayerView()
+        playerView.player = viewModel.player
+        playerView.showsFullScreenToggleButton = false
+        playerView.controlsStyle = .none
+        playerView.videoGravity = .resizeAspectFill
+        return playerView
+    }
+
+    func updateNSView(_ nsView: AVPlayerView, context: Context) {
+        // No update needed
+    }
+}
+#endif
+
+
+
+import Foundation
+import AVKit
+import Combine
+
+class VideoPlayerViewModel: ObservableObject {
+    static let shared = VideoPlayerViewModel()
     
-    init(videoName: String, videoType: String) {
-        super.init(frame: .zero)
-        setupPlayer(videoName: videoName, videoType: videoType)
-        
-        // iOS-specific notification
+    let player: AVQueuePlayer
+    private var looper: AVPlayerLooper?
+    
+    init() {
+        let url = Bundle.main.url(forResource: "background_video", withExtension: "mov")
+
+        let item = AVPlayerItem(url: url!)
+        self.player = AVQueuePlayer()
+        self.looper = AVPlayerLooper(player: player, templateItem: item)
+
+        player.play()
+
+        // Resume playback when app becomes active
+        #if os(iOS)
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(restartVideo),
+            selector: #selector(resumePlayback),
             name: UIApplication.willEnterForegroundNotification,
             object: nil
         )
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    private func setupPlayer(videoName: String, videoType: String) {
-        guard let videoURL = Bundle.main.url(forResource: videoName, withExtension: videoType) else {
-            print("Could not find video \(videoName).\(videoType)")
-            return
-        }
-        
-        let playerItem = AVPlayerItem(url: videoURL)
-        let queuePlayer = AVQueuePlayer(playerItem: playerItem)
-        playerLooper = AVPlayerLooper(player: queuePlayer, templateItem: playerItem)
-        playerLayer.player = queuePlayer
-        playerLayer.videoGravity = .resizeAspectFill
-        layer.addSublayer(playerLayer)
-        
-        queuePlayer.play()
-    }
-    
-    @objc private func restartVideo() {
-        playerLayer.player?.play()
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        playerLayer.frame = bounds
-    }
-}
-#endif
-
-#if os(macOS)
-struct macOSVideoPlayer: NSViewRepresentable {
-    let videoName: String
-    let videoType: String
-    
-    func makeNSView(context: Context) -> NSView {
-        return PlayerNSView(videoName: videoName, videoType: videoType)
-    }
-    
-    func updateNSView(_ nsView: NSView, context: Context) {
-        // No updates needed
-    }
-}
-
-class PlayerNSView: NSView {
-    private var playerLayer = AVPlayerLayer()
-    private var playerLooper: AVPlayerLooper?
-    
-    init(videoName: String, videoType: String) {
-        super.init(frame: .zero)
-        setupPlayer(videoName: videoName, videoType: videoType)
-        
-        // macOS-specific notifications
+        #elseif os(macOS)
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(restartVideo),
+            selector: #selector(resumePlayback),
             name: NSApplication.willBecomeActiveNotification,
             object: nil
         )
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(restartVideo),
-            name: NSWindow.didBecomeKeyNotification,
-            object: nil
-        )
+        #endif
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+
+    @objc private func resumePlayback() {
+        player.play()
     }
-    
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-    
-    private func setupPlayer(videoName: String, videoType: String) {
-        guard let videoURL = Bundle.main.url(forResource: videoName, withExtension: videoType) else {
-            print("Could not find video \(videoName).\(videoType)")
-            return
-        }
-        
-        let playerItem = AVPlayerItem(url: videoURL)
-        let queuePlayer = AVQueuePlayer(playerItem: playerItem)
-        playerLooper = AVPlayerLooper(player: queuePlayer, templateItem: playerItem)
-        playerLayer.player = queuePlayer
-        playerLayer.videoGravity = .resizeAspectFill
-        wantsLayer = true
-        layer?.addSublayer(playerLayer)
-        
-        queuePlayer.play()
-    }
-    
-    @objc private func restartVideo() {
-        playerLayer.player?.play()
-    }
-    
-    override func layout() {
-        super.layout()
-        playerLayer.frame = bounds
-    }
 }
-#endif

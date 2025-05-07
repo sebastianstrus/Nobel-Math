@@ -11,11 +11,13 @@ import SwiftUI
 struct Matematik2App: App {
     
     @StateObject private var settings = SettingsManager.shared
+    @StateObject private var videoViewModel = VideoPlayerViewModel.shared
     
     var body: some Scene {
         WindowGroup {
             WelcomeView()
                 .environmentObject(settings)
+                .environmentObject(videoViewModel)
                 .preferredColorScheme(settings.isDarkMode ? .dark : .light)
         }
     }

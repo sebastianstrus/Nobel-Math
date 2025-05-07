@@ -10,136 +10,130 @@ import SwiftUI
 struct WelcomeView: View {
     
     @EnvironmentObject var settings: SettingsManager
+    @EnvironmentObject var videoViewModel: VideoPlayerViewModel
     
-    @State private var isStartButtonAnimating = false
     @State private var showSettings = false
-    @State private var showLearn = false
     
-
-    let titleSize: CGFloat = {
-        UIDevice.current.userInterfaceIdiom == .pad ? 60 : 40
-    }()
     
-    let subtitleSize: CGFloat = {
-        UIDevice.current.userInterfaceIdiom == .pad ? 35 : 20
-    }()
+    let titleSize: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 60 : 40
+    let subtitleSize: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 35 : 20
+    let buttonWidth: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 150 : 120
+    let buttonHeight: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 60 : 40
+    let buttonSize: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 60 : 46
+    let cornerRadius: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 12 : 8
     
-    let buttonWidth: CGFloat = {
-        UIDevice.current.userInterfaceIdiom == .pad ? 150 : 120
-    }()
-    
-    let buttonHeight: CGFloat = {
-        UIDevice.current.userInterfaceIdiom == .pad ? 60 : 40
-    }()
-    
-    let buttonSize: CGFloat = {
-        UIDevice.current.userInterfaceIdiom == .pad ? 60 : 46
-    }()
-    
-    let cornerRadius: CGFloat = {
-        UIDevice.current.userInterfaceIdiom == .pad ? 12 : 8
-    }()
-
     var body: some View {
-        NavigationStack {
-            ZStack {
-                // Background Image
-                LoopingVideoPlayer(videoName: "background_video", videoType: "mov")
-                    .ignoresSafeArea()
-                    .overlay(Color.black.opacity(0.6))
-                
-//                if UIDevice.current.userInterfaceIdiom == .pad {
-//                    Image("roblox")
-//                        .resizable()
-//                        .scaledToFill()
-//                        .overlay(Color.black.opacity(0.4))
-//                        .ignoresSafeArea()
-//                } else {
-//                    Image("roblox2")
-//                        .resizable()
-//                        .scaledToFill()
-//                        .overlay(Color.black.opacity(0.4))
-//                        .ignoresSafeArea()
-//                }
-                
-
+        ZStack {
+            LoopingVideoPlayer(viewModel: videoViewModel)
+                .ignoresSafeArea()
+                .overlay(Color.black.opacity(0.6))
+            
+            TransparentNavigationView {
                 VStack(spacing: 20) {
                     Spacer()
-
+                    
                     // Title
                     Text("Nobla Math")
                         .font(.system(size: titleSize, weight: .bold, design: .rounded))
                         .foregroundStyle(.white.opacity(0.9))
                         .shadow(color: .black.opacity(0.8), radius: 3, x: 3, y: 3)
-
+                    
                     // Subtitle
                     Text("Discover the Joy of Numbers.")
                         .font(.system(size: subtitleSize, weight: .regular, design: .rounded))
                         .foregroundStyle(.white.opacity(0.9))
                         .shadow(color: .black.opacity(0.8), radius: 2, x: 2, y: 2)
                         .padding(.top, 0)
-
+                    
                     Spacer()
                     
                     if UIDevice.current.userInterfaceIdiom == .phone {
                         Spacer()
                     }
-
-
-                    // Start Button
-                    Button(action: {
-                        showLearn = true
-                    }) {
-                        Text("Start")
-                            .font(Font.system(size: 20))
-                            .fontWeight(.bold)
-                            .frame(width: buttonWidth, height: buttonHeight, alignment: .center)
-                            .background(Color.blue.opacity(0.93))
-                            .foregroundColor(.white)
-                            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: cornerRadius)
-                                    .stroke(Color.white, lineWidth: 1)
-                            )
-                            .scaleEffect(isStartButtonAnimating ? 1.1 : 1.0)
-                            .padding()
+                    
+                    NavigationLink(destination: LearnView().environmentObject(settings)) {
+                        PulsingButton(
+                            title: "Start".localized,
+                            width: buttonWidth,
+                            height: buttonHeight,
+                            cornerRadius: cornerRadius
+                        )
+                        .padding()
                     }
-                    .buttonStyle(PlainButtonStyle())
-                    .padding(.bottom, 40)
-                    .onAppear {
-                        withAnimation(Animation.easeInOut(duration: 1.0).repeatForever(autoreverses: true)) {
-                            isStartButtonAnimating = true
-                        }
-                    }
+                    
+
+                    
+                   
                     
                     Spacer()
                 }
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: {
-                            showSettings = true
-                        }) {
+                        NavigationLink(destination: SettingsView()) {
                             Image(systemName: "gear")
                                 .font(.title2)
                                 .foregroundColor(.white)
                                 .padding()
+                                
                         }
                     }
                 }
-                .navigationDestination(isPresented: $showSettings) {
-                    SettingsView()
-                }
-                .navigationDestination(isPresented: $showLearn) {
-                    LearnView().environmentObject(settings)
-                }
-            }
+   
+            }.ignoresSafeArea()
         }
     }
 }
 
 
-struct WelcomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        WelcomeView()
+
+class TransparentHostingController<Content: View>: UIHostingController<Content> {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .clear
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+            super.traitCollectionDidChange(previousTraitCollection)
+            view.backgroundColor = .clear
+        }
+}
+struct TransparentNavigationView<Content: View>: UIViewControllerRepresentable {
+    @Environment(\.colorScheme) var colorScheme
+    let content: Content
+    
+    init(@ViewBuilder content: () -> Content) {
+        self.content = content()
+    }
+    
+    func makeUIViewController(context: Context) -> UINavigationController {
+        let rootVC = TransparentHostingController(rootView: content)
+        let navController = UINavigationController(rootViewController: rootVC)
+        
+        updateAppearance(navController: navController)
+        return navController
+    }
+    
+    func updateUIViewController(_ uiViewController: UINavigationController, context: Context) {
+        updateAppearance(navController: uiViewController)
+    }
+    
+    private func updateAppearance(navController: UINavigationController) {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = .clear
+        appearance.shadowColor = .clear
+        
+        // Update title color based on color scheme
+        let titleColor: UIColor = colorScheme == .dark ? .white.withAlphaComponent(0.9) : .black.withAlphaComponent(0.8) // You can adjust this
+        appearance.titleTextAttributes = [.foregroundColor: titleColor]
+        
+        navController.navigationBar.standardAppearance = appearance
+        navController.navigationBar.scrollEdgeAppearance = appearance
+        navController.navigationBar.compactAppearance = appearance
+        navController.view.backgroundColor = .clear
+        
+        // Force update the navigation bar
+        navController.navigationBar.setNeedsLayout()
+        navController.navigationBar.layoutIfNeeded()
     }
 }

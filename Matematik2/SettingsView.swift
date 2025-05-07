@@ -11,6 +11,7 @@ import MessageUI
 struct SettingsView: View {
     
     @EnvironmentObject var settings: SettingsManager
+    @Environment(\.colorScheme) var colorScheme
     
     @State private var showProgressAlert = false
     @State private var showCacheAlert = false
@@ -19,10 +20,8 @@ struct SettingsView: View {
     
     
     var body: some View {
-        
-        
-//        VStack {
-            
+        VStack {
+            Text("").frame(height: 0)
             List {
                 
                 Section(header: Text("Statistics".localized)) {
@@ -45,7 +44,7 @@ struct SettingsView: View {
                         GradientSlider(value: settings.$exampleCount, range: 15...90, step: 15)
                     }.padding(.trailing, 8)
                     
-
+                    
                     Toggle("Display Timer".localized, isOn: settings.$isTimerOn)
                         .tint(.purple)
                     
@@ -83,16 +82,16 @@ struct SettingsView: View {
                 
                 Section(header: Text("Language".localized)) {
                     NavigationLink(destination: EmptyView()) {
-                            HStack {
-                                Text("App Language".localized)
-                                Spacer()
-                                Text(settings.primaryLanguage.displayName)
-                            }
-                            .contentShape(Rectangle()) // makes entire row tappable
-                            .onTapGesture {
-                                settings.openAppLanguageSettings()
-                            }
+                        HStack {
+                            Text("App Language".localized)
+                            Spacer()
+                            Text(settings.primaryLanguage.displayName)
                         }
+                        .contentShape(Rectangle()) // makes entire row tappable
+                        .onTapGesture {
+                            settings.openAppLanguageSettings()
+                        }
+                    }
                     
                     
                 }
@@ -109,14 +108,15 @@ struct SettingsView: View {
                     }
                 }
                 
-//                Section(header: Text("Application Cache".localized)) {
-//                    Button("Reset & Exit".localized) {
-//                        showCacheAlert = true
-//                    }
-//                    .foregroundColor(.red)
-//                }
+                //                Section(header: Text("Application Cache".localized)) {
+                //                    Button("Reset & Exit".localized) {
+                //                        showCacheAlert = true
+                //                    }
+                //                    .foregroundColor(.red)
+                //                }
             }
-//        }
+        }
+        .navigationTitle("Settings".localized)
         .onChange(of: settings.isAdditionOn) {
             settings.updateEnabledTabsCount()
         }
@@ -211,38 +211,41 @@ struct StatisticsView: View {
     @State private var showingClearConfirmation = false
     
     var body: some View {
-        List {
-            Section(header: sectionHeader("Hard".localized)) {
-                columnHeaders()
-                resultsSection(for: .hard)
-            }
-            
-            Section(header: sectionHeader("Medium".localized)) {
-                columnHeaders()
-                resultsSection(for: .medium)
-            }
-            
-            Section(header: sectionHeader("Easy".localized)) {
-                columnHeaders()
-                resultsSection(for: .easy)
-            }
-        }
-        .navigationTitle("Statistics".localized)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: { showingClearConfirmation = true }) {
-                    Image(systemName: "trash")
-                        .foregroundColor(.red)
+        VStack {
+            Text("").frame(height: 0)
+            List {
+                Section(header: sectionHeader("Hard".localized)) {
+                    columnHeaders()
+                    resultsSection(for: .hard)
+                }
+                
+                Section(header: sectionHeader("Medium".localized)) {
+                    columnHeaders()
+                    resultsSection(for: .medium)
+                }
+                
+                Section(header: sectionHeader("Easy".localized)) {
+                    columnHeaders()
+                    resultsSection(for: .easy)
                 }
             }
-        }
-        .alert("Clear All Statistics?".localized, isPresented: $showingClearConfirmation) {
-            Button("Clear".localized, role: .destructive) {
-                settings.clearStatistics()
+            .navigationTitle("Statistics".localized)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: { showingClearConfirmation = true }) {
+                        Image(systemName: "trash")
+                            .foregroundColor(.red)
+                    }
+                }
             }
-            Button("Cancel".localized, role: .cancel) {}
-        } message: {
-            Text("This will permanently delete all saved results.".localized)
+            .alert("Clear All Statistics?".localized, isPresented: $showingClearConfirmation) {
+                Button("Clear".localized, role: .destructive) {
+                    settings.clearStatistics()
+                }
+                Button("Cancel".localized, role: .cancel) {}
+            } message: {
+                Text("This will permanently delete all saved results.".localized)
+            }
         }
     }
     
