@@ -15,10 +15,6 @@ struct FallingCoinsView: View {
 
     let screenWidth = UIScreen.main.bounds.width
     let screenHeight = UIScreen.main.bounds.height
-    
-    let sizer: CGFloat = {
-        UIDevice.current.userInterfaceIdiom == .pad ? 1 : 0.5
-    }()
 
     var body: some View {
         ZStack {
@@ -27,7 +23,7 @@ struct FallingCoinsView: View {
             ForEach(coins) { coin in
                 Image("coin2")
                     .resizable()
-                    .frame(width: coin.size * sizer, height: coin.size * sizer)
+                    .frame(width: coin.size, height: coin.size)
                     .rotationEffect(.degrees(coin.rotation))
                     .position(x: coin.x, y: coin.y)
                     .onAppear {
@@ -49,10 +45,10 @@ struct FallingCoinsView: View {
             let newCoin = Coin(
                 id: UUID(),
                 x: CGFloat.random(in: 0...screenWidth),
-                y: -150, // Start poza ekranem
-                size: CGFloat.random(in: 100...400), // Losowy rozmiar
-                rotation: Double.random(in: 0...200), // Losowa rotacja
-                duration: Double.random(in: 0.7...2) // Różne prędkości spadania
+                y: -150,
+                size: CGFloat.random(in: 50...200),
+                rotation: Double.random(in: 0...200),
+                duration: Double.random(in: 0.7...3)
             )
             coins.append(newCoin)
         }
@@ -61,7 +57,7 @@ struct FallingCoinsView: View {
     func animateCoinDrop(_ coin: Coin) {
         if let index = coins.firstIndex(where: { $0.id == coin.id }) {
             withAnimation(.linear(duration: coin.duration)) {
-                coins[index].y = screenHeight + 50 // Moneta spada poza ekran
+                coins[index].y = screenHeight + 50
             }
 
             // Usunięcie monety po animacji

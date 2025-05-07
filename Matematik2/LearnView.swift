@@ -301,6 +301,9 @@ struct VictoryView: View {
                         .padding(.bottom, 20)
                     
                     Text("Time:".localized)
+                        .font(.system(size: fontSize * 0.7, weight: .bold, design: .rounded))
+                        .foregroundColor(.white)
+                    
                     Text(elapsedTime.formatedTime)
 
                         .font(.system(size: fontSize * 0.7, weight: .bold, design: .monospaced))
