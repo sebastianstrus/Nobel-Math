@@ -214,9 +214,9 @@ struct StatisticsView: View {
         VStack {
             Text("").frame(height: 0)
             List {
-                Section(header: sectionHeader("Hard".localized)) {
+                Section(header: sectionHeader("Easy".localized)) {
                     columnHeaders()
-                    resultsSection(for: .hard)
+                    resultsSection(for: .easy)
                 }
                 
                 Section(header: sectionHeader("Medium".localized)) {
@@ -224,10 +224,12 @@ struct StatisticsView: View {
                     resultsSection(for: .medium)
                 }
                 
-                Section(header: sectionHeader("Easy".localized)) {
+                Section(header: sectionHeader("Hard".localized)) {
                     columnHeaders()
-                    resultsSection(for: .easy)
+                    resultsSection(for: .hard)
                 }
+                
+
             }
             .navigationTitle("Statistics".localized)
             .toolbar {
@@ -250,30 +252,33 @@ struct StatisticsView: View {
     }
     
     private func columnHeaders() -> some View {
-        HStack(spacing: 16) {
+        HStack(spacing: 8) {
             // Name header
             Text("Nickname".localized)
-                .frame(width: 100, alignment: .leading)
+                .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                 .font(Font.system(size: 13).bold())
                 .foregroundColor(.primary)
             
             // Count header
             Text("Count".localized)
-                .frame(width: 60, alignment: .center)
+                .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
                 .font(Font.system(size: 13).bold())
                 .foregroundColor(.primary)
             
             // Result header
             Text("Result".localized)
-                .frame(minWidth: 80, alignment: .trailing)
+                .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
                 .font(Font.system(size: 13).bold())
                 .foregroundColor(.primary)
             
             // Date header
             Text("Date".localized)
+                .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
                 .font(Font.system(size: 13).bold())
                 .foregroundColor(.primary)
         }
+        .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
+        .frame(maxWidth: .infinity)
         .padding(.vertical, 8)
     }
     
@@ -282,6 +287,7 @@ struct StatisticsView: View {
             .font(.headline)
             .foregroundColor(.primary)
             .padding(.vertical, 8)
+            .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
     }
     
     private func resultsSection(for difficulty: DifficultyLevel) -> some View {
@@ -301,30 +307,33 @@ struct StatisticsView: View {
                 Text("No results yet".localized)
                     .foregroundColor(.secondary)
                     .frame(maxWidth: .infinity, alignment: .center)
+                    .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
                     .padding(.vertical, 8)
             } else {
                 ForEach(results) { result in
-                    HStack(spacing: 16) {
+                    HStack(spacing: 8) {
                         // Name column
                         Text(result.name)
-                            .frame(width: 100, alignment: .leading)
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                             .font(.subheadline)
                         
                         // Example count column
                         Text("\(result.exampleCount)")
-                            .frame(width: 60, alignment: .center)
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
                             .font(.system(size: 13, design: .monospaced))
                         
                         // Time column
                         Text(formatTime(result.time))
-                            .frame(minWidth: 80, alignment: .trailing)
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
                             .font(.system(size: 15, design: .monospaced))
                         
                         // Date column
                         Text(formatDate(result.date))
-                            .font(.caption)
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
                             .foregroundColor(.secondary)
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
                     .padding(.vertical, 4)
                 }
             }
