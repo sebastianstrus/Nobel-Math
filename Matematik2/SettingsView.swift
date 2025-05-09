@@ -47,7 +47,9 @@ struct SettingsView: View {
                     
                     Toggle("Display Timer".localized, isOn: settings.$isTimerOn)
                         .tint(.purple)
-                    
+                }
+                
+                Section(header: Text("Learning Sections".localized)) {
                     Toggle("Addition".localized, isOn: settings.$isAdditionOn)
                         .tint(.purple)
                         .disabled(settings.tabsEnabledCount == 1 && settings.isAdditionOn)

@@ -46,80 +46,68 @@ struct LearnView: View {
             if showingVictoryView || shouldShowVoctoryView() {
                 VictoryView(elapsedTime: elapsedTime)
                     .environmentObject(settings)
-//                    .toolbar {
-//                        ToolbarItem(placement: .navigationBarLeading) {
-//                            Button {
-//                                dismiss()
-//                            } label: {
-//                                HStack {
-//                                    Image(systemName: "chevron.left")
-//                                    Text("Back".localized)
-//                                }
-//                                .foregroundColor(.blue)
-//                            }
-//                        }
-//                    }
             } else {
                 TabView {
                     if settings.isAdditionOn {
                         MathView(operation: .addition,
-                                isCompleted: $additionCompleted,
-                                hasProgress: $additionHasProgress,
-                                settings: settings)
-                            .tabItem { Label("Addition".localized, systemImage: "plus") }
+                                 isCompleted: $additionCompleted,
+                                 hasProgress: $additionHasProgress,
+                                 settings: settings)
+                        .tabItem { Label("Addition".localized, systemImage: "plus") }
                     }
                     
                     if settings.isSubtractionOn {
                         MathView(operation: .subtraction,
-                                isCompleted: $subtractionCompleted,
-                                hasProgress: $subtractionHasProgress,
-                                settings: settings)
-                            .tabItem { Label("Subtraction".localized, systemImage: "minus") }
+                                 isCompleted: $subtractionCompleted,
+                                 hasProgress: $subtractionHasProgress,
+                                 settings: settings)
+                        .tabItem { Label("Subtraction".localized, systemImage: "minus") }
                     }
                     
                     if settings.isMultiplicationOn {
                         MathView(operation: .multiplication,
-                                isCompleted: $multiplicationCompleted,
-                                hasProgress: $multiplicationHasProgress,
-                                settings: settings)
-                            .tabItem { Label("Multiplication".localized, systemImage: "multiply") }
+                                 isCompleted: $multiplicationCompleted,
+                                 hasProgress: $multiplicationHasProgress,
+                                 settings: settings)
+                        .tabItem { Label("Multiplication".localized, systemImage: "multiply") }
                     }
                     
                     if settings.isDivisionOn {
                         MathView(operation: .division,
-                                isCompleted: $divisionCompleted,
-                                hasProgress: $divisionHasProgress,
-                                settings: settings)
-                            .tabItem { Label("Division".localized, systemImage: "divide") }
+                                 isCompleted: $divisionCompleted,
+                                 hasProgress: $divisionHasProgress,
+                                 settings: settings)
+                        .tabItem { Label("Division".localized, systemImage: "divide") }
                     }
                 }
+                .navigationBarBackButtonHidden(true)
                 .toolbar {
-//                    ToolbarItem(placement: .navigationBarLeading) {
-//                        Button {
-//                            let hasProgress = additionHasProgress || subtractionHasProgress ||
-//                            multiplicationHasProgress || divisionHasProgress
-//                            
-//                            if hasProgress {
-//                                showBackConfirmation = true
-//                            } else {
-//                                dismiss()
-//                            }
-//                        } label: {
-//                            HStack {
-//                                Image(systemName: "chevron.left")
-//                                Text("Back".localized)
-//                            }
-//                            .foregroundColor(.blue)
-//                        }
-//                    }
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button {
+                            let hasProgress = additionHasProgress || subtractionHasProgress ||
+                            multiplicationHasProgress || divisionHasProgress
+                            
+                            if hasProgress {
+                                showBackConfirmation = true
+                            } else {
+                                dismiss()
+                            }
+                        } label: {
+                            HStack {
+                                Image(systemName: "chevron.left")
+                                Text("Back".localized)
+                            }
+                            .foregroundColor(.blue)
+                        }
+                    }
                     
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Text(formattedTime(elapsedTime))
                             .font(.system(size: UIDevice.current.userInterfaceIdiom == .pad ? 20 : 16,
-                                        weight: .bold,
-                                        design: .monospaced))
+                                          weight: .bold,
+                                          design: .monospaced))
                             .foregroundColor(.blue.opacity(settings.isTimerOn ? 1 : 0))
-
+                        
                     }
                 }
             }
@@ -148,10 +136,10 @@ struct LearnView: View {
                 
                 // Only show the name alert if ALL operations are enabled
                 let allOperationsEnabled =
-                    settings.isAdditionOn &&
-                    settings.isSubtractionOn &&
-                    settings.isMultiplicationOn &&
-                    settings.isDivisionOn
+                settings.isAdditionOn &&
+                settings.isSubtractionOn &&
+                settings.isMultiplicationOn &&
+                settings.isDivisionOn
                 
                 if allOperationsEnabled {
                     shouldShowNameAlert = true
@@ -205,14 +193,14 @@ struct LearnView: View {
     
     func shouldShowVoctoryView() -> Bool {
         let tabsEnabledCount: Int = [settings.isAdditionOn,
-                                   settings.isSubtractionOn,
-                                   settings.isMultiplicationOn,
-                                   settings.isDivisionOn].filter { $0 }.count
+                                     settings.isSubtractionOn,
+                                     settings.isMultiplicationOn,
+                                     settings.isDivisionOn].filter { $0 }.count
         
         let tabsCompletedCount: Int = [additionCompleted,
-                                     subtractionCompleted,
-                                     multiplicationCompleted,
-                                     divisionCompleted].filter { $0 }.count
+                                       subtractionCompleted,
+                                       multiplicationCompleted,
+                                       divisionCompleted].filter { $0 }.count
         
         return tabsEnabledCount == tabsCompletedCount
     }
@@ -255,12 +243,12 @@ struct MathProblem: Identifiable {
     var borderColor: Color = .gray
     
     /*mutating func updateBorderColor() {
-        guard let answer = Int(userAnswer.replacingOccurrences(of: " ", with: "")) else {
-            borderColor = .gray
-            return
-        }
-        borderColor = answer == correctAnswer ? .green : .red
-    }*/
+     guard let answer = Int(userAnswer.replacingOccurrences(of: " ", with: "")) else {
+     borderColor = .gray
+     return
+     }
+     borderColor = answer == correctAnswer ? .green : .red
+     }*/
 }
 
 struct VictoryView: View {
@@ -270,23 +258,23 @@ struct VictoryView: View {
         UIDevice.current.userInterfaceIdiom == .pad ? 50 : 25
     }()
     
-//    private func formattedTime(_ time: TimeInterval) -> String {
-//        let minutes = Int(time) / 60
-//        let seconds = Int(time) % 60
-//        let milliseconds = Int((time.truncatingRemainder(dividingBy: 1)) * 100)
-//        
-//        return String(format: "%02d:%02d.%02d", minutes, seconds, milliseconds)
-//    }
+    //    private func formattedTime(_ time: TimeInterval) -> String {
+    //        let minutes = Int(time) / 60
+    //        let seconds = Int(time) % 60
+    //        let milliseconds = Int((time.truncatingRemainder(dividingBy: 1)) * 100)
+    //
+    //        return String(format: "%02d:%02d.%02d", minutes, seconds, milliseconds)
+    //    }
     
     
     
     var body: some View {
         
         let allOperationsEnabled =
-            settings.isAdditionOn &&
-            settings.isSubtractionOn &&
-            settings.isMultiplicationOn &&
-            settings.isDivisionOn
+        settings.isAdditionOn &&
+        settings.isSubtractionOn &&
+        settings.isMultiplicationOn &&
+        settings.isDivisionOn
         
         ZStack {
             FallingCoinsView()
@@ -305,12 +293,19 @@ struct VictoryView: View {
                         .foregroundColor(.white)
                     
                     Text(elapsedTime.formatedTime)
-
-                        .font(.system(size: fontSize * 0.7, weight: .bold, design: .monospaced))
+                    
+                        .font(.system(size: fontSize, weight: .bold, design: .monospaced))
                         .foregroundColor(.white)
+                    
+                    Text("You need to complete addition, subtraction, multiplication, and division in order to save the result.".localized)
+                        .font(.system(size: fontSize * 0.7, weight: .bold, design: .rounded))
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.center)
+                        .padding(40)
+                    
                 }
             }
-           
+            
         }
     }
 }
@@ -394,19 +389,19 @@ struct MathView: View {
                                 .stroke(problems[index].borderColor, lineWidth: fieldLineWidth))
                         }
                         .padding(UIDevice.current.userInterfaceIdiom == .pad ? 16 : 4)
-//                        .overlay {
-//                            Rectangle()
-//                                .stroke(Color.red, lineWidth: 1)
-//                        }
+                        //                        .overlay {
+                        //                            Rectangle()
+                        //                                .stroke(Color.red, lineWidth: 1)
+                        //                        }
                     }
                 }
                 .padding(.trailing, UIDevice.current.userInterfaceIdiom == .pad ? 16 : 12)
             }
             .navigationTitle(title)
         }.padding(.trailing, UIScreen.main.bounds.width > 1000 ? 60 : 0)
-        .onTapGesture {
-            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-        }
+            .onTapGesture {
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            }
     }
     
     func updateBorderColors() {

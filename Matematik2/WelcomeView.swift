@@ -90,6 +90,7 @@ class TransparentHostingController<Content: View>: UIHostingController<Content> 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .clear
+        navigationItem.hidesBackButton = true
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

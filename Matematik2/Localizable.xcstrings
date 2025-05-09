@@ -5528,6 +5528,137 @@
         }
       }
     },
+    "Learning Sections" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أقسام التعلم"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "শিক্ষার বিভাগ"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Læringssektioner"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lernabschnitte"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Secciones de aprendizaje"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oppimisosiot"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sections d'apprentissage"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सीखने के खंड"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bagian Pembelajaran"
+          }
+        },
+        "is" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Námshlutar"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sezioni di apprendimento"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "学習セクション"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "학습 섹션"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Læringsseksjoner"
+          }
+        },
+        "pa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ਸਿੱਖਣ ਦੇ ਭਾਗ"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sekcje nauki"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seções de aprendizagem"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lärsektioner"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Навчальні розділи"
+          }
+        },
+        "ur" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "سیکھنے کے حصے"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "学习部分"
+          }
+        }
+      }
+    },
     "Learning Settings" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -9326,6 +9457,137 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "查看统计"
+          }
+        }
+      }
+    },
+    "You need to complete addition, subtraction, multiplication, and division in order to save the result." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تحتاج إلى إكمال الجمع والطرح والضرب والقسمة لحفظ النتيجة."
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ফলাফল সংরক্ষণ করার জন্য আপনাকে যোগ, বিয়োগ, গুণ এবং ভাগ সম্পূর্ণ করতে হবে।"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du skal fuldføre addition, subtraktion, multiplikation og division for at gemme resultatet."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sie müssen Addition, Subtraktion, Multiplikation und Division abschließen, um das Ergebnis zu speichern."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Necesitas completar suma, resta, multiplicación y división para guardar el resultado."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sinun on suoritettava yhteen-, vähennys-, kerto- ja jakolaskut tuloksen tallentamiseksi."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous devez compléter l'addition, la soustraction, la multiplication et la division pour enregistrer le résultat."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "परिणाम सहेजने के लिए आपको जोड़, घटाव, गुणा और भाग पूरा करना होगा।"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anda perlu menyelesaikan penjumlahan, pengurangan, perkalian, dan pembagian untuk menyimpan hasilnya."
+          }
+        },
+        "is" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Þú verður að ljúka samlagningu, frádrætti, margföldun og deilingu til að vista niðurstöðuna."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Devi completare addizione, sottrazione, moltiplicazione e divisione per salvare il risultato."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "結果を保存するには、足し算、引き算、掛け算、割り算を完了する必要があります。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "결과를 저장하려면 덧셈, 뺄셈, 곱셈 및 나눗셈을 완료해야 합니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du må fullføre addisjon, subtraksjon, multiplikasjon og divisjon for å lagre resultatet."
+          }
+        },
+        "pa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ਨਤੀਜਾ ਸੁਰੱਖਿਅਤ ਕਰਨ ਲਈ ਤੁਹਾਨੂੰ ਜੋੜ, ਘਟਾਓ, ਗੁਣਾ ਅਤੇ ਭਾਗ ਪੂਰਾ ਕਰਨ ਦੀ ਲੋੜ ਹੈ।"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aby zapisać wynik, musisz ukończyć dodawanie, odejmowanie, mnożenie i dzielenie."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Você precisa completar adição, subtração, multiplicação e divisão para salvar o resultado."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du måste slutföra addition, subtraktion, multiplikation och division för att spara resultatet."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вам потрібно завершити додавання, віднімання, множення та ділення, щоб зберегти результат."
+          }
+        },
+        "ur" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نتیجہ محفوظ کرنے کے لیے آپ کو جمع، تفریق، ضرب اور تقسیم مکمل کرنی ہوگی۔"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您需要完成加法、减法、乘法和除法才能保存结果。"
           }
         }
       }
