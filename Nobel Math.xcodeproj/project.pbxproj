@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		7D2542C12D52C202000FDCC0 /* Nobla Math.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nobla Math.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D2542C12D52C202000FDCC0 /* Nobel Math.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nobel Math.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		7D2542C32D52C202000FDCC0 /* Matematik2 */ = {
+		7D2542C32D52C202000FDCC0 /* Nobel Math */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Matematik2;
+			path = "Nobel Math";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -32,7 +32,7 @@
 		7D2542B82D52C202000FDCC0 = {
 			isa = PBXGroup;
 			children = (
-				7D2542C32D52C202000FDCC0 /* Matematik2 */,
+				7D2542C32D52C202000FDCC0 /* Nobel Math */,
 				7D2542C22D52C202000FDCC0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -40,7 +40,7 @@
 		7D2542C22D52C202000FDCC0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7D2542C12D52C202000FDCC0 /* Nobla Math.app */,
+				7D2542C12D52C202000FDCC0 /* Nobel Math.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,9 +48,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		7D2542C02D52C202000FDCC0 /* Nobla Math */ = {
+		7D2542C02D52C202000FDCC0 /* Nobel Math */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7D2542CF2D52C204000FDCC0 /* Build configuration list for PBXNativeTarget "Nobla Math" */;
+			buildConfigurationList = 7D2542CF2D52C204000FDCC0 /* Build configuration list for PBXNativeTarget "Nobel Math" */;
 			buildPhases = (
 				7D2542BD2D52C202000FDCC0 /* Sources */,
 				7D2542BE2D52C202000FDCC0 /* Frameworks */,
@@ -61,13 +61,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				7D2542C32D52C202000FDCC0 /* Matematik2 */,
+				7D2542C32D52C202000FDCC0 /* Nobel Math */,
 			);
-			name = "Nobla Math";
+			name = "Nobel Math";
 			packageProductDependencies = (
 			);
 			productName = Matematik2;
-			productReference = 7D2542C12D52C202000FDCC0 /* Nobla Math.app */;
+			productReference = 7D2542C12D52C202000FDCC0 /* Nobel Math.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -85,7 +85,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 7D2542BC2D52C202000FDCC0 /* Build configuration list for PBXProject "Nobla Math" */;
+			buildConfigurationList = 7D2542BC2D52C202000FDCC0 /* Build configuration list for PBXProject "Nobel Math" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -120,7 +120,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				7D2542C02D52C202000FDCC0 /* Nobla Math */,
+				7D2542C02D52C202000FDCC0 /* Nobel Math */,
 			);
 		};
 /* End PBXProject section */
@@ -340,7 +340,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		7D2542BC2D52C202000FDCC0 /* Build configuration list for PBXProject "Nobla Math" */ = {
+		7D2542BC2D52C202000FDCC0 /* Build configuration list for PBXProject "Nobel Math" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7D2542CD2D52C204000FDCC0 /* Debug */,
@@ -349,7 +349,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7D2542CF2D52C204000FDCC0 /* Build configuration list for PBXNativeTarget "Nobla Math" */ = {
+		7D2542CF2D52C204000FDCC0 /* Build configuration list for PBXNativeTarget "Nobel Math" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7D2542D02D52C204000FDCC0 /* Debug */,

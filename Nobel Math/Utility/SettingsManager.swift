@@ -218,6 +218,7 @@ class SettingsManager: ObservableObject {
         isAdditionOn = true
         isSubtractionOn = true
         isMultiplicationOn = true
+        isTimerOn = true
         isDivisionOn = true
         difficultyLevel = DifficultyLevel.medium.rawValue
     }
