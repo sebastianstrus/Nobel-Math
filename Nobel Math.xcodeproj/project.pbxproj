@@ -275,7 +275,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Matematik2/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Nobel Math/Preview Content\"";
 				DEVELOPMENT_TEAM = 4SL936GBZY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -310,7 +310,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Matematik2/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Nobel Math/Preview Content\"";
 				DEVELOPMENT_TEAM = 4SL936GBZY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
