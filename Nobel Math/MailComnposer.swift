@@ -54,7 +54,7 @@ struct MailComposer: UIViewControllerRepresentable {
     
     private func getEmailBody() -> String {
         """
-        \("I would like to share my feedback on the Nobla Math app:".localized)
+        \("I would like to share my feedback on the Nobel Math app:".localized)
                 
 
         ------------------

@@ -1,6 +1,6 @@
 //
 //  PulsingButton.swift
-//  Nobla Math
+//  Nobel Math
 //
 //  Created by Sebastian Strus on 2025-05-07.
 //

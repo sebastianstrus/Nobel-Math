@@ -144,7 +144,7 @@ struct SettingsView: View {
                 MailComposer(
                     isPresented: $showMailComposer,
                     screenshot: nil,
-                    recipient: "noblamath@gmail.com",
+                    recipient: "nobelmath@gmail.com",
                     subject: "Nobel Math Feedback"
                 )
             } else {
@@ -165,7 +165,7 @@ struct SettingsView: View {
     }
     
     private func shareApp() {
-        let text = "Check out Nobla Math - a great math learning app!".localized
+        let text = "Check out Nobel Math - a great math learning app!".localized
         let url = URL(string: "https://apps.apple.com/app/6745169341")!
         
         let activityViewController = UIActivityViewController(activityItems: [text, url], applicationActivities: nil)
