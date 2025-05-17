@@ -33,7 +33,7 @@ struct WelcomeView: View {
                     Spacer()
                     
                     // Title
-                    Text("Nobla Math")
+                    Text("Nobel Math")
                         .font(.system(size: titleSize, weight: .bold, design: .rounded))
                         .foregroundStyle(.white.opacity(0.9))
                         .shadow(color: .black.opacity(0.8), radius: 3, x: 3, y: 3)

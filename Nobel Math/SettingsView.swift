@@ -145,7 +145,7 @@ struct SettingsView: View {
                     isPresented: $showMailComposer,
                     screenshot: nil,
                     recipient: "noblamath@gmail.com",
-                    subject: "Nobla Math Feedback"
+                    subject: "Nobel Math Feedback"
                 )
             } else {
                 Text("Please configure Mail to send feedback.".localized)
