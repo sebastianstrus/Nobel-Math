@@ -358,7 +358,9 @@ struct MathView: View {
                                     problems[index].userAnswer = newValue
                                     updateBorderColors()
                                     checkCompletion()
-                                    checkProgress()
+                                    if !hasProgress {
+                                        checkProgress()
+                                    }
                                 }
                             ))
                             .font(.system(size: hintFontSize, weight: .bold, design: .rounded))
@@ -500,11 +502,7 @@ struct MathView: View {
     }
     
     private func checkProgress() {
-        if problems.contains(where: { Int($0.userAnswer.replacingOccurrences(of: " ", with: "")) == $0.correctAnswer }) {
-            hasProgress = true
-        } else {
-            hasProgress = false
-        }
+        hasProgress = problems.contains(where: { Int($0.userAnswer.replacingOccurrences(of: " ", with: "")) == $0.correctAnswer })
     }
 }
 
