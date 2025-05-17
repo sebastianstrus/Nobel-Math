@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct NobelMath: App {
+struct Nobel_MathApp: App {
     
     @StateObject private var settings = SettingsManager.shared
     @StateObject private var videoViewModel = VideoPlayerViewModel.shared
@@ -22,3 +22,4 @@ struct NobelMath: App {
         }
     }
 }
+
