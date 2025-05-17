@@ -144,7 +144,7 @@ struct SettingsView: View {
                 MailComposer(
                     isPresented: $showMailComposer,
                     screenshot: nil,
-                    recipient: "nobelmath@gmail.com",
+                    recipient: "feedback.nobelmath@gmail.com",
                     subject: "Nobel Math Feedback"
                 )
             } else {
