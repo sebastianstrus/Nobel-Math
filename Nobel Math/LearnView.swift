@@ -102,7 +102,7 @@ struct LearnView: View {
                     }
                     
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        Text(formattedTime(elapsedTime))
+                        Text(elapsedTime.formattedTimeWithMilliseconds)
                             .font(.system(size: UIDevice.current.userInterfaceIdiom == .pad ? 20 : 16,
                                           weight: .bold,
                                           design: .monospaced))
@@ -118,7 +118,7 @@ struct LearnView: View {
         .onDisappear {
             stopTimer()
         }
-        .alert("Congratulations!".localized + "\n" + elapsedTime.formatedTime, isPresented: $shouldShowNameAlert) {
+        .alert("Congratulations!".localized + "\n" + elapsedTime.formattedTime, isPresented: $shouldShowNameAlert) {
             TextField("Nickname".localized, text: $userName)
             Button("Save".localized) {
                 saveResultAndShowVictory()
@@ -182,13 +182,6 @@ struct LearnView: View {
     private func stopTimer() {
         timer?.invalidate()
         timer = nil
-    }
-    
-    private func formattedTime(_ time: TimeInterval) -> String {
-        let minutes = Int(time) / 60
-        let seconds = Int(time) % 60
-        let milliseconds = Int((time.truncatingRemainder(dividingBy: 1)) * 100)
-        return String(format: "%02d:%02d.%02d", minutes, seconds, milliseconds)
     }
     
     func shouldShowVoctoryView() -> Bool {
@@ -258,16 +251,6 @@ struct VictoryView: View {
         UIDevice.current.userInterfaceIdiom == .pad ? 50 : 25
     }()
     
-    //    private func formattedTime(_ time: TimeInterval) -> String {
-    //        let minutes = Int(time) / 60
-    //        let seconds = Int(time) % 60
-    //        let milliseconds = Int((time.truncatingRemainder(dividingBy: 1)) * 100)
-    //
-    //        return String(format: "%02d:%02d.%02d", minutes, seconds, milliseconds)
-    //    }
-    
-    
-    
     var body: some View {
         
         let allOperationsEnabled =
@@ -292,7 +275,7 @@ struct VictoryView: View {
                         .font(.system(size: fontSize * 0.7, weight: .bold, design: .rounded))
                         .foregroundColor(.white)
                     
-                    Text(elapsedTime.formatedTime)
+                    Text(elapsedTime.formattedTimeWithMilliseconds)
                     
                         .font(.system(size: fontSize, weight: .bold, design: .monospaced))
                         .foregroundColor(.white)

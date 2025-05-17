@@ -325,7 +325,7 @@ struct StatisticsView: View {
                             .font(.system(size: 13, design: .monospaced))
                         
                         // Time column
-                        Text(formatTime(result.time))
+                        Text(result.time.formattedTime)
                             .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
                             .font(.system(size: 15, design: .monospaced))
                         
@@ -340,13 +340,6 @@ struct StatisticsView: View {
                 }
             }
         }
-    }
-    
-    private func formatTime(_ time: TimeInterval) -> String {
-        let minutes = Int(time) / 60
-        let seconds = Int(time) % 60
-        let milliseconds = Int((time.truncatingRemainder(dividingBy: 1)) * 100)
-        return String(format: "%02d:%02d.%02d", minutes, seconds, milliseconds)
     }
     
     private func formatDate(_ date: Date) -> String {
