@@ -387,6 +387,7 @@ struct MathView: View {
     var settings: SettingsManager
     let operation: MathOperation
     @State private var problems: [MathProblem] = []
+    @State private var showStars = false
     @Binding var isCompleted: Bool
     @Binding var hasProgress: Bool
     
@@ -403,34 +404,55 @@ struct MathView: View {
         VStack {
             Text("").frame(height: 0)
             
-            ScrollView {
-                Text("").frame(height: 20)
-                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: spacing) {
-                    ForEach(problems.indices, id: \.self) { index in
-                        MathProblemRow(
-                            problem: $problems[index],
-                            symbol: symbol,
-                            hintFontSize: hintFontSize,
-                            fieldWidth: fieldWidth,
-                            fieldHeight: fieldHeight,
-                            cornerRadius: cornerRadius,
-                            fieldLineWidth: fieldLineWidth
-                        ) {
-                            updateBorderColors()
-                            checkCompletion()
-                            if !hasProgress {
-                                checkProgress()
+            ZStack {
+                ScrollView {
+                    Text("").frame(height: 20)
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: spacing) {
+                        ForEach(problems.indices, id: \.self) { index in
+                            MathProblemRow(
+                                problem: $problems[index],
+                                symbol: symbol,
+                                hintFontSize: hintFontSize,
+                                fieldWidth: fieldWidth,
+                                fieldHeight: fieldHeight,
+                                cornerRadius: cornerRadius,
+                                fieldLineWidth: fieldLineWidth
+                            ) {
+                                updateBorderColors()
+                                checkCompletion()
+                                if !hasProgress {
+                                    checkProgress()
+                                }
                             }
                         }
                     }
+                    .padding(.trailing, UIDevice.current.userInterfaceIdiom == .pad ? 16 : 12)
                 }
-                .padding(.trailing, UIDevice.current.userInterfaceIdiom == .pad ? 16 : 12)
+                
+                if showStars {
+                    BigStarBurstView()
+                }
             }
             .navigationTitle(title)
-        }.padding(.trailing, UIScreen.main.bounds.width > 1000 ? 60 : 0)
-            .onTapGesture {
-                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        }
+        .padding(.trailing, UIScreen.main.bounds.width > 1000 ? 60 : 0)
+        .onTapGesture {
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        }
+        .onChange(of: isCompleted, { oldValue, newValue in
+            if newValue {
+                if SettingsManager.shared.isSparkleStarsOn {
+                    print("TEST100 activate start")
+                    showStars = true
+                    SoundManager.shared.playSound(named: "stars", withExtension: "m4a")
+                }
+                
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                    showStars = false
+                }
             }
+        })
     }
     
     func updateBorderColors() {
@@ -682,6 +704,74 @@ struct StarBurstView: View {
 
     private func moveStarAway(index id: UUID, in size: CGSize) {
         let radius: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 200 : 100
+        if let index = stars.firstIndex(where: { $0.id == id }) {
+            let angle = Double.random(in: 0...360) * .pi / 180
+            let radius: CGFloat = CGFloat.random(in: 50...(radius))
+            stars[index].x += cos(angle) * radius
+            stars[index].y += sin(angle) * radius
+            stars[index].scale = 0.1
+            stars[index].opacity = 0
+        }
+    }
+}
+
+
+struct BigStarBurstView: View {
+    struct Star: Identifiable {
+        let id = UUID()
+        var x: CGFloat
+        var y: CGFloat
+        var scale: CGFloat
+        var opacity: Double
+        var rotation: Angle
+        var delay: Double
+    }
+
+    @State private var stars: [Star] = []
+
+    var body: some View {
+        GeometryReader { geo in
+            ZStack {
+                ForEach(stars) { star in
+                    Image(systemName: "sparkle")
+                        .foregroundColor(.yellow)
+                        .opacity(star.opacity)
+                        .scaleEffect(star.scale)
+                        .rotationEffect(star.rotation)
+                        .position(x: star.x, y: star.y)
+                        .onAppear {
+                            withAnimation(
+                                .easeOut(duration: 2.0)
+                                .delay(star.delay)
+                            ) {
+                                moveStarAway(index: star.id, in: geo.size)
+                            }
+                        }
+                }
+            }
+            .onAppear {
+                generateStars(in: geo.size)
+            }
+        }
+        .allowsHitTesting(false)
+    }
+
+    private func generateStars(in size: CGSize) {
+        stars = (0..<80).map { _ in
+            let scale = UIDevice.current.userInterfaceIdiom == .pad ? Double.random(in: 6...12) : Double.random(in: 3...6)
+            return Star(
+                x: size.width / 2,
+                y: size.height / 2,
+                scale: scale,
+                opacity: 1.0,
+                rotation: .degrees(Double.random(in: 0...360)),
+                delay: Double.random(in: 0...0.2)
+            )
+        }
+    }
+
+    private func moveStarAway(index id: UUID, in size: CGSize) {
+        let radius: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 1000 : 500
         if let index = stars.firstIndex(where: { $0.id == id }) {
             let angle = Double.random(in: 0...360) * .pi / 180
             let radius: CGFloat = CGFloat.random(in: 50...(radius))
