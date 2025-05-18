@@ -7,7 +7,6 @@
 
 import SwiftUI
 import AVFoundation
-import MediaPlayer
 
 struct LearnView: View {
     @EnvironmentObject var settings: SettingsManager
@@ -34,11 +33,6 @@ struct LearnView: View {
     @State private var shouldShowNameAlert = false
     @State private var showingVictoryView = false
     @State private var userName = ""
-    
-    init() {
-        //setMaxVolume()
-        //setMaxBrightness()
-    }
     
     var body: some View {
         ZStack {
@@ -198,19 +192,6 @@ struct LearnView: View {
         
         return tabsEnabledCount == tabsCompletedCount
     }
-    
-    func setMaxVolume() {
-        let volumeView = MPVolumeView()
-        if let slider = volumeView.subviews.first(where: { $0 is UISlider }) as? UISlider {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                slider.value = 1.0
-            }
-        }
-    }
-    
-    func setMaxBrightness() {
-        UIScreen.main.brightness = 1.0
-    }
 }
 
 
@@ -234,7 +215,7 @@ struct MathProblem: Identifiable {
         }
     }
     
-    var borderColor: Color = .gray
+    var isSolved: Bool = false
     
     /*mutating func updateBorderColor() {
      guard let answer = Int(userAnswer.replacingOccurrences(of: " ", with: "")) else {
@@ -348,37 +329,22 @@ struct MathView: View {
             
             ScrollView {
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: spacing) {
-                    ForEach(problems.indices, id: \..self) { index in
-                        HStack {
-                            Spacer(minLength: 0)
-                            Text("\(problems[index].left) \(symbol) \(problems[index].right) =")
-                                .font(.system(size: hintFontSize, weight: .bold, design: .rounded))
-                            TextField("?", text: Binding(
-                                get: { problems[index].userAnswer },
-                                set: { newValue in
-                                    problems[index].userAnswer = newValue
-                                    updateBorderColors()
-                                    checkCompletion()
-                                    if !hasProgress {
-                                        checkProgress()
-                                    }
-                                }
-                            ))
-                            .font(.system(size: hintFontSize, weight: .bold, design: .rounded))
-                            .keyboardType(.numberPad)
-                            .frame(width: fieldWidth, height: fieldHeight)
-                            .multilineTextAlignment(.center)
-                            .padding(UIDevice.current.userInterfaceIdiom == .pad ? 16 : 4)
-                            .background(problems[index].borderColor.opacity(0.3))
-                            .cornerRadius(cornerRadius)
-                            .overlay(RoundedRectangle(cornerRadius: 5)
-                                .stroke(problems[index].borderColor, lineWidth: fieldLineWidth))
+                    ForEach(problems.indices, id: \.self) { index in
+                        MathProblemRow(
+                            problem: $problems[index],
+                            symbol: symbol,
+                            hintFontSize: hintFontSize,
+                            fieldWidth: fieldWidth,
+                            fieldHeight: fieldHeight,
+                            cornerRadius: cornerRadius,
+                            fieldLineWidth: fieldLineWidth
+                        ) {
+                            updateBorderColors()
+                            checkCompletion()
+                            if !hasProgress {
+                                checkProgress()
+                            }
                         }
-                        .padding(UIDevice.current.userInterfaceIdiom == .pad ? 16 : 4)
-                        //                        .overlay {
-                        //                            Rectangle()
-                        //                                .stroke(Color.red, lineWidth: 1)
-                        //                        }
                     }
                 }
                 .padding(.trailing, UIDevice.current.userInterfaceIdiom == .pad ? 16 : 12)
@@ -400,7 +366,7 @@ struct MathView: View {
                 
                 for offset in 0...2 {
                     let index = i + offset
-                    problems[index].borderColor = allCorrect ? .green : .gray
+                    problems[index].isSolved = allCorrect
                 }
             }
         }
@@ -507,3 +473,138 @@ struct MathView: View {
     }
 }
 
+
+
+struct MathProblemRow: View {
+    @Binding var problem: MathProblem
+    @State private var showStars = false
+    let symbol: String
+    let hintFontSize: CGFloat
+    let fieldWidth: CGFloat
+    let fieldHeight: CGFloat
+    let cornerRadius: CGFloat
+    let fieldLineWidth: CGFloat
+    let onUserAnswerChanged: () -> Void
+
+    @State private var animateSolved = false
+
+    var body: some View {
+        HStack {
+            
+                
+                
+                Spacer(minLength: 0)
+                Text("\(problem.left) \(symbol) \(problem.right) =")
+                    .font(.system(size: hintFontSize, weight: .bold, design: .rounded))
+                
+            ZStack {
+                
+                
+                TextField("?", text: Binding(
+                    get: { problem.userAnswer },
+                    set: { newValue in
+                        problem.userAnswer = newValue
+                        onUserAnswerChanged()
+                    }
+                ))
+                .font(.system(size: hintFontSize, weight: .bold, design: .rounded))
+                .keyboardType(.numberPad)
+                .frame(width: fieldWidth, height: fieldHeight)
+                .multilineTextAlignment(.center)
+                .padding(UIDevice.current.userInterfaceIdiom == .pad ? 16 : 4)
+                .background((problem.isSolved ? Color.green : Color.gray).opacity(0.3))
+                .cornerRadius(cornerRadius)
+                .overlay(
+                    RoundedRectangle(cornerRadius: cornerRadius)
+                        .stroke(problem.isSolved ? Color.green : Color.gray, lineWidth: fieldLineWidth)
+                )
+                .disabled(problem.isSolved)
+                
+                if showStars {
+                    StarBurstView()
+                        .frame(width: fieldWidth, height: fieldHeight)
+                }
+            }
+                
+            }
+            
+            
+        
+        .padding(UIDevice.current.userInterfaceIdiom == .pad ? 16 : 4)
+        .onChange(of: problem.isSolved, { oldValue, newValue in
+            if newValue {
+                showStars = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+                    showStars = false
+                }
+            }
+        })
+
+    }
+}
+
+
+struct StarBurstView: View {
+    struct Star: Identifiable {
+        let id = UUID()
+        var x: CGFloat
+        var y: CGFloat
+        var scale: CGFloat
+        var opacity: Double
+        var rotation: Angle
+        var delay: Double
+    }
+
+    @State private var stars: [Star] = []
+
+    var body: some View {
+        GeometryReader { geo in
+            ZStack {
+                ForEach(stars) { star in
+                    Image(systemName: "sparkle")
+                        .foregroundColor(.yellow)
+                        .opacity(star.opacity)
+                        .scaleEffect(star.scale)
+                        .rotationEffect(star.rotation)
+                        .position(x: star.x, y: star.y)
+                        .onAppear {
+                            withAnimation(
+                                .easeOut(duration: 1.0)
+                                .delay(star.delay)
+                            ) {
+                                moveStarAway(index: star.id, in: geo.size)
+                            }
+                        }
+                }
+            }
+            .onAppear {
+                generateStars(in: geo.size)
+            }
+        }
+        .allowsHitTesting(false)
+    }
+
+    private func generateStars(in size: CGSize) {
+        stars = (0..<12).map { _ in
+            Star(
+                x: size.width / 2,
+                y: size.height / 2,
+                scale: Double.random(in: 0.6...1.2),
+                opacity: 1.0,
+                rotation: .degrees(Double.random(in: 0...360)),
+                delay: Double.random(in: 0...0.1)
+            )
+        }
+    }
+
+    private func moveStarAway(index id: UUID, in size: CGSize) {
+        if let index = stars.firstIndex(where: { $0.id == id }) {
+            let angle = Double.random(in: 0...360) * .pi / 180
+            let radius: CGFloat = CGFloat.random(in: 50...100)
+            stars[index].x += cos(angle) * radius
+            stars[index].y += sin(angle) * radius
+            stars[index].scale = 0.1
+            stars[index].opacity = 0
+        }
+    }
+}
