@@ -33,10 +33,12 @@ struct FallingCoinsView: View {
         }
         .onAppear {
             startCoinRain()
-            playCoinSound()
+//            playCoinSound()
+            SoundManager.shared.playSound(named: "coin_sound", loop: true)
         }
         .onDisappear {
             stopCoinRain()
+            SoundManager.shared.stopSound()
         }
     }
 
@@ -72,20 +74,21 @@ struct FallingCoinsView: View {
         timer = nil
     }
 
-    func playCoinSound() {
-        guard let soundURL = Bundle.main.url(forResource: "coin_sound", withExtension: "mp3") else {
-            print("Failed to find a file.")
-            return
-        }
-
-        do {
-            audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
-            audioPlayer?.numberOfLoops = -1 // Zapętlenie dźwięku
-            audioPlayer?.play()
-        } catch {
-            print("Błąd podczas odtwarzania dźwięku: \(error)")
-        }
-    }
+//    func playCoinSound() {
+//        
+//        guard let soundURL = Bundle.main.url(forResource: "coin_sound", withExtension: "mp3") else {
+//            print("Failed to find a file.")
+//            return
+//        }
+//
+//        do {
+//            audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
+//            audioPlayer?.numberOfLoops = -1
+//            audioPlayer?.play()
+//        } catch {
+//            print("Błąd podczas odtwarzania dźwięku: \(error)")
+//        }
+//    }
 }
 
 struct Coin: Identifiable {

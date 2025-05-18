@@ -146,7 +146,10 @@ struct LearnView: View {
                 title: Text("Are you sure?".localized),
                 message: Text("Your progress will be lost if you go back.".localized),
                 primaryButton: .destructive(Text("Discard Changes".localized)) {
-                    dismiss()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        SoundManager.shared.stopSound()
+                        dismiss()
+                    }
                 },
                 secondaryButton: .cancel()
             )
@@ -534,6 +537,7 @@ struct MathProblemRow: View {
         .onChange(of: problem.isSolved, { oldValue, newValue in
             if newValue {
                 showStars = true
+                SoundManager.shared.playSound(named: "stars", withExtension: "m4a")
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
                     showStars = false
                 }
