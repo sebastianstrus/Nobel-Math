@@ -10,7 +10,6 @@ import AVFoundation
 
 struct LearnView: View {
     @EnvironmentObject var settings: SettingsManager
-    @Environment(\.presentationMode) var presentationMode
     @Environment(\.dismiss) var dismiss
     
     // Timer related state variables
@@ -142,19 +141,92 @@ struct LearnView: View {
                 }
             }
         }
-        .alert(isPresented: $showBackConfirmation) {
-            Alert(
-                title: Text("Are you sure?".localized),
-                message: Text("Your progress will be lost if you go back.".localized),
-                primaryButton: .destructive(Text("Discard Changes".localized)) {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        SoundManager.shared.stopSound()
-                        presentationMode.wrappedValue.dismiss()
+        .overlay {
+            if showBackConfirmation {
+                ZStack {
+                    // Dimmed background
+                    Color.black.opacity(0.4)
+                        .ignoresSafeArea()
+                        .onTapGesture {
+                            // Optional: tap outside to dismiss
+                            showBackConfirmation = false
+                        }
+
+                    // Alert box
+                    VStack(spacing: 0) {
+                        Text("Are you sure?".localized)
+                            .font(.headline)
+                            .multilineTextAlignment(.center)
+                            .padding(.top, 20)
+
+                        Text("Your progress will be lost if you go back.".localized)
+                            .font(.subheadline)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal)
+                            .padding(.top, 0)
+
+                        Divider()
+                            .padding(.top, 20)
+
+                        Button {
+                            SoundManager.shared.stopSound()
+                            dismiss()
+                        } label: {
+                            Text("Discard Changes".localized)
+                                .foregroundColor(.red)
+                                .fontWeight(.semibold)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                        }
+                        
+                        Divider()
+
+                            Button {
+                                showBackConfirmation = false
+                            } label: {
+                                Text("Cancel".localized)
+                                    .fontWeight(.medium)
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                            }
+
+                            
+                        
                     }
-                },
-                secondaryButton: .cancel()
-            )
+                    .background(.ultraThinMaterial)
+                    .cornerRadius(16)
+                    .frame(maxWidth: 320)
+                    .shadow(radius: 20)
+                    .padding()
+                }
+                .transition(.opacity)
+                .animation(.easeInOut(duration: 0.2), value: showBackConfirmation)
+            }
         }
+        
+//        .alert(isPresented: $showBackConfirmation) {
+//            Alert(
+//                title: Text("Are you sure?".localized),
+//                message: Text("Your progress will be lost if you go back.".localized),
+//                primaryButton: .destructive(Text("Discard Changes".localized)) {
+//                    SoundManager.shared.stopSound()
+//                    DispatchQueue.main.async {
+//                        SoundManager.shared.stopSound()
+//                        dismiss()
+//                    }
+//                },
+//                secondaryButton: .cancel()
+//            )
+//        }
+//        .confirmationDialog("Are you sure?".localized,
+//                            isPresented: $showBackConfirmation,
+//                            titleVisibility: .visible) {
+//            Button("Discard Changes".localized, role: .destructive) {
+//                SoundManager.shared.stopSound()
+//                backClicked()
+//            }
+//            Button("Cancel", role: .cancel) { }
+//        }
     }
     
     private func saveResultAndShowVictory() {
@@ -332,6 +404,7 @@ struct MathView: View {
             Text("").frame(height: 0)
             
             ScrollView {
+                Text("").frame(height: 20)
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: spacing) {
                     ForEach(problems.indices, id: \.self) { index in
                         MathProblemRow(
@@ -537,8 +610,12 @@ struct MathProblemRow: View {
         .padding(UIDevice.current.userInterfaceIdiom == .pad ? 16 : 4)
         .onChange(of: problem.isSolved, { oldValue, newValue in
             if newValue {
-                showStars = true
-                SoundManager.shared.playSound(named: "stars", withExtension: "m4a")
+                if SettingsManager.shared.isSparkleStarsOn {
+                    showStars = true
+                    SoundManager.shared.playSound(named: "stars", withExtension: "m4a")
+                }
+                
+            
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
                     showStars = false
                 }

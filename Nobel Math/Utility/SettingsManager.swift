@@ -100,6 +100,7 @@ enum UserDefaultsKeys: String {
     case isDivisionOn
     case primaryLanguage = "AppleLanguages"
     case isTimerOn
+    case isSparkleStarsOn
 
 }
 
@@ -142,6 +143,7 @@ class SettingsManager: ObservableObject {
     @AppStorage(UserDefaultsKeys.isDivisionOn.rawValue) var isDivisionOn: Bool = true
     
     @AppStorage(UserDefaultsKeys.isTimerOn.rawValue) var isTimerOn: Bool = true
+    @AppStorage(UserDefaultsKeys.isSparkleStarsOn.rawValue) var isSparkleStarsOn: Bool = true
     
     @AppStorage(UserDefaultsKeys.exampleCount.rawValue) var exampleCount: Int = 45
     @AppStorage(UserDefaultsKeys.difficultyLevel.rawValue) var difficultyLevel: Int = DifficultyLevel.medium.rawValue
@@ -220,6 +222,7 @@ class SettingsManager: ObservableObject {
         isMultiplicationOn = true
         isTimerOn = true
         isDivisionOn = true
+        isSparkleStarsOn = true
         difficultyLevel = DifficultyLevel.medium.rawValue
     }
     

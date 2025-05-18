@@ -47,6 +47,9 @@ struct SettingsView: View {
                     
                     Toggle("Display Timer".localized, isOn: settings.$isTimerOn)
                         .tint(.purple)
+                    
+                    Toggle("Sparkle Stars ✨".localized, isOn: settings.$isSparkleStarsOn)
+                        .tint(.purple)
                 }
                 
                 Section(header: Text("Learning Sections".localized)) {
