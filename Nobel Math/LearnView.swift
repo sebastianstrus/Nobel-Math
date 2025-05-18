@@ -10,6 +10,7 @@ import AVFoundation
 
 struct LearnView: View {
     @EnvironmentObject var settings: SettingsManager
+    @Environment(\.presentationMode) var presentationMode
     @Environment(\.dismiss) var dismiss
     
     // Timer related state variables
@@ -148,7 +149,7 @@ struct LearnView: View {
                 primaryButton: .destructive(Text("Discard Changes".localized)) {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                         SoundManager.shared.stopSound()
-                        dismiss()
+                        presentationMode.wrappedValue.dismiss()
                     }
                 },
                 secondaryButton: .cancel()
@@ -266,7 +267,7 @@ struct VictoryView: View {
                         .foregroundColor(.white)
                     
                     Text("You need to complete addition, subtraction, multiplication, and division in order to save the result.".localized)
-                        .font(.system(size: fontSize * 0.7, weight: .bold, design: .rounded))
+                        .font(.system(size: fontSize * 0.5, weight: .bold, design: .rounded))
                         .foregroundColor(.white)
                         .multilineTextAlignment(.center)
                         .padding(40)
@@ -590,10 +591,11 @@ struct StarBurstView: View {
 
     private func generateStars(in size: CGSize) {
         stars = (0..<12).map { _ in
-            Star(
+            let scale = UIDevice.current.userInterfaceIdiom == .pad ? Double.random(in: 1.2...2.4) : Double.random(in: 0.6...1.2)
+            return Star(
                 x: size.width / 2,
                 y: size.height / 2,
-                scale: Double.random(in: 0.6...1.2),
+                scale: scale,
                 opacity: 1.0,
                 rotation: .degrees(Double.random(in: 0...360)),
                 delay: Double.random(in: 0...0.1)
@@ -602,9 +604,10 @@ struct StarBurstView: View {
     }
 
     private func moveStarAway(index id: UUID, in size: CGSize) {
+        let radius: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 200 : 100
         if let index = stars.firstIndex(where: { $0.id == id }) {
             let angle = Double.random(in: 0...360) * .pi / 180
-            let radius: CGFloat = CGFloat.random(in: 50...100)
+            let radius: CGFloat = CGFloat.random(in: 50...(radius))
             stars[index].x += cos(angle) * radius
             stars[index].y += sin(angle) * radius
             stars[index].scale = 0.1
