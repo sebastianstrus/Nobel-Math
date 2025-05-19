@@ -406,7 +406,7 @@ struct MathView: View {
             
             ZStack {
                 ScrollView {
-                    Text("").frame(height: 20)
+                    Text("").frame(height: UIDevice.current.userInterfaceIdiom == .pad ? 20 : 10)
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: spacing) {
                         ForEach(problems.indices, id: \.self) { index in
                             MathProblemRow(
