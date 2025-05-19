@@ -18,9 +18,8 @@ struct WelcomeView: View {
     let titleSize: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 60 : 40
     let subtitleSize: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 35 : 20
     let buttonWidth: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 150 : 120
-    let buttonHeight: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 60 : 40
-    let buttonSize: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 60 : 46
-    let cornerRadius: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 12 : 8
+    let buttonHeight: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 48 : 40
+    let cornerRadius: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 8 : 8
     
     var body: some View {
         ZStack {

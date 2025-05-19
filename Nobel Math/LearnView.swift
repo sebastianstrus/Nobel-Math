@@ -163,7 +163,7 @@ struct LearnView: View {
                             .font(.subheadline)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal)
-                            .padding(.top, 0)
+                            .padding(.top, 4)
 
                         Divider()
                             .padding(.top, 20)
@@ -173,8 +173,8 @@ struct LearnView: View {
                             dismiss()
                         } label: {
                             Text("Discard Changes".localized)
-                                .foregroundColor(.red)
-                                .fontWeight(.semibold)
+                                .foregroundColor(Color(UIColor.systemRed))
+                                .font(.body)
                                 .frame(maxWidth: .infinity)
                                 .padding()
                         }
@@ -185,7 +185,8 @@ struct LearnView: View {
                                 showBackConfirmation = false
                             } label: {
                                 Text("Cancel".localized)
-                                    .fontWeight(.medium)
+                                    .font(.body.weight(.semibold))
+                                    .foregroundColor(.accentColor)
                                     .frame(maxWidth: .infinity)
                                     .padding()
                             }
