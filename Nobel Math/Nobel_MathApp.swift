@@ -6,19 +6,28 @@
 //
 
 import SwiftUI
+import StoreKit
 
 @main
 struct Nobel_MathApp: App {
     
+    @StateObject private var purchaseManager = PurchaseManager()
+    
     @StateObject private var settings = SettingsManager.shared
     @StateObject private var videoViewModel = VideoPlayerViewModel.shared
     
+    
     var body: some Scene {
         WindowGroup {
-            WelcomeView()
+            WelcomeContentView()
                 .environmentObject(settings)
                 .environmentObject(videoViewModel)
                 .preferredColorScheme(settings.isDarkMode ? .dark : .light)
+                .environmentObject(purchaseManager)
+                .task {
+                    await purchaseManager.updatePurchasedProducts()
+                }
+            
         }
     }
 }

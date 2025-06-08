@@ -6,82 +6,131 @@
 //
 
 import SwiftUI
+import StoreKit
+
+struct WelcomeContentView: View {
+    @EnvironmentObject private var purchaseManager: PurchaseManager
+
+    var body: some View {
+        TransparentNavigationView {
+            WelcomeView()
+        }
+        .ignoresSafeArea()
+        .task {
+            do {
+                try await purchaseManager.loadProducts()
+            } catch {
+                print("Error loading products: \(error)")
+            }
+        }
+    }
+}
+
+
+
+import SwiftUI
+import StoreKit
 
 struct WelcomeView: View {
     
-    @EnvironmentObject var settings: SettingsManager
-    @EnvironmentObject var videoViewModel: VideoPlayerViewModel
-    
+    @EnvironmentObject private var purchaseManager: PurchaseManager
+    @EnvironmentObject private var settings: SettingsManager
+    @EnvironmentObject private var videoViewModel: VideoPlayerViewModel
+
     @State private var showSettings = false
-    
-    
+
     let titleSize: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 60 : 40
     let subtitleSize: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 35 : 20
     let buttonWidth: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 150 : 120
     let buttonHeight: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 48 : 40
     let cornerRadius: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 8 : 8
-    
+
     var body: some View {
         ZStack {
             LoopingVideoPlayer(viewModel: videoViewModel)
                 .ignoresSafeArea()
                 .overlay(Color.black.opacity(0.6))
             
-            TransparentNavigationView {
-                VStack(spacing: 20) {
-                    Spacer()
-                    
-                    // Title
-                    Text("Nobel Math")
-                        .font(.system(size: titleSize, weight: .bold, design: .rounded))
-                        .foregroundStyle(.white.opacity(0.9))
-                        .shadow(color: .black.opacity(0.8), radius: 3, x: 3, y: 3)
-                    
-                    // Subtitle
-                    Text("Discover the Joy of Numbers.")
-                        .font(.system(size: subtitleSize, weight: .regular, design: .rounded))
-                        .foregroundStyle(.white.opacity(0.9))
-                        .shadow(color: .black.opacity(0.8), radius: 2, x: 2, y: 2)
-                        .padding(.top, 0)
-                    
-                    Spacer()
-                    
-                    if UIDevice.current.userInterfaceIdiom == .phone {
-                        Spacer()
-                    }
-                    
-                    NavigationLink(destination: LearnView().environmentObject(settings)) {
-                        PulsingButton(
-                            title: "Start".localized,
-                            width: buttonWidth,
-                            height: buttonHeight,
-                            cornerRadius: cornerRadius
-                        )
-                        .padding()
-                    }
-                    
+            VStack(spacing: 20) {
+                Spacer()
+                
+                Text("Nobel Math")
+                    .font(.system(size: titleSize, weight: .bold, design: .rounded))
+                    .foregroundStyle(.white.opacity(0.9))
+                    .shadow(color: .black.opacity(0.8), radius: 3, x: 3, y: 3)
+                
+                Text("Discover the Joy of Numbers.")
+                    .font(.system(size: subtitleSize, weight: .regular, design: .rounded))
+                    .foregroundStyle(.white.opacity(0.9))
+                    .shadow(color: .black.opacity(0.8), radius: 2, x: 2, y: 2)
 
-                    
-                   
-                    
-                    Spacer()
+                Spacer()
+
+                VStack(spacing: 20) {
+                    if purchaseManager.hasUnlockedPro {
+                        NavigationLink(destination: LearnView().environmentObject(settings)) {
+                            PulsingButton(
+                                title: "Start".localized,
+                                width: buttonWidth,
+                                height: buttonHeight,
+                                cornerRadius: cornerRadius
+                            )
+                            .padding()
+                        }
+                    } else {
+                        Text("Products: \(purchaseManager.products.count)")
+                        ForEach(purchaseManager.products) { product in
+                            Button {
+                                _ = Task {
+                                    do {
+                                        try await purchaseManager.purchase(product)
+                                    } catch {
+                                        print(error)
+                                    }
+                                }
+                            } label: {
+                                Text("\(product.displayPrice) - \(product.displayName)")
+                                    .foregroundColor(.white)
+                                    .padding()
+                                    .background(Color.blue)
+                                    .clipShape(Capsule())
+                            }
+                        }
+
+                        Button {
+                            _ = Task {
+                                do {
+                                    try await AppStore.sync()
+                                } catch {
+                                    print(error)
+                                }
+                            }
+                        } label: {
+                            Text("Restore Purchases")
+                                .foregroundColor(.white)
+                        }
+                    }
                 }
-                .toolbar {
+
+                Spacer()
+            }
+            .toolbar {
+                if purchaseManager.hasUnlockedPro {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         NavigationLink(destination: SettingsView()) {
                             Image(systemName: "gear")
                                 .font(.title2)
                                 .foregroundColor(.white)
                                 .padding()
-                                
+                            
                         }
                     }
                 }
-   
-            }.ignoresSafeArea()
+            }
         }
     }
 }
+
 
 
 

@@ -1,0 +1,145 @@
+{
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [
+      {
+        "locale" : "en_US",
+        "policyText" : "",
+        "policyURL" : ""
+      }
+    ]
+  },
+  "identifier" : "0AD9471A",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6745169341",
+    "_developerTeamID" : "4SL936GBZY",
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 771093532.79633796,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "21689447",
+      "localizations" : [
+
+      ],
+      "name" : "NobelMathGroup",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "4.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6746117341",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Full access to Nobel Math. No ads. No limits.",
+              "displayName" : "Nobel Math Full Access",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.sebastianstrus.noblamathapp.premium.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "MonthlyAccess",
+          "subscriptionGroupID" : "21689447",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "49.99",
+          "familyShareable" : false,
+          "groupNumber" : 2,
+          "internalID" : "6746118432",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Full access to Nobel Math. No ads. No limits.",
+              "displayName" : "Nobel Math Full Access",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "con.sebastianstrus.noblamath.yearly.access",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "YearlyAccess",
+          "subscriptionGroupID" : "21689447",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}
