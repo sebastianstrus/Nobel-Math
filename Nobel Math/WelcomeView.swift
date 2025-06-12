@@ -103,8 +103,8 @@ struct WelcomeView: View {
                                 SubscriptionButton(
                                     id: product.id,
                                     price: product.displayPrice,
-                                    title: product.displayName,
-                                    subtitle: product.description,
+                                    title: "Nobel Math Premium Monthly".localized,
+                                    subtitle: "Math magic delivered each month!".localized,
                                     highlight: product.id == selectedProductId,
                                     period:  "/month".localized,
                                     features: ["Full Access".localized, "No Ads".localized, "Cancel Anytime".localized]
@@ -123,8 +123,8 @@ struct WelcomeView: View {
                                 SubscriptionButton(
                                     id: product.id,
                                     price: product.displayPrice,
-                                    title: product.displayName,
-                                    subtitle: product.description,
+                                    title: "Nobel Math Premium Yearly".localized,
+                                    subtitle: "Save more and learn all year long!".localized,
                                     highlight: product.id == selectedProductId,
                                     period:  "/year".localized,
                                     features: ["Full Access".localized, "No Ads".localized, "Best Value".localized]
@@ -334,7 +334,7 @@ struct SubscriptionButton: View {
                     Spacer()
                     
                     if highlight {
-                        PremiumBadge(badgeText: id == ProductIDs.monthly ? "Popular".localized : "Best Value".localized)
+                        PremiumBadge(badgeText: id == ProductIDs.monthly ? "Popular".localized.uppercased() : "Best Value".localized.uppercased())
                     }
                 }
                 

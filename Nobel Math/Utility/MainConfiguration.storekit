@@ -20,7 +20,7 @@
     "_applicationInternalID" : "6745169341",
     "_developerTeamID" : "4SL936GBZY",
     "_failTransactionsEnabled" : false,
-    "_lastSynchronizedDate" : 771420615.72693002,
+    "_lastSynchronizedDate" : 771445854.78275895,
     "_locale" : "en_US",
     "_storefront" : "USA",
     "_storeKitErrors" : [
@@ -93,9 +93,194 @@
           "introductoryOffer" : null,
           "localizations" : [
             {
+              "description" : "Magie math chaque mois livrée!",
+              "displayName" : "Nobel Math Premium Mensuel",
+              "locale" : "fr"
+            },
+            {
+              "description" : "Μαθηματική μαγεία κάθε μήνα!",
+              "displayName" : "Nobel Math Premium Μηνιαίο",
+              "locale" : "el"
+            },
+            {
+              "description" : "매달 수학의 마법을!",
+              "displayName" : "Nobel Math 프리미엄 월간",
+              "locale" : "ko"
+            },
+            {
+              "description" : "Sihir matematik setiap bulan!",
+              "displayName" : "Nobel Math Premium Bulanan",
+              "locale" : "ms"
+            },
+            {
+              "description" : "Mathematik‑Magie jeden Monat!",
+              "displayName" : "Nobel Math Premium Monatlich",
+              "locale" : "de"
+            },
+            {
+              "description" : "Maandelijkse wiskundemagie!",
+              "displayName" : "Nobel Math Premium Maandelijks",
+              "locale" : "nl"
+            },
+            {
+              "description" : "Magia matemática cada mes",
+              "displayName" : "Nobel Math Premium Mensual",
+              "locale" : "es_ES"
+            },
+            {
               "description" : "Math magic delivered each month!",
               "displayName" : "Nobel Math Premium Monthly",
               "locale" : "en_US"
+            },
+            {
+              "description" : "Math magic delivered each month!",
+              "displayName" : "Nobel Math Premium Monthly",
+              "locale" : "en_GB"
+            },
+            {
+              "description" : "سحر الرياضيات كل شهر!",
+              "displayName" : "نوبل ماث بريميوم شهري",
+              "locale" : "ar"
+            },
+            {
+              "description" : "Màgia matemática cada mes!",
+              "displayName" : "Nobel Math Premium Mensual",
+              "locale" : "ca"
+            },
+            {
+              "description" : "毎月届く数学の魔法！",
+              "displayName" : "Nobel Math プレミアム月額",
+              "locale" : "ja"
+            },
+            {
+              "description" : "Математическая магия каждый месяц!",
+              "displayName" : "Nobel Math Premium Ежемесяц",
+              "locale" : "ru"
+            },
+            {
+              "description" : "Matematická magie každý měsíc!",
+              "displayName" : "Nobel Math Premium Měsíčně",
+              "locale" : "cs"
+            },
+            {
+              "description" : "Her ay matematik sihri!",
+              "displayName" : "Nobel Math Premium Aylık",
+              "locale" : "tr"
+            },
+            {
+              "description" : "Matematická mágia každý mesiac!",
+              "displayName" : "Nobel Math Premium Mesačne",
+              "locale" : "sk"
+            },
+            {
+              "description" : "每月送數學魔法！",
+              "displayName" : "Nobel Math 高級月訂",
+              "locale" : "zh_Hant"
+            },
+            {
+              "description" : "Phép toán kì diệu mỗi tháng!",
+              "displayName" : "Nobel Math Premium Hàng tháng",
+              "locale" : "vi"
+            },
+            {
+              "description" : "Математична магія щомісяця!",
+              "displayName" : "Nobel Math Premium Щомісяць",
+              "locale" : "uk"
+            },
+            {
+              "description" : "เวทมนต์คณิตทุกเดือน!",
+              "displayName" : "Nobel Math พรีเมียมรายเดือน",
+              "locale" : "th"
+            },
+            {
+              "description" : "Matematyczna magia co miesiąc!",
+              "displayName" : "Nobel Math Premium Miesięcznie",
+              "locale" : "pl"
+            },
+            {
+              "description" : "Magie matematică în fiecare lună!",
+              "displayName" : "Nobel Math Premium Lunar",
+              "locale" : "ro"
+            },
+            {
+              "description" : "Magia matematica ogni mese!",
+              "displayName" : "Nobel Math Premium Mensile",
+              "locale" : "it"
+            },
+            {
+              "description" : "Magična matematika svaki mjesec!",
+              "displayName" : "Nobel Math Premium Mjesečno",
+              "locale" : "hr"
+            },
+            {
+              "description" : "每月送数学魔法！",
+              "displayName" : "Nobel Math 高级月订",
+              "locale" : "zh_Hans"
+            },
+            {
+              "description" : "Magie math chaque mois livrée!",
+              "displayName" : "Nobel Math Premium Mensuel",
+              "locale" : "fr"
+            },
+            {
+              "description" : "Math magic delivered each month!",
+              "displayName" : "Nobel Math Premium Monthly",
+              "locale" : "en_CA"
+            },
+            {
+              "description" : "Magia matemática cada mês!",
+              "displayName" : "Nobel Math Premium Mensal",
+              "locale" : "pt_PT"
+            },
+            {
+              "description" : "Sihir matematika tiap bulan!",
+              "displayName" : "Nobel Math Premium Bulanan",
+              "locale" : "id"
+            },
+            {
+              "description" : "Mattemagi hver måned!",
+              "displayName" : "Nobel Math Premium Månedligt",
+              "locale" : "da"
+            },
+            {
+              "description" : "Matikkataikaa joka kuukausi!",
+              "displayName" : "Nobel Math Premium Kuukausi",
+              "locale" : "fi"
+            },
+            {
+              "description" : "Mattemagi levererad varje månad!",
+              "displayName" : "Nobel Math Premium Månad",
+              "locale" : "sv"
+            },
+            {
+              "description" : "Magia matemática cada mes",
+              "displayName" : "Nobel Math Premium Mensual",
+              "locale" : "es_MX"
+            },
+            {
+              "description" : "हर महीने गणित का जादू!",
+              "displayName" : "नोबेल मैथ प्रीमियम मासिक",
+              "locale" : "hi"
+            },
+            {
+              "description" : "Math magic delivered each month!",
+              "displayName" : "Nobel Math Premium Monthly",
+              "locale" : "en_AU"
+            },
+            {
+              "description" : "Matemágia érkezik havonta!",
+              "displayName" : "Nobel Math Prémium Havi",
+              "locale" : "hu"
+            },
+            {
+              "description" : "Magia matemática todo mês!",
+              "displayName" : "Nobel Math Premium Mensal",
+              "locale" : "pt_BR"
+            },
+            {
+              "description" : "קסם מתמטי כל חודש!",
+              "displayName" : "Nobel Math פרימיום חודשי",
+              "locale" : "he"
             }
           ],
           "productID" : "com.sebastianstrus.noblamathapp.premium.monthly",
@@ -121,9 +306,194 @@
           "introductoryOffer" : null,
           "localizations" : [
             {
+              "description" : "Uštedi više i uči cijele godine!",
+              "displayName" : "Nobel Math Premium Godišnje",
+              "locale" : "hr"
+            },
+            {
+              "description" : "Belajar setahun dan hemat lebih!",
+              "displayName" : "Nobel Math Premium Tahunan",
+              "locale" : "id"
+            },
+            {
+              "description" : "למד כל השנה וחסוך יותר!",
+              "displayName" : "Nobel Math פרימיום שנתי",
+              "locale" : "he"
+            },
+            {
+              "description" : "Вчися цілий рік та заощаджуй!",
+              "displayName" : "Nobel Math Premium Річний",
+              "locale" : "uk"
+            },
+            {
+              "description" : "Ucz się cały rok i oszczędzaj!",
+              "displayName" : "Nobel Math Premium Rocznie",
+              "locale" : "pl"
+            },
+            {
+              "description" : "Ušetřete a učte se celý rok!",
+              "displayName" : "Nobel Math Premium Ročně",
+              "locale" : "cs"
+            },
+            {
+              "description" : "Ahorra y aprende todo el año",
+              "displayName" : "Nobel Math Premium Anual",
+              "locale" : "es_ES"
+            },
+            {
+              "description" : "Belajar sepanjang tahun & jimat!",
+              "displayName" : "Nobel Math Premium Tahunan",
+              "locale" : "ms"
+            },
+            {
+              "description" : "Save more and learn all year long!",
+              "displayName" : "Nobel Math Premium Yearly",
+              "locale" : "en_GB"
+            },
+            {
+              "description" : "Tiết kiệm & học suốt cả năm!",
+              "displayName" : "Nobel Math Premium Hàng năm",
+              "locale" : "vi"
+            },
+            {
+              "description" : "Économisez et apprenez toute l'année!",
+              "displayName" : "Nobel Math Premium Annuel",
+              "locale" : "fr"
+            },
+            {
+              "description" : "साल भर सीखें और बचत करें!",
+              "displayName" : "नोबेल मैथ प्रीमियम वार्षिक",
+              "locale" : "hi"
+            },
+            {
+              "description" : "Tüm yıl öğren ve tasarruf et!",
+              "displayName" : "Nobel Math Premium Yıllık",
+              "locale" : "tr"
+            },
+            {
+              "description" : "Tanulj egész évben és spórolj!",
+              "displayName" : "Nobel Math Prémium Éves",
+              "locale" : "hu"
+            },
+            {
+              "description" : "年間でお得に学ぼう！",
+              "displayName" : "Nobel Math プレミアム年額",
+              "locale" : "ja"
+            },
+            {
+              "description" : "Estalvia i aprèn tot l’any!",
+              "displayName" : "Nobel Math Premium Anual",
+              "locale" : "ca"
+            },
+            {
+              "description" : "Risparmia e impara tutto l’anno!",
+              "displayName" : "Nobel Math Premium Annuale",
+              "locale" : "it"
+            },
+            {
+              "description" : "Экономь и учись весь год!",
+              "displayName" : "Nobel Math Premium Ежегодно",
+              "locale" : "ru"
+            },
+            {
+              "description" : "Poupe e aprenda todo o ano!",
+              "displayName" : "Nobel Math Premium Anual",
+              "locale" : "pt_PT"
+            },
+            {
+              "description" : "Spare mehr & lerne das ganze Jahr!",
+              "displayName" : "Nobel Math Premium Jährlich",
+              "locale" : "de"
+            },
+            {
+              "description" : "وفر أكثر وتعلم طوال السنة!",
+              "displayName" : "نوبل ماث بريميوم سنوي",
+              "locale" : "ar"
+            },
+            {
+              "description" : "Save more and learn all year long!",
+              "displayName" : "Nobel Math Premium Yearly",
+              "locale" : "en_AU"
+            },
+            {
+              "description" : "Uč sa celý rok a ušetri viac!",
+              "displayName" : "Nobel Math Premium Ročne",
+              "locale" : "sk"
+            },
+            {
+              "description" : "Spara mer och lär hela året!",
+              "displayName" : "Nobel Math Premium Årligen",
+              "locale" : "sv"
+            },
+            {
+              "description" : "Μάθε όλο το χρόνο & κέρδισε!",
+              "displayName" : "Nobel Math Premium Ετήσιο",
+              "locale" : "el"
+            },
+            {
+              "description" : "Ahorra y aprende todo el año",
+              "displayName" : "Nobel Math Premium Anual",
+              "locale" : "es_MX"
+            },
+            {
+              "description" : "Save more and learn all year long!",
+              "displayName" : "Nobel Math Premium Yearly",
+              "locale" : "en_CA"
+            },
+            {
+              "description" : "Säästä ja opi koko vuoden ajan!",
+              "displayName" : "Nobel Math Premium Vuosittain",
+              "locale" : "fi"
+            },
+            {
+              "description" : "Economize e aprenda o ano todo!",
+              "displayName" : "Nobel Math Premium Anual",
+              "locale" : "pt_BR"
+            },
+            {
               "description" : "Save more and learn all year long!",
               "displayName" : "Nobel Math Premium Yearly",
               "locale" : "en_US"
+            },
+            {
+              "description" : "더 저렴하게 1년 내내 학습!",
+              "displayName" : "Nobel Math 프리미엄 연간",
+              "locale" : "ko"
+            },
+            {
+              "description" : "ประหยัดและเรียนทั้งปี!",
+              "displayName" : "Nobel Math พรีเมียมรายปี",
+              "locale" : "th"
+            },
+            {
+              "description" : "Economisește și învață tot anul!",
+              "displayName" : "Nobel Math Premium Anual",
+              "locale" : "ro"
+            },
+            {
+              "description" : "Spar og lær hele året!",
+              "displayName" : "Nobel Math Premium Årligt",
+              "locale" : "da"
+            },
+            {
+              "description" : "全年节省更多并学习！",
+              "displayName" : "Nobel Math 高级年订",
+              "locale" : "zh_Hans"
+            },
+            {
+              "description" : "Économisez et apprenez toute l'année!",
+              "displayName" : "Nobel Math Premium Annuel",
+              "locale" : "fr"
+            },
+            {
+              "description" : "Leer het hele jaar en bespaar!",
+              "displayName" : "Nobel Math Premium Jaarlijks",
+              "locale" : "nl"
+            },
+            {
+              "description" : "全年節省更多並學習！",
+              "displayName" : "Nobel Math 高級年訂",
+              "locale" : "zh_Hant"
             }
           ],
           "productID" : "con.sebastianstrus.noblamath.yearly.access",
