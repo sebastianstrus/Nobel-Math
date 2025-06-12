@@ -10,7 +10,7 @@ import StoreKit
 
 struct WelcomeContentView: View {
     @EnvironmentObject private var purchaseManager: PurchaseManager
-
+    
     var body: some View {
         TransparentNavigationView {
             WelcomeView()
@@ -28,52 +28,54 @@ struct WelcomeContentView: View {
 
 
 
-import SwiftUI
-import StoreKit
-
 struct WelcomeView: View {
     
     @EnvironmentObject private var purchaseManager: PurchaseManager
     @EnvironmentObject private var settings: SettingsManager
     @EnvironmentObject private var videoViewModel: VideoPlayerViewModel
-
+    
     @State private var showSettings = false
     
     @State private var selectedProductId = "com.sebastianstrus.noblamathapp.premium.monthly"
-
+    
     let titleSize: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 60 : 40
     let subtitleSize: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 35 : 20
     
     let startButtonWidth: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 150 : 120
     let startButtonHeight: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 48 : 40
-
+    
     
     let buttonWidth: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 320 : 280
     let buttonHeight: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 80 : 70
     let cornerRadius: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 16 : 12
-
+    
     var body: some View {
         ZStack {
             LoopingVideoPlayer(viewModel: videoViewModel)
                 .ignoresSafeArea()
                 .overlay(Color.black.opacity(0.6))
             
-            VStack(spacing: 16) {
+            VStack {
+                
+                Spacer()
                 Spacer()
                 
-                Text("Nobel Math")
-                    .font(.system(size: titleSize, weight: .bold, design: .rounded))
-                    .foregroundStyle(.white.opacity(0.9))
-                    .shadow(color: .black.opacity(0.8), radius: 3, x: 3, y: 3)
+                Group {
+                    Text("Nobel Math")
+                        .font(.system(size: titleSize, weight: .bold, design: .rounded))
+                        .foregroundStyle(.white.opacity(0.9))
+                        .shadow(color: .black.opacity(0.8), radius: 3, x: 3, y: 3)
+                    
+                    Text("Discover the Joy of Numbers.")
+                        .font(.system(size: subtitleSize, weight: .regular, design: .rounded))
+                        .foregroundStyle(.white.opacity(0.9))
+                        .shadow(color: .black.opacity(0.8), radius: 2, x: 2, y: 2)
+                }
                 
-                Text("Discover the Joy of Numbers.")
-                    .font(.system(size: subtitleSize, weight: .regular, design: .rounded))
-                    .foregroundStyle(.white.opacity(0.9))
-                    .shadow(color: .black.opacity(0.8), radius: 2, x: 2, y: 2)
-
                 Spacer()
-
-                VStack(spacing: 0) {
+                Spacer()
+                
+                Group {
                     if purchaseManager.hasUnlockedPro {
                         NavigationLink(destination: LearnView().environmentObject(settings)) {
                             Text("Start")
@@ -93,7 +95,8 @@ struct WelcomeView: View {
                             
                         }
                     } else {
-                        ForEach(purchaseManager.products) { product in
+                        
+                        if let product = purchaseManager.products.first {
                             Button {
                                 selectedProductId = product.id
                             } label: {
@@ -103,15 +106,57 @@ struct WelcomeView: View {
                                     title: product.displayName,
                                     subtitle: product.description,
                                     highlight: product.id == selectedProductId,
-                                    period:  product.id == ProductIDs.monthly ?
-                                    "/month" : "/year",
-                                    features: product.id == ProductIDs.monthly ?
-                                    ["Full Access", "No Ads", "Cancel Anytime"] :
-                                        ["Full Access", "No Ads", "Best Value"]
+                                    period:  "/month".localized,
+                                    features: ["Full Access".localized, "No Ads".localized, "Cancel Anytime".localized]
                                 ).frame(maxWidth: 440)
-
-                            }.padding()
+                                
+                            }.padding(.horizontal)
+                                .padding(.bottom, 8)
                         }
+                        
+                        
+                        
+                        if let product = purchaseManager.products.last {
+                            Button {
+                                selectedProductId = product.id
+                            } label: {
+                                SubscriptionButton(
+                                    id: product.id,
+                                    price: product.displayPrice,
+                                    title: product.displayName,
+                                    subtitle: product.description,
+                                    highlight: product.id == selectedProductId,
+                                    period:  "/year".localized,
+                                    features: ["Full Access".localized, "No Ads".localized, "Best Value".localized]
+                                ).frame(maxWidth: 440)
+                                
+                            }.padding(.horizontal)
+                        }
+                        
+                        
+                        
+//                        ForEach(purchaseManager.products) { product in
+//                            Button {
+//                                selectedProductId = product.id
+//                            } label: {
+//                                SubscriptionButton(
+//                                    id: product.id,
+//                                    price: product.displayPrice,
+//                                    title: product.displayName,
+//                                    subtitle: product.description,
+//                                    highlight: product.id == selectedProductId,
+//                                    period:  product.id == ProductIDs.monthly ?
+//                                    "/month".localized : "/year".localized,
+//                                    features: product.id == ProductIDs.monthly ?
+//                                    ["Full Access".localized, "No Ads".localized, "Cancel Anytime".localized] :
+//                                        ["Full Access".localized, "No Ads".localized, "Best Value".localized]
+//                                ).frame(maxWidth: 440)
+//                                
+//                            }.padding(.horizontal)
+//                        }
+                        
+                        
+                        Spacer()
                         
                         Button {
                             if let product = purchaseManager.products.first(where: { $0.id == selectedProductId }) {
@@ -136,31 +181,35 @@ struct WelcomeView: View {
                                                              endPoint: .trailing))
                                 )
                                 .shadow(color: .purple.opacity(0.4), radius: 10, x: 0, y: 4)
-                        }.padding()
-
-//                        Button {
-//                            _ = Task {
-//                                do {
-//                                    try await AppStore.sync()
-//                                } catch {
-//                                    print(error)
-//                                }
-//                            }
-//                        } label: {
-//                            Text("Restore Purchases")
-//                                .font(.subheadline)
-//                                .foregroundColor(.cyan)
-//                                .padding(.vertical, 10)
-//                                .padding(.horizontal, 24)
-//                                .background(Color.black.opacity(0.3))
-//                                .clipShape(Capsule())
-//                                .shadow(color: .cyan, radius: 8)
-//                        }
+                        }.padding(.horizontal)
+                        
+                        
+                        
+                        //                        Button {
+                        //                            _ = Task {
+                        //                                do {
+                        //                                    try await AppStore.sync()
+                        //                                } catch {
+                        //                                    print(error)
+                        //                                }
+                        //                            }
+                        //                        } label: {
+                        //                            Text("Restore Purchases")
+                        //                                .font(.subheadline)
+                        //                                .foregroundColor(.cyan)
+                        //                                .padding(.vertical, 10)
+                        //                                .padding(.horizontal, 24)
+                        //                                .background(Color.black.opacity(0.3))
+                        //                                .clipShape(Capsule())
+                        //                                .shadow(color: .cyan, radius: 8)
+                        //                        }
                     }
+                    Spacer()
                 }
-
-                Spacer()
+                
             }
+            .frame(maxHeight: .infinity)
+
             .toolbar {
                 if purchaseManager.hasUnlockedPro {
                     ToolbarItem(placement: .navigationBarTrailing) {
@@ -169,12 +218,12 @@ struct WelcomeView: View {
                                 .font(.title2)
                                 .foregroundColor(.white)
                                 .padding()
-                            
                         }
                     }
                 }
             }
         }
+        .ignoresSafeArea()
     }
 }
 
@@ -189,9 +238,9 @@ class TransparentHostingController<Content: View>: UIHostingController<Content> 
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-            super.traitCollectionDidChange(previousTraitCollection)
-            view.backgroundColor = .clear
-        }
+        super.traitCollectionDidChange(previousTraitCollection)
+        view.backgroundColor = .clear
+    }
 }
 struct TransparentNavigationView<Content: View>: UIViewControllerRepresentable {
     @Environment(\.colorScheme) var colorScheme
@@ -250,27 +299,27 @@ struct SubscriptionButton: View {
             // Main container with border
             RoundedRectangle(cornerRadius: 16)
                 .fill(
-                                    highlight ?
-                                    LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.2), Color.purple.opacity(0.2)]),
-                                                  startPoint: .topLeading,
-                                                  endPoint: .bottomTrailing) :
-                                    LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0.3), Color.black.opacity(0.5)]),
-                                                  startPoint: .topLeading,
-                                                  endPoint: .bottomTrailing)
-                                )
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 16)
-                                        .stroke(
-                                            highlight ?
-                                            LinearGradient(gradient: Gradient(colors: [.blue, .purple]),
-                                                        startPoint: .topLeading,
-                                                        endPoint: .bottomTrailing) :
-                                            LinearGradient(gradient: Gradient(colors: [.white.opacity(0.5), .white.opacity(0.5)]),
-                                                        startPoint: .topLeading,
-                                                        endPoint: .bottomTrailing),
-                                            lineWidth: highlight ? 3 : 1.5
-                                        )
-                                )
+                    highlight ?
+                    LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.2), Color.purple.opacity(0.2)]),
+                                   startPoint: .topLeading,
+                                   endPoint: .bottomTrailing) :
+                        LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0.3), Color.black.opacity(0.5)]),
+                                       startPoint: .topLeading,
+                                       endPoint: .bottomTrailing)
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(
+                            highlight ?
+                            LinearGradient(gradient: Gradient(colors: [.blue, .purple]),
+                                           startPoint: .topLeading,
+                                           endPoint: .bottomTrailing) :
+                                LinearGradient(gradient: Gradient(colors: [.white.opacity(0.5), .white.opacity(0.5)]),
+                                               startPoint: .topLeading,
+                                               endPoint: .bottomTrailing),
+                            lineWidth: highlight ? 3 : 1.5
+                        )
+                )
                 .shadow(color: highlight ? .blue.opacity(0.5) : .clear, radius: 10, x: 0, y: 4)
             
             VStack(alignment: .leading, spacing: 8) {
@@ -285,7 +334,7 @@ struct SubscriptionButton: View {
                     Spacer()
                     
                     if highlight {
-                        PremiumBadge(badgeText: id == ProductIDs.monthly ? "POPULAR" : "BEST VALUE")
+                        PremiumBadge(badgeText: id == ProductIDs.monthly ? "Popular".localized : "Best Value".localized)
                     }
                 }
                 
@@ -297,13 +346,13 @@ struct SubscriptionButton: View {
                     .font(.system(size: 13, weight: .medium, design: .rounded))
                     .opacity(0.9)
                 
-                HStack(alignment: .center, spacing: 30) {
+                VStack(alignment: .leading, spacing: 8) {
                     
                     if features.count == 3 {
                         FeatureRow(icon: "checkmark.circle.fill", text: features[0])
-                        Spacer(minLength: 0)
+                        //                        Spacer(minLength: 0)
                         FeatureRow(icon: "checkmark.circle.fill", text: features[1])
-                        Spacer(minLength: 0)
+                        //                        Spacer(minLength: 0)
                         FeatureRow(icon: "checkmark.circle.fill", text: features[2])
                         
                     }
@@ -314,7 +363,7 @@ struct SubscriptionButton: View {
             .padding(.horizontal, 16)
             .foregroundColor(.white)
         }
-        .frame(height: highlight ? 180 : 160)
+        .frame(height: highlight ? 210 : 190)
     }
 }
 
@@ -331,8 +380,8 @@ struct PremiumBadge: View {
             .background(
                 Capsule()
                     .fill(LinearGradient(gradient: Gradient(colors: [.yellow, .orange]),
-                                          startPoint: .leading,
-                                          endPoint: .trailing))
+                                         startPoint: .leading,
+                                         endPoint: .trailing))
                     .shadow(color: .orange.opacity(0.5), radius: 3, x: 0, y: 2)
             )
     }

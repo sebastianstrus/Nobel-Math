@@ -32,3 +32,10 @@ struct Nobel_MathApp: App {
     }
 }
 
+//    .overlay(
+//        Rectangle()
+//            .stroke(
+//                Color.red,
+//                lineWidth: 2
+//            )
+//    )
