@@ -20,7 +20,7 @@
     "_applicationInternalID" : "6745169341",
     "_developerTeamID" : "4SL936GBZY",
     "_failTransactionsEnabled" : false,
-    "_lastSynchronizedDate" : 771093532.79633796,
+    "_lastSynchronizedDate" : 771420615.72693002,
     "_locale" : "en_US",
     "_storefront" : "USA",
     "_storeKitErrors" : [
@@ -93,8 +93,8 @@
           "introductoryOffer" : null,
           "localizations" : [
             {
-              "description" : "Full access to Nobel Math. No ads. No limits.",
-              "displayName" : "Nobel Math Full Access",
+              "description" : "Math magic delivered each month!",
+              "displayName" : "Nobel Math Premium Monthly",
               "locale" : "en_US"
             }
           ],
@@ -114,15 +114,15 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "49.99",
+          "displayPrice" : "29.99",
           "familyShareable" : false,
           "groupNumber" : 2,
           "internalID" : "6746118432",
           "introductoryOffer" : null,
           "localizations" : [
             {
-              "description" : "Full access to Nobel Math. No ads. No limits.",
-              "displayName" : "Nobel Math Full Access",
+              "description" : "Save more and learn all year long!",
+              "displayName" : "Nobel Math Premium Yearly",
               "locale" : "en_US"
             }
           ],

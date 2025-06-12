@@ -8,6 +8,16 @@
 import Foundation
 import StoreKit
 
+enum ProductIDs {
+    static let monthly = "com.sebastianstrus.noblamathapp.premium.monthly"
+    static let yearly = "con.sebastianstrus.noblamath.yearly.access"
+
+    static let all: [String] = [
+        monthly,
+        yearly
+    ]
+}
+
 @MainActor
 class PurchaseManager: ObservableObject {
 
@@ -37,12 +47,12 @@ class PurchaseManager: ObservableObject {
     }
 
     func loadProducts() async throws {
-        print("TEST100 loadProducts")
         guard !self.productsLoaded else { return }
         
-        self.products = try await Product.products(for: productIds)
-        print("TEST100 productsLoaded: \(self.productsLoaded)")
-        print("TEST100 products.count: \(self.products.count)")
+        self.products = try await Product.products(for: productIds).sorted(by: { p1, p2 in
+            p1.price < p2.price
+        })
+
         self.productsLoaded = true
     }
 

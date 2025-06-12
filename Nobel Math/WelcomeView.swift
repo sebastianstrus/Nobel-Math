@@ -38,12 +38,19 @@ struct WelcomeView: View {
     @EnvironmentObject private var videoViewModel: VideoPlayerViewModel
 
     @State private var showSettings = false
+    
+    @State private var selectedProductId = "com.sebastianstrus.noblamathapp.premium.monthly"
 
     let titleSize: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 60 : 40
     let subtitleSize: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 35 : 20
-    let buttonWidth: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 150 : 120
-    let buttonHeight: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 48 : 40
-    let cornerRadius: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 8 : 8
+    
+    let startButtonWidth: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 150 : 120
+    let startButtonHeight: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 48 : 40
+
+    
+    let buttonWidth: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 320 : 280
+    let buttonHeight: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 80 : 70
+    let cornerRadius: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 16 : 12
 
     var body: some View {
         ZStack {
@@ -51,7 +58,7 @@ struct WelcomeView: View {
                 .ignoresSafeArea()
                 .overlay(Color.black.opacity(0.6))
             
-            VStack(spacing: 20) {
+            VStack(spacing: 16) {
                 Spacer()
                 
                 Text("Nobel Math")
@@ -66,49 +73,89 @@ struct WelcomeView: View {
 
                 Spacer()
 
-                VStack(spacing: 20) {
+                VStack(spacing: 0) {
                     if purchaseManager.hasUnlockedPro {
                         NavigationLink(destination: LearnView().environmentObject(settings)) {
-                            PulsingButton(
-                                title: "Start".localized,
-                                width: buttonWidth,
-                                height: buttonHeight,
-                                cornerRadius: cornerRadius
-                            )
-                            .padding()
+                            Text("Start")
+                                .font(.system(size: 20, weight: .bold, design: .rounded))
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 40)
+                                .padding(.vertical, 16)
+                                .background(
+                                    Capsule()
+                                        .fill(LinearGradient(gradient: Gradient(colors: [.blue, .purple]),
+                                                             startPoint: .leading,
+                                                             endPoint: .trailing))
+                                )
+                                .shadow(color: .purple.opacity(0.4), radius: 10, x: 0, y: 4)
+                            
+                            
+                            
                         }
                     } else {
-                        Text("Products: \(purchaseManager.products.count)")
                         ForEach(purchaseManager.products) { product in
                             Button {
-                                _ = Task {
+                                selectedProductId = product.id
+                            } label: {
+                                SubscriptionButton(
+                                    id: product.id,
+                                    price: product.displayPrice,
+                                    title: product.displayName,
+                                    subtitle: product.description,
+                                    highlight: product.id == selectedProductId,
+                                    period:  product.id == ProductIDs.monthly ?
+                                    "/month" : "/year",
+                                    features: product.id == ProductIDs.monthly ?
+                                    ["Full Access", "No Ads", "Cancel Anytime"] :
+                                        ["Full Access", "No Ads", "Best Value"]
+                                ).frame(maxWidth: 440)
+
+                            }.padding()
+                        }
+                        
+                        Button {
+                            if let product = purchaseManager.products.first(where: { $0.id == selectedProductId }) {
+                                Task {
                                     do {
                                         try await purchaseManager.purchase(product)
                                     } catch {
                                         print(error)
                                     }
                                 }
-                            } label: {
-                                Text("\(product.displayPrice) - \(product.displayName)")
-                                    .foregroundColor(.white)
-                                    .padding()
-                                    .background(Color.blue)
-                                    .clipShape(Capsule())
-                            }
-                        }
-
-                        Button {
-                            _ = Task {
-                                do {
-                                    try await AppStore.sync()
-                                } catch {
-                                    print(error)
-                                }
                             }
                         } label: {
-                            Text("Restore Purchases")
+                            Text("Subscribe")
+                                .font(.system(size: 20, weight: .bold, design: .rounded))
                                 .foregroundColor(.white)
-                        }
+                                .padding(.horizontal, 40)
+                                .padding(.vertical, 16)
+                                .background(
+                                    Capsule()
+                                        .fill(LinearGradient(gradient: Gradient(colors: [.blue, .purple]),
+                                                             startPoint: .leading,
+                                                             endPoint: .trailing))
+                                )
+                                .shadow(color: .purple.opacity(0.4), radius: 10, x: 0, y: 4)
+                        }.padding()
+
+//                        Button {
+//                            _ = Task {
+//                                do {
+//                                    try await AppStore.sync()
+//                                } catch {
+//                                    print(error)
+//                                }
+//                            }
+//                        } label: {
+//                            Text("Restore Purchases")
+//                                .font(.subheadline)
+//                                .foregroundColor(.cyan)
+//                                .padding(.vertical, 10)
+//                                .padding(.horizontal, 24)
+//                                .background(Color.black.opacity(0.3))
+//                                .clipShape(Capsule())
+//                                .shadow(color: .cyan, radius: 8)
+//                        }
                     }
                 }
 
@@ -184,5 +231,124 @@ struct TransparentNavigationView<Content: View>: UIViewControllerRepresentable {
         // Force update the navigation bar
         navController.navigationBar.setNeedsLayout()
         navController.navigationBar.layoutIfNeeded()
+    }
+}
+
+
+
+struct SubscriptionButton: View {
+    let id: String
+    let price: String
+    let title: String
+    let subtitle: String
+    let highlight: Bool
+    let period: String
+    let features: [String]
+    
+    var body: some View {
+        ZStack {
+            // Main container with border
+            RoundedRectangle(cornerRadius: 16)
+                .fill(
+                                    highlight ?
+                                    LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.2), Color.purple.opacity(0.2)]),
+                                                  startPoint: .topLeading,
+                                                  endPoint: .bottomTrailing) :
+                                    LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0.3), Color.black.opacity(0.5)]),
+                                                  startPoint: .topLeading,
+                                                  endPoint: .bottomTrailing)
+                                )
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .stroke(
+                                            highlight ?
+                                            LinearGradient(gradient: Gradient(colors: [.blue, .purple]),
+                                                        startPoint: .topLeading,
+                                                        endPoint: .bottomTrailing) :
+                                            LinearGradient(gradient: Gradient(colors: [.white.opacity(0.5), .white.opacity(0.5)]),
+                                                        startPoint: .topLeading,
+                                                        endPoint: .bottomTrailing),
+                                            lineWidth: highlight ? 3 : 1.5
+                                        )
+                                )
+                .shadow(color: highlight ? .blue.opacity(0.5) : .clear, radius: 10, x: 0, y: 4)
+            
+            VStack(alignment: .leading, spacing: 8) {
+                // Price and period
+                HStack(alignment: .firstTextBaseline, spacing: 4) {
+                    Text(price)
+                        .font(.system(size: 28, weight: .bold, design: .rounded))
+                    Text(period)
+                        .font(.system(size: 14, weight: .medium, design: .rounded))
+                        .opacity(0.8)
+                    
+                    Spacer()
+                    
+                    if highlight {
+                        PremiumBadge(badgeText: id == ProductIDs.monthly ? "POPULAR" : "BEST VALUE")
+                    }
+                }
+                
+                Text(title)
+                    .font(.system(size: 16, weight: .semibold, design: .rounded))
+                    .padding(.bottom, 2)
+                
+                Text(subtitle)
+                    .font(.system(size: 13, weight: .medium, design: .rounded))
+                    .opacity(0.9)
+                
+                HStack(alignment: .center, spacing: 30) {
+                    
+                    if features.count == 3 {
+                        FeatureRow(icon: "checkmark.circle.fill", text: features[0])
+                        Spacer(minLength: 0)
+                        FeatureRow(icon: "checkmark.circle.fill", text: features[1])
+                        Spacer(minLength: 0)
+                        FeatureRow(icon: "checkmark.circle.fill", text: features[2])
+                        
+                    }
+                    
+                }
+                .padding(.top, 8)
+            }
+            .padding(.horizontal, 16)
+            .foregroundColor(.white)
+        }
+        .frame(height: highlight ? 180 : 160)
+    }
+}
+
+struct PremiumBadge: View {
+    
+    let badgeText: String
+    
+    var body: some View {
+        Text(badgeText)
+            .font(.system(size: 12, weight: .black, design: .rounded))
+            .foregroundColor(.white)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 4)
+            .background(
+                Capsule()
+                    .fill(LinearGradient(gradient: Gradient(colors: [.yellow, .orange]),
+                                          startPoint: .leading,
+                                          endPoint: .trailing))
+                    .shadow(color: .orange.opacity(0.5), radius: 3, x: 0, y: 2)
+            )
+    }
+}
+
+struct FeatureRow: View {
+    let icon: String
+    let text: String
+    
+    var body: some View {
+        HStack(spacing: 8) {
+            Image(systemName: icon)
+                .foregroundColor(.green)
+                .font(.system(size: 14))
+            Text(text)
+                .font(.system(size: 12, weight: .medium, design: .rounded))
+        }
     }
 }

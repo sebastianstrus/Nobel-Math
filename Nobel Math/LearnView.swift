@@ -443,7 +443,6 @@ struct MathView: View {
         .onChange(of: isCompleted, { oldValue, newValue in
             if newValue {
                 if SettingsManager.shared.isSparkleStarsOn {
-                    print("TEST100 activate start")
                     showStars = true
                     SoundManager.shared.playSound(named: "stars", withExtension: "m4a")
                 }
