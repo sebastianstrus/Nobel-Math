@@ -20,7 +20,7 @@
     "_applicationInternalID" : "6745169341",
     "_developerTeamID" : "4SL936GBZY",
     "_failTransactionsEnabled" : false,
-    "_lastSynchronizedDate" : 771445854.78275895,
+    "_lastSynchronizedDate" : 771511592.82436204,
     "_locale" : "en_US",
     "_storefront" : "USA",
     "_storeKitErrors" : [
@@ -316,6 +316,21 @@
               "locale" : "id"
             },
             {
+              "description" : "Ušetřete a učte se celý rok!",
+              "displayName" : "Nobel Math Premium Ročně",
+              "locale" : "cs"
+            },
+            {
+              "description" : "Tiết kiệm & học suốt cả năm!",
+              "displayName" : "Nobel Math Premium Hàng năm",
+              "locale" : "vi"
+            },
+            {
+              "description" : "Économisez et apprenez toute l'année!",
+              "displayName" : "Nobel Math Premium Annuel",
+              "locale" : "fr"
+            },
+            {
               "description" : "למד כל השנה וחסוך יותר!",
               "displayName" : "Nobel Math פרימיום שנתי",
               "locale" : "he"
@@ -329,11 +344,6 @@
               "description" : "Ucz się cały rok i oszczędzaj!",
               "displayName" : "Nobel Math Premium Rocznie",
               "locale" : "pl"
-            },
-            {
-              "description" : "Ušetřete a učte se celý rok!",
-              "displayName" : "Nobel Math Premium Ročně",
-              "locale" : "cs"
             },
             {
               "description" : "Ahorra y aprende todo el año",
@@ -351,14 +361,14 @@
               "locale" : "en_GB"
             },
             {
-              "description" : "Tiết kiệm & học suốt cả năm!",
-              "displayName" : "Nobel Math Premium Hàng năm",
-              "locale" : "vi"
+              "description" : "年間でお得に学ぼう！",
+              "displayName" : "Nobel Math プレミアム年額",
+              "locale" : "ja"
             },
             {
-              "description" : "Économisez et apprenez toute l'année!",
-              "displayName" : "Nobel Math Premium Annuel",
-              "locale" : "fr"
+              "description" : "Spare mehr & lerne das ganze Jahr!",
+              "displayName" : "Nobel Math Premium Jährlich",
+              "locale" : "de"
             },
             {
               "description" : "साल भर सीखें और बचत करें!",
@@ -374,11 +384,6 @@
               "description" : "Tanulj egész évben és spórolj!",
               "displayName" : "Nobel Math Prémium Éves",
               "locale" : "hu"
-            },
-            {
-              "description" : "年間でお得に学ぼう！",
-              "displayName" : "Nobel Math プレミアム年額",
-              "locale" : "ja"
             },
             {
               "description" : "Estalvia i aprèn tot l’any!",
@@ -401,19 +406,19 @@
               "locale" : "pt_PT"
             },
             {
-              "description" : "Spare mehr & lerne das ganze Jahr!",
-              "displayName" : "Nobel Math Premium Jährlich",
-              "locale" : "de"
+              "description" : "Save more and learn all year long!",
+              "displayName" : "Nobel Math Premium Yearly",
+              "locale" : "en_AU"
+            },
+            {
+              "description" : "Economize e aprenda o ano todo!",
+              "displayName" : "Nobel Math Premium Anual",
+              "locale" : "pt_BR"
             },
             {
               "description" : "وفر أكثر وتعلم طوال السنة!",
               "displayName" : "نوبل ماث بريميوم سنوي",
               "locale" : "ar"
-            },
-            {
-              "description" : "Save more and learn all year long!",
-              "displayName" : "Nobel Math Premium Yearly",
-              "locale" : "en_AU"
             },
             {
               "description" : "Uč sa celý rok a ušetri viac!",
@@ -446,9 +451,14 @@
               "locale" : "fi"
             },
             {
-              "description" : "Economize e aprenda o ano todo!",
+              "description" : "Economisește și învață tot anul!",
               "displayName" : "Nobel Math Premium Anual",
-              "locale" : "pt_BR"
+              "locale" : "ro"
+            },
+            {
+              "description" : "全年節省更多並學習！",
+              "displayName" : "Nobel Math 高級年訂",
+              "locale" : "zh_Hant"
             },
             {
               "description" : "Save more and learn all year long!",
@@ -464,11 +474,6 @@
               "description" : "ประหยัดและเรียนทั้งปี!",
               "displayName" : "Nobel Math พรีเมียมรายปี",
               "locale" : "th"
-            },
-            {
-              "description" : "Economisește și învață tot anul!",
-              "displayName" : "Nobel Math Premium Anual",
-              "locale" : "ro"
             },
             {
               "description" : "Spar og lær hele året!",
@@ -489,11 +494,6 @@
               "description" : "Leer het hele jaar en bespaar!",
               "displayName" : "Nobel Math Premium Jaarlijks",
               "locale" : "nl"
-            },
-            {
-              "description" : "全年節省更多並學習！",
-              "displayName" : "Nobel Math 高級年訂",
-              "locale" : "zh_Hant"
             }
           ],
           "productID" : "con.sebastianstrus.noblamath.yearly.access",
