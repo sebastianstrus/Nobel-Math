@@ -30,7 +30,6 @@ struct WelcomeContentView: View {
 
 struct WelcomeView: View {
     
-    @EnvironmentObject private var purchaseManager: PurchaseManager
     @EnvironmentObject private var settings: SettingsManager
     @EnvironmentObject private var videoViewModel: VideoPlayerViewModel
     
@@ -76,7 +75,6 @@ struct WelcomeView: View {
                 Spacer()
                 
                 Group {
-                    if purchaseManager.hasUnlockedPro {
                         NavigationLink(destination: LearnView().environmentObject(settings)) {
                             Text("Start")
                                 .font(.system(size: 20, weight: .bold, design: .rounded))
@@ -94,47 +92,10 @@ struct WelcomeView: View {
                             
                             
                         }
-                    } else {
-                        
-                        if let product = purchaseManager.products.first {
-                            Button {
-                                selectedProductId = product.id
-                            } label: {
-                                SubscriptionButton(
-                                    id: product.id,
-                                    price: product.displayPrice,
-                                    title: "Nobel Math Premium Monthly".localized,
-                                    subtitle: "Math magic delivered each month!".localized,
-                                    highlight: product.id == selectedProductId,
-                                    period:  "/month".localized,
-                                    features: ["Full Access".localized, "No Ads".localized, "Cancel Anytime".localized]
-                                ).frame(maxWidth: 440)
-                                
-                            }.padding(.horizontal)
-                                .padding(.bottom, 8)
-                        }
+
                         
                         
-                        
-                        if let product = purchaseManager.products.last {
-                            Button {
-                                selectedProductId = product.id
-                            } label: {
-                                SubscriptionButton(
-                                    id: product.id,
-                                    price: product.displayPrice,
-                                    title: "Nobel Math Premium Yearly".localized,
-                                    subtitle: "Save more and learn all year long!".localized,
-                                    highlight: product.id == selectedProductId,
-                                    period:  "/year".localized,
-                                    features: ["Full Access".localized, "No Ads".localized, "Best Value".localized]
-                                ).frame(maxWidth: 440)
-                                
-                            }.padding(.horizontal)
-                        }
-                        
-                        
-                        
+
 //                        ForEach(purchaseManager.products) { product in
 //                            Button {
 //                                selectedProductId = product.id
@@ -158,52 +119,9 @@ struct WelcomeView: View {
                         
                         Spacer()
                         
-                        Button {
-                            if let product = purchaseManager.products.first(where: { $0.id == selectedProductId }) {
-                                Task {
-                                    do {
-                                        try await purchaseManager.purchase(product)
-                                    } catch {
-                                        print(error)
-                                    }
-                                }
-                            }
-                        } label: {
-                            Text("Subscribe")
-                                .font(.system(size: 20, weight: .bold, design: .rounded))
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 40)
-                                .padding(.vertical, 16)
-                                .background(
-                                    Capsule()
-                                        .fill(LinearGradient(gradient: Gradient(colors: [.blue, .purple]),
-                                                             startPoint: .leading,
-                                                             endPoint: .trailing))
-                                )
-                                .shadow(color: .purple.opacity(0.4), radius: 10, x: 0, y: 4)
-                        }.padding(.horizontal)
+                       
                         
-                        
-                        
-                        //                        Button {
-                        //                            _ = Task {
-                        //                                do {
-                        //                                    try await AppStore.sync()
-                        //                                } catch {
-                        //                                    print(error)
-                        //                                }
-                        //                            }
-                        //                        } label: {
-                        //                            Text("Restore Purchases")
-                        //                                .font(.subheadline)
-                        //                                .foregroundColor(.cyan)
-                        //                                .padding(.vertical, 10)
-                        //                                .padding(.horizontal, 24)
-                        //                                .background(Color.black.opacity(0.3))
-                        //                                .clipShape(Capsule())
-                        //                                .shadow(color: .cyan, radius: 8)
-                        //                        }
-                    }
+                    
                     Spacer()
                 }
                 
@@ -211,16 +129,15 @@ struct WelcomeView: View {
             .frame(maxHeight: .infinity)
 
             .toolbar {
-                if purchaseManager.hasUnlockedPro {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        NavigationLink(destination: SettingsView()) {
-                            Image(systemName: "gear")
-                                .font(.title2)
-                                .foregroundColor(.white)
-                                .padding()
-                        }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink(destination: SettingsView()) {
+                        Image(systemName: "gear")
+                            .font(.title2)
+                            .foregroundColor(.white)
+                            .padding()
                     }
                 }
+                
             }
         }
         .ignoresSafeArea()

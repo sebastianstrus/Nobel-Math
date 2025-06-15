@@ -145,8 +145,8 @@ class SettingsManager: ObservableObject {
     @AppStorage(UserDefaultsKeys.isTimerOn.rawValue) var isTimerOn: Bool = true
     @AppStorage(UserDefaultsKeys.isSparkleStarsOn.rawValue) var isSparkleStarsOn: Bool = true
     
-    @AppStorage(UserDefaultsKeys.exampleCount.rawValue) var exampleCount: Int = 45
-    @AppStorage(UserDefaultsKeys.difficultyLevel.rawValue) var difficultyLevel: Int = DifficultyLevel.medium.rawValue
+    @AppStorage(UserDefaultsKeys.exampleCount.rawValue) var exampleCount: Int = 30
+    @AppStorage(UserDefaultsKeys.difficultyLevel.rawValue) var difficultyLevel: Int = DifficultyLevel.easy.rawValue
     
     @Published var tabsEnabledCount: Int = 0
     

@@ -9,6 +9,7 @@ import SwiftUI
 import AVFoundation
 
 struct LearnView: View {
+    @EnvironmentObject private var purchaseManager: PurchaseManager
     @EnvironmentObject var settings: SettingsManager
     @Environment(\.dismiss) var dismiss
     
@@ -33,6 +34,9 @@ struct LearnView: View {
     @State private var shouldShowNameAlert = false
     @State private var showingVictoryView = false
     @State private var userName = ""
+    @State private var selectedTab = 0
+    
+    @State private var showSubscriptionSheet = false
     
     var body: some View {
         ZStack {
@@ -41,13 +45,25 @@ struct LearnView: View {
                 VictoryView(elapsedTime: elapsedTime)
                     .environmentObject(settings)
             } else {
-                TabView {
+                TabView(selection: $selectedTab) {
                     if settings.isAdditionOn {
                         MathView(operation: .addition,
                                  isCompleted: $additionCompleted,
                                  hasProgress: $additionHasProgress,
                                  settings: settings)
-                        .tabItem { Label("Addition".localized, systemImage: "plus") }
+                        .tabItem {
+                            VStack {
+                                Image(systemName: "plus")
+                                    .font(.system(size: 28))
+                                    .foregroundColor(.white)
+                                    .padding()
+                                    .background(Circle().fill(Color.orange))
+                                Text("Addition".localized)
+                                    .font(.caption)
+                                    .foregroundColor(.orange)
+                            }
+                        }
+                        .tag(0)
                     }
                     
                     if settings.isSubtractionOn {
@@ -56,6 +72,8 @@ struct LearnView: View {
                                  hasProgress: $subtractionHasProgress,
                                  settings: settings)
                         .tabItem { Label("Subtraction".localized, systemImage: "minus") }
+                        .badge(!purchaseManager.hasUnlockedPro ? "PRO" : nil)
+                        .tag(1)
                     }
                     
                     if settings.isMultiplicationOn {
@@ -64,6 +82,8 @@ struct LearnView: View {
                                  hasProgress: $multiplicationHasProgress,
                                  settings: settings)
                         .tabItem { Label("Multiplication".localized, systemImage: "multiply") }
+                        .badge(!purchaseManager.hasUnlockedPro ? "PRO" : nil)
+                        .tag(2)
                     }
                     
                     if settings.isDivisionOn {
@@ -72,8 +92,26 @@ struct LearnView: View {
                                  hasProgress: $divisionHasProgress,
                                  settings: settings)
                         .tabItem { Label("Division".localized, systemImage: "divide") }
+                        .badge(!purchaseManager.hasUnlockedPro ? "PRO" : nil)
+                        .tag(3)
+                        
                     }
                 }
+                .onChange(of: selectedTab) { oldTab, newTab in
+                    if newTab > 0 && !purchaseManager.hasUnlockedPro {
+                        selectedTab = 0
+                        showSubscriptionSheet = true
+                    }
+                }
+                .sheet(isPresented: $showSubscriptionSheet) {
+                    SubscriptionView()
+                }
+                .onChange(of: purchaseManager.hasUnlockedPro) { _, newValue in
+                    if newValue {
+                        showSubscriptionSheet = false
+                    }
+                }
+
                 .navigationBarBackButtonHidden(true)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
@@ -95,14 +133,35 @@ struct LearnView: View {
                             .foregroundColor(.blue)
                         }
                     }
-                    
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Text(elapsedTime.formattedTimeWithMilliseconds)
-                            .font(.system(size: UIDevice.current.userInterfaceIdiom == .pad ? 20 : 16,
-                                          weight: .bold,
-                                          design: .monospaced))
-                            .foregroundColor(.blue.opacity(settings.isTimerOn ? 1 : 0))
-                        
+                    if purchaseManager.hasUnlockedPro {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Text(elapsedTime.formattedTimeWithMilliseconds)
+                                .font(.system(size: UIDevice.current.userInterfaceIdiom == .pad ? 20 : 16,
+                                              weight: .bold,
+                                              design: .monospaced))
+                                .foregroundColor(.blue.opacity(settings.isTimerOn ? 1 : 0))
+                        }
+                    } else {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button {
+                                showSubscriptionSheet = true
+                            } label: {
+                                Text("Try Premium".localized)
+                                    .font(.system(size: 14, weight: .bold))
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 6)
+                                    .background(
+                                        LinearGradient(
+                                            gradient: Gradient(colors: [Color.blue, Color.purple]),
+                                            startPoint: .leading,
+                                            endPoint: .trailing
+                                        )
+                                    )
+                                    .cornerRadius(12)
+                                    .shadow(color: .purple.opacity(0.4), radius: 4, x: 0, y: 2)
+                            }
+                        }
                     }
                 }
             }
@@ -204,30 +263,6 @@ struct LearnView: View {
                 .animation(.easeInOut(duration: 0.2), value: showBackConfirmation)
             }
         }
-        
-//        .alert(isPresented: $showBackConfirmation) {
-//            Alert(
-//                title: Text("Are you sure?".localized),
-//                message: Text("Your progress will be lost if you go back.".localized),
-//                primaryButton: .destructive(Text("Discard Changes".localized)) {
-//                    SoundManager.shared.stopSound()
-//                    DispatchQueue.main.async {
-//                        SoundManager.shared.stopSound()
-//                        dismiss()
-//                    }
-//                },
-//                secondaryButton: .cancel()
-//            )
-//        }
-//        .confirmationDialog("Are you sure?".localized,
-//                            isPresented: $showBackConfirmation,
-//                            titleVisibility: .visible) {
-//            Button("Discard Changes".localized, role: .destructive) {
-//                SoundManager.shared.stopSound()
-//                backClicked()
-//            }
-//            Button("Cancel", role: .cancel) { }
-//        }
     }
     
     private func saveResultAndShowVictory() {

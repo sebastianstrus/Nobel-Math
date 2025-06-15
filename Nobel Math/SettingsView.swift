@@ -10,6 +10,7 @@ import MessageUI
 
 struct SettingsView: View {
     
+    @EnvironmentObject private var purchaseManager: PurchaseManager
     @EnvironmentObject var settings: SettingsManager
     @Environment(\.colorScheme) var colorScheme
     
@@ -18,19 +19,95 @@ struct SettingsView: View {
     @State private var showMailComposer = false
     @State private var showingLanguageHelp = false
     
+    @State private var showSubscriptionSheet = false
+    
+    var statisticsSectionHeader: some View {
+        HStack(spacing: 6) {
+            Text("Statistics".localized)
+            if !purchaseManager.hasUnlockedPro { ProBadge() }
+            Spacer()
+        }
+    }
+    
+    var learningSectionHeader: some View {
+        HStack(spacing: 6) {
+            Text("Learning Settings".localized)
+            if !purchaseManager.hasUnlockedPro { ProBadge() }
+            Spacer()
+        }
+    }
+    
+    var learningSectionsSectionHeader: some View {
+        HStack(spacing: 6) {
+            Text("Learning Sections".localized)
+            if !purchaseManager.hasUnlockedPro { ProBadge() }
+            Spacer()
+        }
+    }
+    
+    var resetSectionHeader: some View {
+        HStack(spacing: 6) {
+            Text("Default Settings".localized)
+            if !purchaseManager.hasUnlockedPro { ProBadge() }
+            Spacer()
+        }
+    }
     
     var body: some View {
         VStack {
             Text("").frame(height: 0)
             List {
                 
-                Section(header: Text("Statistics".localized)) {
-                    NavigationLink(destination: StatisticsView()) {
-                        Text("View Statistics".localized)
-                    }
-                }
+                if !purchaseManager.hasUnlockedPro {
+                                    Section {
+                                        Button {
+                                            showSubscriptionSheet = true
+                                        } label: {
+                                            HStack {
+                                                Spacer()
+                                                VStack(spacing: 8) {
+                                                    HStack(spacing: 6) {
+                                                        Image(systemName: "crown.fill")
+                                                            .foregroundColor(.yellow)
+                                                        Text("Try Premium".localized)
+                                                            .font(.system(size: 18, weight: .bold))
+                                                            .foregroundColor(.white)
+                                                    }
+                                                    
+                                                    Text("Unlock all features".localized)
+                                                        .font(.subheadline)
+                                                        .foregroundColor(.white.opacity(0.8))
+                                                }
+                                                .padding(.vertical, 12)
+                                                .frame(maxWidth: .infinity)
+                                                .background(
+                                                    LinearGradient(
+                                                        gradient: Gradient(colors: [Color.blue, Color.purple]),
+                                                        startPoint: .leading,
+                                                        endPoint: .trailing
+                                                    )
+                                                )
+                                                .cornerRadius(10)
+                                                .shadow(color: .purple.opacity(0.4), radius: 5, x: 0, y: 2)
+                                                Spacer()
+                                            }
+                                        }
+                                        .listRowInsets(EdgeInsets())
+                                        .listRowBackground(Color.clear)
+                                    }
+                                }
                 
-                Section(header: Text("Learning Settings".localized)) {
+                Section(header: statisticsSectionHeader
+                    ) {
+                        NavigationLink(destination: StatisticsView()) {
+                            Text("View Statistics".localized)
+                        }
+                        .disabled(!purchaseManager.hasUnlockedPro)
+                    }
+                
+
+                
+                Section(header: learningSectionHeader) {
                     Picker("Difficulty Level".localized, selection: $settings.difficultyLevel) {
                         ForEach(DifficultyLevel.allCases, id: \.self) { level in
                             Text(level.localizedName).tag(level.rawValue)
@@ -50,9 +127,9 @@ struct SettingsView: View {
                     
                     Toggle("Sparkle Stars ✨".localized, isOn: settings.$isSparkleStarsOn)
                         .tint(.purple)
-                }
+                }.disabled(!purchaseManager.hasUnlockedPro)
                 
-                Section(header: Text("Learning Sections".localized)) {
+                Section(header: learningSectionsSectionHeader) {
                     Toggle("Addition".localized, isOn: settings.$isAdditionOn)
                         .tint(.purple)
                         .disabled(settings.tabsEnabledCount == 1 && settings.isAdditionOn)
@@ -72,7 +149,7 @@ struct SettingsView: View {
                         .tint(.purple)
                         .disabled(settings.tabsEnabledCount == 1 && settings.isDivisionOn)
                     
-                }
+                }.disabled(!purchaseManager.hasUnlockedPro)
                 
                 Section(header: Text("Appearance".localized)) {
                     Picker("Theme".localized, selection: Binding(
@@ -107,11 +184,11 @@ struct SettingsView: View {
                     }
                 }
                 
-                Section(header: Text("Default Settings".localized)) {
+                Section(header: resetSectionHeader) {
                     Button("Reset Settings".localized) {
                         settings.resetSettings()
                     }
-                }
+                }.disabled(!purchaseManager.hasUnlockedPro)
                 
                 //                Section(header: Text("Application Cache".localized)) {
                 //                    Button("Reset & Exit".localized) {
@@ -122,6 +199,14 @@ struct SettingsView: View {
             }
         }
         .navigationTitle("Settings".localized)
+        .sheet(isPresented: $showSubscriptionSheet) {
+            SubscriptionView()
+        }
+        .onChange(of: purchaseManager.hasUnlockedPro) { _, newValue in
+            if newValue {
+                showSubscriptionSheet = false
+            }
+        }
         .onChange(of: settings.isAdditionOn) {
             settings.updateEnabledTabsCount()
         }
@@ -350,5 +435,17 @@ struct StatisticsView: View {
         formatter.dateStyle = .short
         formatter.timeStyle = .none
         return formatter.string(from: date)
+    }
+}
+
+
+struct ProBadge: View {
+    var body: some View {
+        Text("PRO")
+            .font(.caption2.bold())
+            .padding(4)
+            .background(Color.purple)
+            .foregroundColor(.white)
+            .cornerRadius(4)
     }
 }
