@@ -311,7 +311,7 @@ enum MathOperation {
     case addition, subtraction, multiplication, division
 }
 
-struct MathProblem: Identifiable, Equatable {
+struct MathProblem: Identifiable {
     let id = UUID()
     let left: Int
     let right: Int
@@ -328,20 +328,6 @@ struct MathProblem: Identifiable, Equatable {
     }
     
     var isSolved: Bool = false
-    
-    static func == (lhs: MathProblem, rhs: MathProblem) -> Bool {
-            return lhs.left == rhs.left &&
-                   lhs.right == rhs.right &&
-                   lhs.operation == rhs.operation
-        }
-    
-    /*mutating func updateBorderColor() {
-     guard let answer = Int(userAnswer.replacingOccurrences(of: " ", with: "")) else {
-     borderColor = .gray
-     return
-     }
-     borderColor = answer == correctAnswer ? .green : .red
-     }*/
 }
 
 struct VictoryView: View {
@@ -398,8 +384,6 @@ struct VictoryView: View {
 
 struct MathView: View {
     
-    var recentProblems = [MathProblem]()
-    
     let hintFontSize: CGFloat = {
         UIDevice.current.userInterfaceIdiom == .pad ? 22 : 12
     }()
@@ -431,6 +415,7 @@ struct MathView: View {
     var settings: SettingsManager
     let operation: MathOperation
     @State private var problems: [MathProblem] = []
+    @State private var recentProblems = [MathProblem]()
     @State private var showStars = false
     @Binding var isCompleted: Bool
     @Binding var hasProgress: Bool
@@ -514,14 +499,18 @@ struct MathView: View {
         }
     }
     
-    mutating func generateProblems(for operation: MathOperation) -> [MathProblem] {
+    func generateProblems(for operation: MathOperation) -> [MathProblem] {
         let count = settings.exampleCount
         var newProblems: [MathProblem] = []
-
+        
         while newProblems.count < count {
             let candidate = generateSingleProblem(for: operation)
-
-            if !recentProblems.contains(candidate) {
+            
+            let itContains: Bool = recentProblems.contains { problem in
+                problem.left == candidate.left && problem.right == candidate.right && problem.operation == candidate.operation
+            }
+            
+            if !itContains {
                 newProblems.append(candidate)
                 recentProblems.append(candidate)
                 if recentProblems.count > 9 {
@@ -529,9 +518,10 @@ struct MathView: View {
                 }
             }
         }
-
+        
         return newProblems
     }
+
     
     func generateSingleProblem(for operation: MathOperation) -> MathProblem {
         var left = 1
