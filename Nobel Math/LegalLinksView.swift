@@ -13,8 +13,8 @@ struct LegalLinksView: View {
 
     var body: some View {
         HStack(spacing: 24) {
-            Link("Terms of Use", destination: termsURL)
-            Link("Privacy Policy", destination: privacyURL)
+            Link("Terms of Use".localized, destination: termsURL)
+            Link("Privacy Policy".localized, destination: privacyURL)
         }
         .font(.footnote)
         .foregroundColor(.white.opacity(0.8))
