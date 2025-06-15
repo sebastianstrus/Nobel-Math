@@ -311,7 +311,7 @@ enum MathOperation {
     case addition, subtraction, multiplication, division
 }
 
-struct MathProblem: Identifiable {
+struct MathProblem: Identifiable, Equatable {
     let id = UUID()
     let left: Int
     let right: Int
@@ -328,6 +328,12 @@ struct MathProblem: Identifiable {
     }
     
     var isSolved: Bool = false
+    
+    static func == (lhs: MathProblem, rhs: MathProblem) -> Bool {
+            return lhs.left == rhs.left &&
+                   lhs.right == rhs.right &&
+                   lhs.operation == rhs.operation
+        }
     
     /*mutating func updateBorderColor() {
      guard let answer = Int(userAnswer.replacingOccurrences(of: " ", with: "")) else {
@@ -391,6 +397,8 @@ struct VictoryView: View {
 
 
 struct MathView: View {
+    
+    var recentProblems = [MathProblem]()
     
     let hintFontSize: CGFloat = {
         UIDevice.current.userInterfaceIdiom == .pad ? 22 : 12
@@ -506,74 +514,68 @@ struct MathView: View {
         }
     }
     
-    func generateProblems(for operation: MathOperation) -> [MathProblem] {
-        let count: Int = settings.exampleCount
-        var problems = [MathProblem]()
-        for _ in 0..<count {
-            var left = 1
-            var right = 1
-            
-            switch operation {
-            case .addition:
-                switch settings.difficultyLevel {
-                case 0:
-                    left = Int.random(in: 1...10)
-                    right = Int.random(in: 1...10)
-                case 1:
-                    left = Int.random(in: 1...20)
-                    right = Int.random(in: 1...20)
-                default:
-                    left = Int.random(in: 9...50)
-                    right = Int.random(in: 9...50)
+    mutating func generateProblems(for operation: MathOperation) -> [MathProblem] {
+        let count = settings.exampleCount
+        var newProblems: [MathProblem] = []
+
+        while newProblems.count < count {
+            let candidate = generateSingleProblem(for: operation)
+
+            if !recentProblems.contains(candidate) {
+                newProblems.append(candidate)
+                recentProblems.append(candidate)
+                if recentProblems.count > 9 {
+                    recentProblems.removeFirst()
                 }
-            case .subtraction:
-                switch settings.difficultyLevel {
-                case 0:
-                    left = Int.random(in: 2...20)
-                    right = Int.random(in: 1...left-1)
-                case 1:
-                    left = Int.random(in: 2...49)
-                    right = Int.random(in: 1...left-1)
-                default:
-                    left = Int.random(in: 10...99)
-                    right = Int.random(in: 9...left-1)
-                }
-                
-            case .multiplication:
-                repeat {
-                    switch settings.difficultyLevel {
-                    case 0:
-                        left = Int.random(in: 1...6)
-                        right = Int.random(in: 1...6)
-                    case 1:
-                        left = Int.random(in: 1...10)
-                        right = Int.random(in: 1...10)
-                    default:
-                        left = Int.random(in: 2...50)
-                        right = Int.random(in: 2...50)
-                    }
-                } while left * right > 100
-            case .division:
-                repeat {
-                    switch settings.difficultyLevel {
-                    case 0:
-                        right = Int.random(in: 1...5)
-                        left = right * Int.random(in: 1...5)
-                    case 1:
-                        right = Int.random(in: 1...6)
-                        left = right * Int.random(in: 1...6)
-                    default:
-                        right = Int.random(in: 2...10)
-                        left = right * Int.random(in: 2...9)
-                    }
-                } while left / right <= 0
             }
-            
-            problems.append(MathProblem(left: left, right: right, operation: operation))
         }
-        
-        return problems
+
+        return newProblems
     }
+    
+    func generateSingleProblem(for operation: MathOperation) -> MathProblem {
+        var left = 1
+        var right = 1
+
+        switch operation {
+        case .addition:
+            switch settings.difficultyLevel {
+            case 0: left = Int.random(in: 1...10); right = Int.random(in: 1...10)
+            case 1: left = Int.random(in: 1...20); right = Int.random(in: 1...20)
+            default: left = Int.random(in: 9...50); right = Int.random(in: 9...50)
+            }
+
+        case .subtraction:
+            repeat {
+                switch settings.difficultyLevel {
+                case 0: left = Int.random(in: 2...20); right = Int.random(in: 1..<left)
+                case 1: left = Int.random(in: 2...49); right = Int.random(in: 1..<left)
+                default: left = Int.random(in: 10...99); right = Int.random(in: 9..<left)
+                }
+            } while left <= right
+
+        case .multiplication:
+            repeat {
+                switch settings.difficultyLevel {
+                case 0: left = Int.random(in: 1...6); right = Int.random(in: 1...6)
+                case 1: left = Int.random(in: 1...10); right = Int.random(in: 1...10)
+                default: left = Int.random(in: 2...50); right = Int.random(in: 2...50)
+                }
+            } while left * right > 100
+
+        case .division:
+            repeat {
+                switch settings.difficultyLevel {
+                case 0: right = Int.random(in: 1...5); left = right * Int.random(in: 1...5)
+                case 1: right = Int.random(in: 2...7); left = right * Int.random(in: 2...8)
+                default: right = Int.random(in: 2...9); left = right * Int.random(in: 2...10)
+                }
+            } while left / right <= 0
+        }
+
+        return MathProblem(left: left, right: right, operation: operation)
+    }
+
     
     
     var title: String {
