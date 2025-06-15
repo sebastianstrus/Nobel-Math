@@ -45,6 +45,7 @@ struct SubscriptionView: View {
                         .font(.system(size: titleSize, weight: .bold, design: .rounded))
                         .foregroundStyle(.white.opacity(0.9))
                         .shadow(color: .black.opacity(0.8), radius: 3, x: 3, y: 3)
+                        .padding(.top, UIDevice.current.userInterfaceIdiom == .pad ? 50 : 20)
                     
 //                    Text("Discover the Joy of Numbers.")
 //                        .font(.system(size: subtitleSize, weight: .regular, design: .rounded))
@@ -146,25 +147,26 @@ struct SubscriptionView: View {
                         
                         
                         
-                        Button {
-                            _ = Task {
-                                do {
-                                    try await AppStore.sync()
-                                } catch {
-                                    print(error)
-                                }
+                    Button {
+                        _ = Task {
+                            do {
+                                try await AppStore.sync()
+                            } catch {
+                                print(error)
                             }
-                        } label: {
-                            Text("Restore Purchases".localized)
-                                .font(.subheadline)
-                                .foregroundColor(.cyan)
-                                .padding(.vertical, 10)
-                                .padding(.horizontal, 24)
-//                                .background(Color.black.opacity(0.3))
-//                                .clipShape(Capsule())
-//                                .shadow(color: .cyan, radius: 8)
                         }
-                        
+                    } label: {
+                        Text("Restore Purchases".localized)
+                            .font(.subheadline)
+                            .foregroundColor(.cyan)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 24)
+                        //                                .background(Color.black.opacity(0.3))
+                        //                                .clipShape(Capsule())
+                        //                                .shadow(color: .cyan, radius: 8)
+                    }
+                    
+                    LegalLinksView()
                     
                     Spacer()
                 }

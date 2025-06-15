@@ -70,15 +70,22 @@ class VideoPlayerViewModel: ObservableObject {
     
     let player: AVQueuePlayer
     private var looper: AVPlayerLooper?
-    
-    init() {
-        let url = Bundle.main.url(forResource: "background_video", withExtension: "mov")
+    private var timeObserverToken: Any?
+    private var cancellables = Set<AnyCancellable>()
 
-        let item = AVPlayerItem(url: url!)
+    init() {
+        guard let url = Bundle.main.url(forResource: "background_video", withExtension: "mov") else {
+            fatalError("Video not found in bundle.")
+        }
+
+        let item = AVPlayerItem(url: url)
         self.player = AVQueuePlayer()
         self.looper = AVPlayerLooper(player: player, templateItem: item)
 
         player.play()
+
+        // Observe if player stops playing
+        startObservingPlayback()
 
         // Resume playback when app becomes active
         #if os(iOS)
@@ -98,11 +105,28 @@ class VideoPlayerViewModel: ObservableObject {
         #endif
     }
 
+    private func startObservingPlayback() {
+        timeObserverToken = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 5, preferredTimescale: 1), queue: .main) { [weak self] time in
+            guard let self = self else { return }
+
+            if self.player.timeControlStatus != .playing {
+                print("Playback stalled, restarting...")
+                self.player.play()
+            }
+        }
+    }
+
     @objc private func resumePlayback() {
-        player.play()
+        if player.timeControlStatus != .playing {
+            print("Resuming playback...")
+            player.play()
+        }
     }
 
     deinit {
+        if let token = timeObserverToken {
+            player.removeTimeObserver(token)
+        }
         NotificationCenter.default.removeObserver(self)
     }
 }
