@@ -415,7 +415,7 @@ struct MathView: View {
     var settings: SettingsManager
     let operation: MathOperation
     @State private var problems: [MathProblem] = []
-    @State private var recentProblems = [MathProblem]()
+    private static var recentProblems = [MathProblem]()
     @State private var showStars = false
     @Binding var isCompleted: Bool
     @Binding var hasProgress: Bool
@@ -425,7 +425,7 @@ struct MathView: View {
         self._isCompleted = isCompleted
         self._hasProgress = hasProgress
         self.settings = settings
-        _problems = State(initialValue: generateProblems(for: operation))
+        _problems = State(initialValue: Self.generateProblems(for: operation, settings: settings))
     }
     
     
@@ -499,22 +499,22 @@ struct MathView: View {
         }
     }
     
-    func generateProblems(for operation: MathOperation) -> [MathProblem] {
+    static func generateProblems(for operation: MathOperation, settings: SettingsManager) -> [MathProblem] {
         let count = settings.exampleCount
         var newProblems: [MathProblem] = []
         
         while newProblems.count < count {
-            let candidate = generateSingleProblem(for: operation)
+            let candidate = generateSingleProblem(for: operation, settings: settings)
             
-            let itContains: Bool = recentProblems.contains { problem in
+            let itContains: Bool = MathView.recentProblems.contains { problem in
                 problem.left == candidate.left && problem.right == candidate.right && problem.operation == candidate.operation
             }
             
             if !itContains {
                 newProblems.append(candidate)
-                recentProblems.append(candidate)
-                if recentProblems.count > 9 {
-                    recentProblems.removeFirst()
+                MathView.recentProblems.append(candidate)
+                if MathView.recentProblems.count > 9 {
+                    MathView.recentProblems.removeFirst()
                 }
             }
         }
@@ -523,7 +523,7 @@ struct MathView: View {
     }
 
     
-    func generateSingleProblem(for operation: MathOperation) -> MathProblem {
+    static func generateSingleProblem(for operation: MathOperation, settings: SettingsManager) -> MathProblem {
         var left = 1
         var right = 1
 
