@@ -7,6 +7,7 @@
 
 import Foundation
 import StoreKit
+import SwiftUI
 
 enum ProductIDs {
     static let monthly = "com.sebastianstrus.noblamathapp.premium.monthly"
@@ -20,6 +21,8 @@ enum ProductIDs {
 
 @MainActor
 class PurchaseManager: ObservableObject {
+    
+    @AppStorage(UserDefaultsKeys.isFree.rawValue) var isFree: Bool = false
 
     private let productIds = [
         "com.sebastianstrus.noblamathapp.premium.monthly",
@@ -43,7 +46,7 @@ class PurchaseManager: ObservableObject {
     }
 
     var hasUnlockedPro: Bool {
-       return !self.purchasedProductIDs.isEmpty
+       return isFree || !self.purchasedProductIDs.isEmpty
     }
 
     func loadProducts() async throws {

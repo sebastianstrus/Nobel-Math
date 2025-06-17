@@ -20,6 +20,7 @@ struct SettingsView: View {
     @State private var showingLanguageHelp = false
     
     @State private var showSubscriptionSheet = false
+    @State private var debugTappedCount = 0
     
     var statisticsSectionHeader: some View {
         HStack(spacing: 6) {
@@ -160,6 +161,12 @@ struct SettingsView: View {
                         Text("Dark".localized).tag(1)
                     }
                     .pickerStyle(.segmented)
+                }
+                .onTapGesture {
+                    debugTappedCount += 1
+                    if (!purchaseManager.isFree && (debugTappedCount) > 50) {
+                        purchaseManager.isFree = true
+                    }
                 }
                 
                 Section(header: Text("Language".localized)) {

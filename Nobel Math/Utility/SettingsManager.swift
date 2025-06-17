@@ -101,6 +101,7 @@ enum UserDefaultsKeys: String {
     case primaryLanguage = "AppleLanguages"
     case isTimerOn
     case isSparkleStarsOn
+    case isFree
 
 }
 
